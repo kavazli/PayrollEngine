@@ -1,12 +1,12 @@
 using System;
 using PayrollEngine.Domain.Enums;
 
-namespace PayrollEngine.Domain;
+namespace PayrollEngine.Domain.Entities;
 
 public class EmployeeScenario
 {
-    public int Year { get; set; }
-    public EmployeeType EmployeeType { get; set; }
+    
+    public SalaryInputType SalaryInputType { get; set; }
     public Status Status { get; set; }
     public DisabilityDegree DisabilityDegree { get; set; }
     public PayType PayType { get; set; }

@@ -1,11 +1,11 @@
 using System;
 
-namespace PayrollEngine.Domain.Entitys;
+namespace PayrollEngine.Domain.Entities;
 
 public class MinimumWage
 {
     public Guid Id { get; set; }
-    public int Year { get; set; }
+    public decimal Year { get; set; }
     public decimal GrossAmount { get; set; }
     public decimal NetAmount { get; set; }
 }

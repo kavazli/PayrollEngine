@@ -1,10 +1,10 @@
 using System;
 
-namespace PayrollEngine.Domain.Entitys;
+namespace PayrollEngine.Domain.Entities;
 
 public class StampTax
 {
     public Guid Id { get; set; }
-    public int Year { get; set; }
+    public decimal Year { get; set; }
     public decimal Rate { get; set; }
 }

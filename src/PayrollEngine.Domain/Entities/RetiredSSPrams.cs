@@ -1,11 +1,11 @@
 using System;
 
-namespace PayrollEngine.Domain.Entitys;
+namespace PayrollEngine.Domain.Entities;
 
 public class RetiredSSPrams
 {
     public Guid Id { get; set; }
-    public int Year { get; set; }
-    public decimal EmployeeeSSRate { get; set; }
+    public decimal Year { get; set; }
+    public decimal EmployeeSSRate { get; set; }
     public decimal EmployerSSRate { get; set; }
 }

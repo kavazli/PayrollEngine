@@ -1,12 +1,12 @@
 using System;
 using PayrollEngine.Domain.Enums;
 
-namespace PayrollEngine.Domain.Entitys;
+namespace PayrollEngine.Domain.Entities;
 
 public class PayrollTemplateMonth
 {
     public Months Month { get; set; }
-    public int WorkDay { get; set; }
+    public decimal WorkDay { get; set; }
     public decimal BaseSalary { get; set; }
     public decimal SalaryIncreaseRate { get; set; }
     public decimal Overtime50 { get; set; }

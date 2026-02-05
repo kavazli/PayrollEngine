@@ -1,7 +1,7 @@
 using System;
 using PayrollEngine.Domain.Enums;
 
-namespace PayrollEngine.Domain.Entitys;
+namespace PayrollEngine.Domain.Entities;
 
 public class ResultPayroll
 {

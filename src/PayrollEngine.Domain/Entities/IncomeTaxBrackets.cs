@@ -1,6 +1,6 @@
 using System;
 
-namespace PayrollEngine.Domain.Entitys;
+namespace PayrollEngine.Domain.Entities;
 
 public class IncomeTaxBrackets
 {

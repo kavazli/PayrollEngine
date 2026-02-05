@@ -1,6 +1,6 @@
 namespace PayrollEngine.Domain.Enums;
 
-public enum EmployeeType
+public enum SalaryInputType
 {
     Gross,
     Net
