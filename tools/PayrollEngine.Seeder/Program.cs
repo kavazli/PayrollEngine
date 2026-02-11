@@ -21,14 +21,18 @@ class Program
 
         using var context = new PayrollEngineDbContext(options);
 
-        var Provider = new ActiveSSParamsProvider(context);
+        var ProviderActive = new ActiveSSParamsProvider(context);
+        var ProviderRetired = new RetiredSSParamsProvider(context);
+        var IncomeTaxProvider = new IncomeTaxBracketsProvider(context);
+
+        
        
-        var parametreler = Provider.GetValue(2026);
+        var parametreler = ProviderActive.GetValue(2026);
 
         System.Console.WriteLine(parametreler.EmployeeSSRate);
         System.Console.WriteLine(parametreler.EmployeeUIRate);
         System.Console.WriteLine(parametreler.EmployerSSRate);
-        System.Console.WriteLine(parametreler.EmployerUIRate);;
+        System.Console.WriteLine(parametreler.EmployerUIRate);
             
     }
 
