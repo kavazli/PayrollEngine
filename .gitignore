@@ -482,3 +482,7 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# PayrollEngine - Keep SQLite database in Git for cross-platform development
+!**/PayrollEngine.db
+!**/PayrollEngine.db-*
