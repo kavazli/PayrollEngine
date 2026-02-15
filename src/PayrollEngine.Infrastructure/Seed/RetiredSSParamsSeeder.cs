@@ -5,7 +5,7 @@ namespace PayrollEngine.Infrastructure.Seed;
 
 public class RetiredSSParamsSeeder
 {
-    public static void Seed(PayrollEngineDbContext context, decimal year, 
+    public static void Seed(PayrollEngineDbContext context, int year, 
                                                             decimal employeeSSRate, 
                                                             decimal employerSSRate)
                                                             

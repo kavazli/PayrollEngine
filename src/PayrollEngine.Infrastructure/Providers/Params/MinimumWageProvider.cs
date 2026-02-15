@@ -1,11 +1,13 @@
 using System;
+using Microsoft.EntityFrameworkCore;
 using PayrollEngine.Domain.Entities;
+using PayrollEngine.Domain.Interfaces;
 
 namespace PayrollEngine.Infrastructure.Providers;
 
-public class MinimumWageProvider
+public class MinimumWageProvider : IMinimumWageProvider
 {
-    readonly private PayrollEngineDbContext _context;
+    private readonly PayrollEngineDbContext _context;
 
     public MinimumWageProvider(PayrollEngineDbContext context)
     {
@@ -16,16 +18,16 @@ public class MinimumWageProvider
         _context = context;
     }
 
-    public MinimumWage GetValue(decimal year)
+    public async Task<MinimumWage> GetValueAsync(int year)
     {
-        var temp = _context.MinimumWages.SingleOrDefault(item => item.Year == year);
+        var result = await _context.MinimumWages.SingleOrDefaultAsync(item => item.Year == year);
 
-        if(temp == null)
+        if(result == null)
         {
             throw new InvalidOperationException($"MinimumWage not found for year {year}.");          
         }
 
-        return temp;
+        return result;
     }
 
 }

@@ -5,7 +5,7 @@ namespace PayrollEngine.Infrastructure.Seed;
 
 public class SSCeilingSeeder
 {
-    public static void Seed(PayrollEngineDbContext context, decimal year, 
+    public static void Seed(PayrollEngineDbContext context, int year, 
                                                             decimal ceilingAmount)
     {
         if (context.SSCeilings.Any(p=> p.Year == year))

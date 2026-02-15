@@ -1,11 +1,13 @@
 using System;
+using Microsoft.EntityFrameworkCore;
 using PayrollEngine.Domain.Entities;
+using PayrollEngine.Domain.Interfaces;
 
 namespace PayrollEngine.Infrastructure.Providers;
 
-public class RetiredSSParamsProvider
+public class RetiredSSParamsProvider : IRetiredSSParamsProvider
 {
-    readonly private PayrollEngineDbContext _context;
+    private readonly PayrollEngineDbContext _context;
 
     public RetiredSSParamsProvider(PayrollEngineDbContext context)
     {
@@ -17,15 +19,15 @@ public class RetiredSSParamsProvider
     }
 
 
-    public RetiredSSParams GetValue(decimal year)
+    public async Task<RetiredSSParams> GetValueAsync(int year)
     {
-        var temp = _context.RetiredSSParams.SingleOrDefault(item => item.Year == year);
+        var result = await _context.RetiredSSParams.SingleOrDefaultAsync(item => item.Year == year);
 
-        if(temp == null)
+        if(result == null)
         {
             throw new InvalidOperationException($"RetiredSSParams not found for year {year}.");          
         }
 
-        return temp;
+        return result;
     }
 }

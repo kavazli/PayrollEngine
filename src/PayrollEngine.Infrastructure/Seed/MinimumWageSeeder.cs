@@ -5,7 +5,7 @@ namespace PayrollEngine.Infrastructure.Seed;
 
 public class MinimumWageSeeder
 {
-    public static void Seed(PayrollEngineDbContext context, decimal year, 
+    public static void Seed(PayrollEngineDbContext context, int year, 
                                                             decimal minimumWage,
                                                             decimal netAmount)
     {

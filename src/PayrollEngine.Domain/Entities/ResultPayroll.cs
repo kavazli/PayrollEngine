@@ -7,8 +7,8 @@ public class ResultPayroll
 {
     public Guid Id { get; set; }
     public Months Month { get; set; }
-    public decimal WorkDay { get; set; }
-    public decimal SSDay { get; set; }
+    public int WorkDay { get; set; }
+    public int SSDay { get; set; }
     public decimal CurrentSalary { get; set; }
     public decimal Overtime50Amount { get; set; }
     public decimal Overtime100Amount { get; set; }

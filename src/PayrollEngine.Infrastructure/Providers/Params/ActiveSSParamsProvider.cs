@@ -1,12 +1,14 @@
 using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using PayrollEngine.Domain.Entities;
+using PayrollEngine.Domain.Interfaces;
 
 namespace PayrollEngine.Infrastructure.Providers;
 
-public class ActiveSSParamsProvider
+public class ActiveSSParamsProvider : IActiveSSParamsProvider
 {   
-    readonly private PayrollEngineDbContext _context;
+    private readonly PayrollEngineDbContext _context;
     public ActiveSSParamsProvider(PayrollEngineDbContext context)
     {   
         if(context == null)
@@ -16,16 +18,16 @@ public class ActiveSSParamsProvider
         _context = context;    
     }
 
-    public ActiveSSParams GetValue(decimal year)
+    public async Task<ActiveSSParams> GetValueAsync(int year)
     {   
-        var temp = _context.ActiveSSParams.SingleOrDefault(item => item.Year == year);
+        var result = await _context.ActiveSSParams.SingleOrDefaultAsync(item => item.Year == year);
 
-        if(temp == null)
+        if(result == null)
         {
             throw new InvalidOperationException($"ActiveSSParams not found for year {year}.");          
         }
 
-        return temp;
+        return result;
         
     }
 }

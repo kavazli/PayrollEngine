@@ -1,21 +1,22 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using PayrollEngine.Domain.Entities;
+using PayrollEngine.Domain.Interfaces.Templates;
 
 namespace PayrollEngine.Infrastructure.Providers.Templates;
 
-public class EmployeeScenariosProvider
+public class EmployeeScenariosProvider : IEmployeeScenariosProvider
 {
-    readonly private PayrollEngineDbContext _Context;
+    private readonly PayrollEngineDbContext _context;
 
-    public EmployeeScenariosProvider(PayrollEngineDbContext Context)
+    public EmployeeScenariosProvider(PayrollEngineDbContext context)
     {   
-        if (Context == null)
+        if (context == null)
         {
-            throw new ArgumentNullException(nameof(Context));
+            throw new ArgumentNullException(nameof(context));
         }
 
-        _Context = Context;
+        _context = context;
     }
 
 
@@ -27,8 +28,8 @@ public class EmployeeScenariosProvider
         }
             
 
-        _Context.EmployeeScenarios.Add(scenario);
-        await _Context.SaveChangesAsync();
+        _context.EmployeeScenarios.Add(scenario);
+        await _context.SaveChangesAsync();
         return scenario;
 
     }
@@ -36,16 +37,16 @@ public class EmployeeScenariosProvider
 
     public async Task<EmployeeScenario> GetAsync()
     {
-        return await _Context.EmployeeScenarios.FirstOrDefaultAsync();
+        return await _context.EmployeeScenarios.FirstOrDefaultAsync();
     }
 
 
 
     public async Task ClearAsync()
     {
-        var scenarios = await _Context.EmployeeScenarios.ToListAsync();
-        _Context.EmployeeScenarios.RemoveRange(scenarios);
-        await _Context.SaveChangesAsync();
+        var scenarios = await _context.EmployeeScenarios.ToListAsync();
+        _context.EmployeeScenarios.RemoveRange(scenarios);
+        await _context.SaveChangesAsync();
     }
 
 
@@ -57,16 +58,16 @@ public class EmployeeScenariosProvider
 
         }
             
-        using (var transaction = _Context.Database.BeginTransaction())
+        using (var transaction = _context.Database.BeginTransaction())
         {
             try
             {
                 // Clear ve Add bir transaction içinde
-                var scenarios = await _Context.EmployeeScenarios.ToListAsync();
-                _Context.EmployeeScenarios.RemoveRange(scenarios);
-                _Context.EmployeeScenarios.Add(scenario);
+                var scenarios = await _context.EmployeeScenarios.ToListAsync();
+                _context.EmployeeScenarios.RemoveRange(scenarios);
+                _context.EmployeeScenarios.Add(scenario);
                 
-                await _Context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
             }
             catch

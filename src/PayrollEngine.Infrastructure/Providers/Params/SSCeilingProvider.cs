@@ -1,11 +1,13 @@
 using System;
+using Microsoft.EntityFrameworkCore;
 using PayrollEngine.Domain.Entities;
+using PayrollEngine.Domain.Interfaces;
 
 namespace PayrollEngine.Infrastructure.Providers;
 
-public class SSCeilingProvider
+public class SSCeilingProvider : ISSCeilingProvider
 {
-    readonly private PayrollEngineDbContext _context;
+    private readonly PayrollEngineDbContext _context;
 
     public SSCeilingProvider(PayrollEngineDbContext context)
     {
@@ -16,15 +18,15 @@ public class SSCeilingProvider
         _context = context;
     }
 
-    public SSCeiling GetValue(decimal year)
+    public async Task<SSCeiling> GetValueAsync(int year)
     {
-        var temp = _context.SSCeilings.SingleOrDefault(item => item.Year == year);
+        var result = await _context.SSCeilings.SingleOrDefaultAsync(item => item.Year == year);
 
-        if(temp == null)
+        if(result == null)
         {
             throw new InvalidOperationException($"SSCeiling not found for year {year}.");          
         }
 
-        return temp;
+        return result;
     }
 }

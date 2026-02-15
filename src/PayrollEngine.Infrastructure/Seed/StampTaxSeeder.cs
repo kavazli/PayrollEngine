@@ -5,7 +5,7 @@ namespace PayrollEngine.Infrastructure.Seed;
 
 public class StampTaxSeeder
 {
-    public static void Seed(PayrollEngineDbContext context, decimal year, 
+    public static void Seed(PayrollEngineDbContext context, int year, 
                                                             decimal stampTaxAmount)
     {
         if (context.StampTaxes.Any(p=> p.Year == year))

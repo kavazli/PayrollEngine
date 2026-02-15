@@ -1,12 +1,13 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using PayrollEngine.Domain.Entities;
+using PayrollEngine.Domain.Interfaces.Templates;
 
 namespace PayrollEngine.Infrastructure.Providers.Templates;
 
-public class ResultPayrollsProvider
+public class ResultPayrollsProvider : IResultPayrollsProvider
 {
-    readonly private PayrollEngineDbContext _context;
+    private readonly PayrollEngineDbContext _context;
 
     public ResultPayrollsProvider(PayrollEngineDbContext context)
     {
@@ -38,11 +39,11 @@ public class ResultPayrollsProvider
         return await _context.ResultPayrolls.ToListAsync();
     }
 
-    public void Clear()
+    public async Task ClearAsync()
     {
-        var resultPayrolls = _context.ResultPayrolls.ToList();
+        var resultPayrolls = await _context.ResultPayrolls.ToListAsync();
         _context.ResultPayrolls.RemoveRange(resultPayrolls);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
     public async Task SetAsync(List<ResultPayroll> resultPayrolls)
@@ -58,16 +59,14 @@ public class ResultPayrollsProvider
             {
                 var existingResultPayrolls = await _context.ResultPayrolls.ToListAsync();
                 _context.ResultPayrolls.RemoveRange(existingResultPayrolls);
-                await _context.SaveChangesAsync();
 
                 _context.ResultPayrolls.AddRange(resultPayrolls);
                 await _context.SaveChangesAsync();
-
-                transaction.Commit();
+                await transaction.CommitAsync();
             }
             catch
             {
-                transaction.Rollback();
+                await transaction.RollbackAsync();
                 throw;
             }
         }

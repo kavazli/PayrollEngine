@@ -1,13 +1,14 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using PayrollEngine.Domain.Entities;
+using PayrollEngine.Domain.Interfaces.Templates;
 
 namespace PayrollEngine.Infrastructure.Providers.Templates;
 
-public class PayrollMonthsProvider
+public class PayrollMonthsProvider : IPayrollMonthsProvider
 {
 
-    readonly private PayrollEngineDbContext _Context;
+    private readonly PayrollEngineDbContext _context;
 
     public PayrollMonthsProvider(PayrollEngineDbContext context)
     {
@@ -16,7 +17,7 @@ public class PayrollMonthsProvider
             throw new ArgumentNullException(nameof(context));
         }
 
-        _Context = context;
+        _context = context;
     }
 
 
@@ -27,23 +28,23 @@ public class PayrollMonthsProvider
             throw new ArgumentNullException(nameof(months));
         }
 
-        _Context.PayrollMonths.AddRange(months);
-        await _Context.SaveChangesAsync();
+        _context.PayrollMonths.AddRange(months);
+        await _context.SaveChangesAsync();
         return months;
     }
     
 
     public async Task<List<PayrollMonth>> GetAsync()
     {
-        return await _Context.PayrollMonths.ToListAsync();
+        return await _context.PayrollMonths.ToListAsync();
     }
 
 
     public async Task ClearAsync()
     {
-        var months = await _Context.PayrollMonths.ToListAsync();
-        _Context.PayrollMonths.RemoveRange(months);
-        await _Context.SaveChangesAsync();
+        var months = await _context.PayrollMonths.ToListAsync();
+        _context.PayrollMonths.RemoveRange(months);
+        await _context.SaveChangesAsync();
     }
     
 
@@ -54,22 +55,20 @@ public class PayrollMonthsProvider
             throw new ArgumentNullException(nameof(months));
         }
 
-        using (var transaction = _Context.Database.BeginTransaction())
+        using (var transaction = _context.Database.BeginTransaction())
         {
             try
             {
-                var existingMonths = await _Context.PayrollMonths.ToListAsync();
-                _Context.PayrollMonths.RemoveRange(existingMonths);
-                await _Context.SaveChangesAsync();
-
-                _Context.PayrollMonths.AddRange(months);
-                await _Context.SaveChangesAsync();
-
-                transaction.Commit();
+                var existingMonths = await _context.PayrollMonths.ToListAsync();
+                _context.PayrollMonths.RemoveRange(existingMonths);
+                
+                _context.PayrollMonths.AddRange(months);
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
             }
             catch
             {
-                transaction.Rollback();
+                await transaction.RollbackAsync();
                 throw;
             }
         }

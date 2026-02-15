@@ -1,10 +1,12 @@
 using System;
+using Microsoft.EntityFrameworkCore;
 using PayrollEngine.Domain.Entities;
+using PayrollEngine.Domain.Interfaces;
 
 
 namespace PayrollEngine.Infrastructure.Providers;
 
-public class CumulativeIncomeTaxBaseProvider
+public class CumulativeIncomeTaxBaseProvider : ICumulativeIncomeTaxBaseProvider
 {   
 
     private readonly PayrollEngineDbContext _context;
@@ -18,16 +20,16 @@ public class CumulativeIncomeTaxBaseProvider
         
     }
 
-    public CumulativeIncomeTaxBase GetValue(decimal Month)
+    public async Task<CumulativeIncomeTaxBase> GetValueAsync(int month)
     {
-        var temp = _context.CumulativeIncomeTaxBases.SingleOrDefault(item => item.Month == Month);
+        var result = await _context.CumulativeIncomeTaxBases.SingleOrDefaultAsync(item => item.Month == month);
 
-        if(temp == null)
+        if(result == null)
         {
-            throw new InvalidOperationException($"CumulativeIncomeTaxBase not found for month {Month}.");          
+            throw new InvalidOperationException($"CumulativeIncomeTaxBase not found for month {month}.");          
         }
 
-        return temp;
+        return result;
     }
 
 }

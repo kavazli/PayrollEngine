@@ -7,7 +7,7 @@ public class PayrollTemplateMonth
 {
     public int Id { get; set; }
     public Months Month { get; set; }
-    public decimal WorkDay { get; set; }
+    public int WorkDay { get; set; }
     public decimal BaseSalary { get; set; }
     public decimal SalaryIncreaseRate { get; set; }
     public decimal Overtime50 { get; set; }
