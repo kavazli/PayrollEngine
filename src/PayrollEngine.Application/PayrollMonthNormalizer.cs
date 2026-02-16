@@ -13,29 +13,43 @@ public class PayrollMonthNormalizer
     {   
         if(templateMonth == null)
         {
-            throw new ArgumentNullException(nameof(templateMonth));
+            throw new ArgumentNullException(nameof(templateMonth) + "cannot be null.");
         }
         if(scenario == null)
         {
-            throw new ArgumentNullException(nameof(scenario));
+            throw new ArgumentNullException(nameof(scenario) + "cannot be null.");
         }
         TemplateMonth = templateMonth;
         Scenario = scenario;
     }
 
     public PayrollMonth Normalize()
-    {
-        
+    {   
+        var TempWorkDay = CalculateWorkDays();
+        var TempBaseSalary = CalculateSalaryIncrease();
+        var TempOvertime50 = CalculateOvertime50();
+        var TempOvertime100 = CalculateOvertime100();
+        var TempGrossSalary = TempBaseSalary + TempOvertime50 + TempOvertime100 + TemplateMonth.BonusAmount;
 
-        return new PayrollMonth
-        {
+
+        PayrollMonth payrollMonth = new PayrollMonth()
+        {   
+              
+
             Month = TemplateMonth.Month,
-            WorkDay = CalculateWorkDays(),
-            BaseSalary = CalculateSalaryIncrease(),
-            
-            
+            WorkDay = TempWorkDay,
+            BaseSalary = TempBaseSalary,
+            Overtime50 = TempOvertime50,
+            Overtime100 = TempOvertime100,
+            BonusAmount = TemplateMonth.BonusAmount,
+            GrossSalary = TempGrossSalary,
+
+            PrivateHealthInsurance = TemplateMonth.PrivateHealthInsurance,
+            ShoppingVoucher = TemplateMonth.ShoppingVoucher 
             
         };
+
+        return payrollMonth;
     }
 
     private decimal CalculateSalaryIncrease()
@@ -43,6 +57,17 @@ public class PayrollMonthNormalizer
         return TemplateMonth.BaseSalary * TemplateMonth.SalaryIncreaseRate;
     }
 
+
+
+    private decimal CalculateOvertime50()
+    {         
+       return TemplateMonth.Overtime50 * (TemplateMonth.BaseSalary / 225m) * 1.5m;
+    }
+
+    private decimal CalculateOvertime100()
+    {         
+       return TemplateMonth.Overtime100 * (TemplateMonth.BaseSalary / 225m) * 2m;
+    }
 
     private int CalculateWorkDays()
     {   
@@ -88,7 +113,7 @@ public class PayrollMonthNormalizer
                 tempDay = (int)Domain.Enums.MonthsDay.December;
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException("Bir hata oluştu. Geçersiz ay değeri.");
+                    throw new ArgumentOutOfRangeException(" one error occurred. Invalid month value.");
 
                 
             }
@@ -101,7 +126,7 @@ public class PayrollMonthNormalizer
         }
         else
         {
-            throw new ArgumentOutOfRangeException("Bir hata oluştu. Geçersiz ödeme tipi.");
+            throw new ArgumentOutOfRangeException(" one error occurred. Invalid pay type.");
         }
         
     }

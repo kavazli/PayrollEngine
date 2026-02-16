@@ -10,4 +10,8 @@
     <ProjectReference Include="../PayrollEngine.Domain/PayrollEngine.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>
