@@ -21,32 +21,6 @@ public class PayrollMonthService
     }
 
     
-    public async Task<PayrollMonth> ProcessAndSaveAsync(
-        PayrollTemplateMonth templateMonth, 
-        EmployeeScenario scenario)
-    {   
-        if (templateMonth == null)
-        {
-            throw new ArgumentNullException(nameof(templateMonth), "Template month cannot be null.");
-        }
-       
-        if (scenario == null)
-        {
-            throw new ArgumentNullException(nameof(scenario), "Employee scenario cannot be null.");
-        }
-        
-
-        // 1. Normalize et (iş mantığı)
-        var normalizer = new PayrollMonthNormalizer(templateMonth, scenario);
-        var normalizedPayrollMonth = normalizer.Normalize();
-
-        // 2. DB'ye kaydet (veri erişimi)
-        var existingMonths = await _payrollMonthsProvider.GetAsync();
-        existingMonths.Add(normalizedPayrollMonth);
-        await _payrollMonthsProvider.SetAsync(existingMonths);
-
-        return normalizedPayrollMonth;
-    }
 
     
     public async Task<List<PayrollMonth>> ProcessAndSaveBatchAsync(
@@ -62,6 +36,9 @@ public class PayrollMonthService
             throw new ArgumentNullException(nameof(scenario), "Employee scenario cannot be null.");
         }
         
+        // DB yi temizle
+        await _payrollMonthsProvider.ClearAsync();
+
         var normalizedMonths = new List<PayrollMonth>();
 
         foreach (var templateMonth in templateMonths)
@@ -70,7 +47,7 @@ public class PayrollMonthService
             var normalizedMonth = normalizer.Normalize();
             normalizedMonths.Add(normalizedMonth);
         }
-
+        
         await _payrollMonthsProvider.AddAsync(normalizedMonths);
         return normalizedMonths;
     }

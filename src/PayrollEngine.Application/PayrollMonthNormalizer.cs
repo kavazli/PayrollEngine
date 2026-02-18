@@ -27,8 +27,8 @@ public class PayrollMonthNormalizer
     {   
         var TempWorkDay = CalculateWorkDays();
         var TempBaseSalary = CalculateSalaryIncrease();
-        var TempOvertime50 = CalculateOvertime50();
-        var TempOvertime100 = CalculateOvertime100();
+        var TempOvertime50 = CalculateOvertime50(TempBaseSalary);
+        var TempOvertime100 = CalculateOvertime100(TempBaseSalary);
         var TempGrossSalary = TempBaseSalary + TempOvertime50 + TempOvertime100 + TemplateMonth.BonusAmount;
 
 
@@ -53,20 +53,23 @@ public class PayrollMonthNormalizer
     }
 
     private decimal CalculateSalaryIncrease()
-    {
-        return TemplateMonth.BaseSalary * TemplateMonth.SalaryIncreaseRate;
+    {   
+
+        var result = TemplateMonth.BaseSalary * TemplateMonth.SalaryIncreaseRate;
+
+        return TemplateMonth.BaseSalary + result;
     }
 
 
 
-    private decimal CalculateOvertime50()
+    private decimal CalculateOvertime50(decimal BaseSalary)
     {         
-       return TemplateMonth.Overtime50 * (TemplateMonth.BaseSalary / 225m) * 1.5m;
+       return TemplateMonth.Overtime50 * (BaseSalary / 225m) * 1.5m;
     }
 
-    private decimal CalculateOvertime100()
+    private decimal CalculateOvertime100(decimal BaseSalary)
     {         
-       return TemplateMonth.Overtime100 * (TemplateMonth.BaseSalary / 225m) * 2m;
+       return TemplateMonth.Overtime100 * (BaseSalary / 225m) * 2m;
     }
 
     private int CalculateWorkDays()

@@ -9,6 +9,8 @@
 
   <ItemGroup>
     <ProjectReference Include="../../src/PayrollEngine.Infrastructure/PayrollEngine.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\PayrollEngine.Application\PayrollEngine.Application.csproj" />
+    <ProjectReference Include="..\..\src\PayrollEngine.Domain\PayrollEngine.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
