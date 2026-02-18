@@ -16,7 +16,7 @@ namespace PayrollEngine.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Year = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Year = table.Column<int>(type: "INTEGER", nullable: false),
                     EmployeeSSRate = table.Column<decimal>(type: "TEXT", nullable: false),
                     EmployeeUIRate = table.Column<decimal>(type: "TEXT", nullable: false),
                     EmployerSSRate = table.Column<decimal>(type: "TEXT", nullable: false),
@@ -32,7 +32,7 @@ namespace PayrollEngine.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Month = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Month = table.Column<int>(type: "INTEGER", nullable: false),
                     CumulativeBase = table.Column<decimal>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -61,8 +61,8 @@ namespace PayrollEngine.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Year = table.Column<decimal>(type: "TEXT", nullable: false),
-                    Bracket = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Year = table.Column<int>(type: "INTEGER", nullable: false),
+                    Bracket = table.Column<int>(type: "INTEGER", nullable: false),
                     MinAmount = table.Column<decimal>(type: "TEXT", nullable: false),
                     MaxAmount = table.Column<decimal>(type: "TEXT", nullable: false),
                     Rate = table.Column<decimal>(type: "TEXT", nullable: false)
@@ -77,7 +77,7 @@ namespace PayrollEngine.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Year = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Year = table.Column<int>(type: "INTEGER", nullable: false),
                     GrossAmount = table.Column<decimal>(type: "TEXT", nullable: false),
                     NetAmount = table.Column<decimal>(type: "TEXT", nullable: false)
                 },
@@ -92,7 +92,7 @@ namespace PayrollEngine.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Month = table.Column<int>(type: "INTEGER", nullable: false),
-                    WorkDay = table.Column<decimal>(type: "TEXT", nullable: false),
+                    WorkDay = table.Column<int>(type: "INTEGER", nullable: false),
                     BaseSalary = table.Column<decimal>(type: "TEXT", nullable: false),
                     Overtime50 = table.Column<decimal>(type: "TEXT", nullable: false),
                     Overtime100 = table.Column<decimal>(type: "TEXT", nullable: false),
@@ -113,7 +113,7 @@ namespace PayrollEngine.Infrastructure.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Month = table.Column<int>(type: "INTEGER", nullable: false),
-                    WorkDay = table.Column<decimal>(type: "TEXT", nullable: false),
+                    WorkDay = table.Column<int>(type: "INTEGER", nullable: false),
                     BaseSalary = table.Column<decimal>(type: "TEXT", nullable: false),
                     SalaryIncreaseRate = table.Column<decimal>(type: "TEXT", nullable: false),
                     Overtime50 = table.Column<decimal>(type: "TEXT", nullable: false),
@@ -133,8 +133,8 @@ namespace PayrollEngine.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Month = table.Column<int>(type: "INTEGER", nullable: false),
-                    WorkDay = table.Column<decimal>(type: "TEXT", nullable: false),
-                    SSDay = table.Column<decimal>(type: "TEXT", nullable: false),
+                    WorkDay = table.Column<int>(type: "INTEGER", nullable: false),
+                    SSDay = table.Column<int>(type: "INTEGER", nullable: false),
                     CurrentSalary = table.Column<decimal>(type: "TEXT", nullable: false),
                     Overtime50Amount = table.Column<decimal>(type: "TEXT", nullable: false),
                     Overtime100Amount = table.Column<decimal>(type: "TEXT", nullable: false),
@@ -168,7 +168,7 @@ namespace PayrollEngine.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Year = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Year = table.Column<int>(type: "INTEGER", nullable: false),
                     EmployeeSSRate = table.Column<decimal>(type: "TEXT", nullable: false),
                     EmployerSSRate = table.Column<decimal>(type: "TEXT", nullable: false)
                 },
@@ -182,7 +182,7 @@ namespace PayrollEngine.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Year = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Year = table.Column<int>(type: "INTEGER", nullable: false),
                     Ceiling = table.Column<decimal>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -195,7 +195,7 @@ namespace PayrollEngine.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Year = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Year = table.Column<int>(type: "INTEGER", nullable: false),
                     Rate = table.Column<decimal>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>

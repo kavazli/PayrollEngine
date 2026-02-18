@@ -20,14 +20,14 @@ public class IncomeTaxBracketsProvider : IIncomeTaxBracketsProvider
 
     public async Task<List<IncomeTaxBracket>> GetValueAsync(int year)
     {
-        var result = await _context.IncomeTaxBrackets.Where(b => b.Year == year).OrderBy(b => b.MinAmount).ToListAsync();
+        var result = await _context.IncomeTaxBrackets.Where(b => b.Year == year).ToListAsync();
 
         if(result == null || result.Count == 0)
         {
             throw new InvalidOperationException($"No IncomeTaxBrackets found for year {year}.");          
         }
 
-        return result;
+        return result.OrderBy(b => b.MinAmount).ToList();
     }
 
 }

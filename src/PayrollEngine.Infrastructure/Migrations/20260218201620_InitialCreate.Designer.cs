@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PayrollEngine.Infrastructure;
 
@@ -10,9 +11,11 @@ using PayrollEngine.Infrastructure;
 namespace PayrollEngine.Infrastructure.Migrations
 {
     [DbContext(typeof(PayrollEngineDbContext))]
-    partial class PayrollEngineDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260218201620_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
@@ -35,8 +38,8 @@ namespace PayrollEngine.Infrastructure.Migrations
                     b.Property<decimal>("EmployerUIRate")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Year")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Year")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -52,8 +55,8 @@ namespace PayrollEngine.Infrastructure.Migrations
                     b.Property<decimal>("CumulativeBase")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Month")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Month")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -92,8 +95,8 @@ namespace PayrollEngine.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Bracket")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Bracket")
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("MaxAmount")
                         .HasColumnType("TEXT");
@@ -104,8 +107,8 @@ namespace PayrollEngine.Infrastructure.Migrations
                     b.Property<decimal>("Rate")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Year")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Year")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -124,8 +127,8 @@ namespace PayrollEngine.Infrastructure.Migrations
                     b.Property<decimal>("NetAmount")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Year")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Year")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -162,8 +165,8 @@ namespace PayrollEngine.Infrastructure.Migrations
                     b.Property<decimal>("ShoppingVoucher")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("WorkDay")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("WorkDay")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -200,8 +203,8 @@ namespace PayrollEngine.Infrastructure.Migrations
                     b.Property<decimal>("ShoppingVoucher")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("WorkDay")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("WorkDay")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -268,8 +271,8 @@ namespace PayrollEngine.Infrastructure.Migrations
                     b.Property<decimal>("SSContributionBase")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("SSDay")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("SSDay")
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("ShoppingVoucher")
                         .HasColumnType("TEXT");
@@ -286,8 +289,8 @@ namespace PayrollEngine.Infrastructure.Migrations
                     b.Property<decimal>("TotalSalary")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("WorkDay")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("WorkDay")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -306,8 +309,8 @@ namespace PayrollEngine.Infrastructure.Migrations
                     b.Property<decimal>("EmployerSSRate")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Year")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Year")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -323,8 +326,8 @@ namespace PayrollEngine.Infrastructure.Migrations
                     b.Property<decimal>("Ceiling")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Year")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Year")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -340,8 +343,8 @@ namespace PayrollEngine.Infrastructure.Migrations
                     b.Property<decimal>("Rate")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Year")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Year")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
