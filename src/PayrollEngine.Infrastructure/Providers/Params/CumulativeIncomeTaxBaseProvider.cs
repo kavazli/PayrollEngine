@@ -1,6 +1,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using PayrollEngine.Domain.Entities;
+using PayrollEngine.Domain.Enums;
 using PayrollEngine.Domain.Interfaces;
 
 
@@ -10,6 +11,7 @@ public class CumulativeIncomeTaxBaseProvider : ICumulativeIncomeTaxBaseProvider
 {   
 
     private readonly PayrollEngineDbContext _context;
+
     public CumulativeIncomeTaxBaseProvider(PayrollEngineDbContext context)
     {   
         if(context == null)
@@ -20,7 +22,8 @@ public class CumulativeIncomeTaxBaseProvider : ICumulativeIncomeTaxBaseProvider
         
     }
 
-    public async Task<CumulativeIncomeTaxBase> GetValueAsync(int month)
+
+    public async Task<CumulativeIncomeTaxBase> GetValueAsync(Months month)
     {
         var result = await _context.CumulativeIncomeTaxBases.SingleOrDefaultAsync(item => item.Month == month);
 
@@ -32,4 +35,27 @@ public class CumulativeIncomeTaxBaseProvider : ICumulativeIncomeTaxBaseProvider
         return result;
     }
 
+
+    public async Task<CumulativeIncomeTaxBase> AddAsync(CumulativeIncomeTaxBase taxBase)
+    {
+        if (taxBase == null)
+        {
+            throw new ArgumentNullException(nameof(taxBase));
+        }
+
+        _context.CumulativeIncomeTaxBases.Add(taxBase);
+        await _context.SaveChangesAsync();
+
+        return taxBase;
+    }
+    
+    public async Task ClearAsync()
+    {
+        var taxBases = await _context.CumulativeIncomeTaxBases.ToListAsync();
+        _context.CumulativeIncomeTaxBases.RemoveRange(taxBases);
+        await _context.SaveChangesAsync();
+   
+    }
+
+    
 }

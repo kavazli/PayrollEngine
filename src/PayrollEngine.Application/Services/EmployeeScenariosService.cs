@@ -6,7 +6,9 @@ namespace PayrollEngine.Application.Services;
 
 public class EmployeeScenariosService
 {
+
     private readonly IEmployeeScenariosProvider _employeeScenariosProvider;
+
 
     public EmployeeScenariosService(IEmployeeScenariosProvider provider)
     {
@@ -16,31 +18,50 @@ public class EmployeeScenariosService
         }
 
         _employeeScenariosProvider = provider;
+
     }
 
 
-    public async Task<EmployeeScenario> ProcessAndSaveAsync(EmployeeScenario scenario)
+    public async Task<EmployeeScenario> AddAsync(EmployeeScenario scenario)
     {
+
         if (_employeeScenariosProvider == null)
         {
             throw new InvalidOperationException("Employee scenarios provider is not initialized.");
         }
-
         if (scenario == null)
         {
             throw new ArgumentNullException(nameof(scenario), "Employee scenario cannot be null.");
         }   
 
-        await _employeeScenariosProvider.ClearAsync();
+        await ClearAsync();
 
         await _employeeScenariosProvider.AddAsync(scenario);
         return scenario;
+
     }
 
-
-    public async Task<EmployeeScenario> GetEmployeeScenarioAsync()
+    public async Task<EmployeeScenario> GetAsync()
     {
         return await _employeeScenariosProvider.GetAsync();
     }
+
+
+    public async Task ClearAsync()
+    {
+        await _employeeScenariosProvider.ClearAsync();
+    }
+
+
+    public async Task SetAsync(EmployeeScenario scenario)
+    {
+        if (scenario == null)
+        {
+            throw new ArgumentNullException(nameof(scenario), "Employee scenario cannot be null.");
+        }
+
+        await _employeeScenariosProvider.SetAsync(scenario);
+    }
+
 
 }

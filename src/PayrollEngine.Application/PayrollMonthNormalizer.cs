@@ -13,11 +13,11 @@ public class PayrollMonthNormalizer
     {   
         if(templateMonth == null)
         {
-            throw new ArgumentNullException(nameof(templateMonth) + "cannot be null.");
+            throw new ArgumentNullException(nameof(templateMonth),"cannot be null.");
         }
         if(scenario == null)
         {
-            throw new ArgumentNullException(nameof(scenario) + "cannot be null.");
+            throw new ArgumentNullException(nameof(scenario),"cannot be null.");
         }
         TemplateMonth = templateMonth;
         Scenario = scenario;

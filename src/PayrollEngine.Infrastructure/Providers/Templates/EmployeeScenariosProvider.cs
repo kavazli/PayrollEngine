@@ -41,7 +41,6 @@ public class EmployeeScenariosProvider : IEmployeeScenariosProvider
     }
 
 
-
     public async Task ClearAsync()
     {
         var scenarios = await _context.EmployeeScenarios.ToListAsync();

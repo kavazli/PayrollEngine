@@ -21,8 +21,19 @@ public class ResultPayrollsProvider : IResultPayrollsProvider
         
     }
 
+    public async Task<ResultPayroll> AddAsync(ResultPayroll resultPayroll)
+    {
+        if (resultPayroll == null)
+        {
+            throw new ArgumentNullException(nameof(resultPayroll));
+        }
 
-    public async Task<List<ResultPayroll>> AddAsync(List<ResultPayroll> resultPayrolls)
+        _context.ResultPayrolls.Add(resultPayroll);
+        await _context.SaveChangesAsync();
+        return resultPayroll;
+    }
+
+    public async Task<List<ResultPayroll>> AddRangeAsync(List<ResultPayroll> resultPayrolls)
     {
         if (resultPayrolls == null)
         {
@@ -72,4 +83,5 @@ public class ResultPayrollsProvider : IResultPayrollsProvider
         }
     }
 
+    
 }

@@ -7,7 +7,9 @@ namespace PayrollEngine.Application.Services;
 
 public class PayrollMonthService
 {   
+
     private readonly IPayrollMonthsProvider _payrollMonthsProvider;
+
 
     public PayrollMonthService(IPayrollMonthsProvider provider)
     {   
@@ -16,17 +18,16 @@ public class PayrollMonthService
         {
             throw new ArgumentNullException(nameof(provider), "Payroll months provider cannot be null.");
         }
-
         _payrollMonthsProvider = provider;
+
     }
 
     
-
-    
-    public async Task<List<PayrollMonth>> ProcessAndSaveBatchAsync(
+    public async Task<List<PayrollMonth>> AddAsync(
         List<PayrollTemplateMonth> templateMonths, 
         EmployeeScenario scenario)
     {   
+
         if(templateMonths == null || templateMonths.Count == 0)
         {
             throw new ArgumentException("Template months list cannot be null or empty.", nameof(templateMonths));
@@ -37,12 +38,13 @@ public class PayrollMonthService
         }
         
         // DB yi temizle
-        await _payrollMonthsProvider.ClearAsync();
+        await ClearAsync();
 
         var normalizedMonths = new List<PayrollMonth>();
 
         foreach (var templateMonth in templateMonths)
         {
+            // Normalizasyon işlemi
             var normalizer = new PayrollMonthNormalizer(templateMonth, scenario);
             var normalizedMonth = normalizer.Normalize();
             normalizedMonths.Add(normalizedMonth);
@@ -50,5 +52,28 @@ public class PayrollMonthService
         
         await _payrollMonthsProvider.AddAsync(normalizedMonths);
         return normalizedMonths;
+
+    }
+
+
+    public Task<List<PayrollMonth>> GetAsync()
+    {
+        return _payrollMonthsProvider.GetAsync();
+    }
+
+
+    public async Task ClearAsync()
+    {
+        await _payrollMonthsProvider.ClearAsync();
+    }
+
+
+    public async Task SetAsync(List<PayrollMonth> months)
+    {
+        if (months == null || months.Count == 0)
+        {
+            throw new ArgumentException("Months list cannot be null or empty.", nameof(months));
+        }
+        await _payrollMonthsProvider.SetAsync(months);
     }
 }

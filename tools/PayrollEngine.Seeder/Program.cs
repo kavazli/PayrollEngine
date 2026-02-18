@@ -29,29 +29,7 @@ class Program
         
        
 
-        List<PayrollTemplateMonth> payrollMonths = new List<PayrollTemplateMonth>();
-
-        for(int i = 1; i <= 12; i++)
-        {
-            var payrollMonth = new PayrollTemplateMonth
-            {   
-                Month = Months.May,
-                WorkDay = 30,
-                BaseSalary = 25000m,
-                SalaryIncreaseRate = 0.25m,
-                Overtime50 = 25m,
-                Overtime100 = 25m,
-                BonusAmount = 1000m,
-                PrivateHealthInsurance = 200m,
-                ShoppingVoucher = 100m
-            };
-
-            payrollMonths.Add(payrollMonth);
-            
-        }
-
-
-        await payrollMonthService.ProcessAndSaveBatchAsync(payrollMonths, await employeeScenariosService.GetEmployeeScenarioAsync());
+       
 
 
     }
