@@ -85,32 +85,33 @@ class Program
         System.Console.WriteLine($"Stamp Tax for 2026: {result6.Rate}");
         */
 
-        /*
-         var scenario = await employeeScenariosService.GetAsync();
+        
+        //  var scenario = await employeeScenariosService.GetAsync();
 
-            if(scenario != null)
-            {
-                System.Console.WriteLine($"Employee Scenario: {scenario.Id}");
-                System.Console.WriteLine($"Employee Scenario: {scenario.SalaryInputType}");
-                System.Console.WriteLine($"Employee Scenario: {scenario.DisabilityDegree}");
-                System.Console.WriteLine($"Employee Scenario: {scenario.PayType}");
-                System.Console.WriteLine($"Employee Scenario: {scenario.Status}");
-                System.Console.WriteLine($"Employee Scenario: {scenario.IncentiveType}");
-            }
-            else
-            {
-                System.Console.WriteLine("No Employee Scenario found.");
-            }
-        */
+        //     if(scenario != null)
+        //     {
+        //         System.Console.WriteLine($"Employee Scenario: {scenario.Id}");
+        //         System.Console.WriteLine($"Employee Scenario: {scenario.SalaryInputType}");
+        //         System.Console.WriteLine($"Employee Scenario: {scenario.DisabilityDegree}");
+        //         System.Console.WriteLine($"Employee Scenario: {scenario.PayType}");
+        //         System.Console.WriteLine($"Employee Scenario: {scenario.Status}");
+        //         System.Console.WriteLine($"Employee Scenario: {scenario.IncentiveType}");
+        //         System.Console.WriteLine($"Employee Scenario: {scenario.Year}");
+        //     }
+        //     else
+        //     {
+        //         System.Console.WriteLine("No Employee Scenario found.");
+        //     }
+        
 
-        /*
-        List<PayrollMonth> months = await payrollMonthService.GetAsync();
+        
+        // List<PayrollMonth> months = await payrollMonthService.GetAsync();
 
-        foreach (var month in months)
-        {
-            System.Console.WriteLine($"Payroll Month: {month.Id} - {month.Month} - {month.BaseSalary} - {month.GrossSalary} - {month.Overtime50}");
-        }
-        */
+        // foreach (var month in months)
+        // {
+        //     System.Console.WriteLine($"Payroll Month: {month.Id} - {month.Month} - {month.BaseSalary} - {month.GrossSalary} - {month.Overtime50}");
+        // }
+        
 
     }
 
