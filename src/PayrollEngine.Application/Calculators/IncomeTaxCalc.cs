@@ -9,12 +9,13 @@ public class IncomeTaxCalc
 {
     private readonly IncomeTaxBracketsService _incomeTaxService;
     private readonly CumulativeIncomeTaxBaseService _cumulativeIncomeTaxBaseService;
-
-    private readonly EmployeeScenariosService _employeeScenariosService;    
+    private readonly EmployeeScenariosService _employeeScenariosService;
+    private readonly IncomeTaxExemptionCalc _incomeTaxExemptionCalc;    
 
     public IncomeTaxCalc(IncomeTaxBracketsService incomeTaxService, 
                          CumulativeIncomeTaxBaseService cumulativeIncomeTaxBaseService, 
-                         EmployeeScenariosService employeeScenariosService)
+                         EmployeeScenariosService employeeScenariosService,
+                         IncomeTaxExemptionCalc incomeTaxExemptionCalc)
     {   
 
         if (incomeTaxService == null)
@@ -32,10 +33,16 @@ public class IncomeTaxCalc
         {
             throw new ArgumentNullException(nameof(employeeScenariosService), "EmployeeScenariosService cannot be null.");
         }
+        if (incomeTaxExemptionCalc == null)
+        {
+            throw new ArgumentNullException(nameof(incomeTaxExemptionCalc), "IncomeTaxExemptionCalc cannot be null.");
+        }
+
 
         _incomeTaxService = incomeTaxService;
         _cumulativeIncomeTaxBaseService = cumulativeIncomeTaxBaseService;
         _employeeScenariosService = employeeScenariosService;
+        _incomeTaxExemptionCalc = incomeTaxExemptionCalc;
     }
 
     public async Task<decimal> Calc(Months months)
@@ -58,12 +65,12 @@ public class IncomeTaxCalc
             }
         }
 
-        var taxPrevious = await CalculateTaxAmount(previousCumulativeBase);
-        var taxCurrent = await CalculateTaxAmount(currentCumulativeBase.CumulativeBase);
+        var taxPrevious = await CalculateTaxAmount(previousCumulativeBase, months);
+        var taxCurrent = await CalculateTaxAmount(currentCumulativeBase.CumulativeBase, months);
         return taxCurrent - taxPrevious;
     } 
    
-    private async Task<decimal> CalculateTaxAmount(decimal cumulativeBase)
+    private async Task<decimal> CalculateTaxAmount(decimal cumulativeBase, Months months)
     {   
         var employeeScenario = await _employeeScenariosService.GetAsync();
         if(employeeScenario == null)
@@ -115,7 +122,11 @@ public class IncomeTaxCalc
 
         }
 
-        return tax;
+        decimal exemption = await _incomeTaxExemptionCalc.Calc(months);
+        decimal result = tax - exemption;
+        
+
+        return result;
 
     }
 

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PayrollEngine.Application;
 using PayrollEngine.Infrastructure;
 
 
@@ -12,6 +13,9 @@ builder.Services.AddDbContext<PayrollEngineDbContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("Default"));
 });
+
+builder.Services.AddInfrastructure();
+builder.Services.AddApplication();
 
 
 var app = builder.Build();

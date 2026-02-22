@@ -28,6 +28,7 @@ public class CumtIncomeTaxBaseCalc
         if (currentMonth != Months.January)
         {
             var previousMonth = (Months)((int)currentMonth - 1);
+            
             var previousRecord = await _cumulativeIncomeTaxBaseService.GetValueAsync(previousMonth);
             if (previousRecord != null)
             {

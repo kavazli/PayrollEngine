@@ -35,9 +35,18 @@ public class SSContributionCalc
             throw new ArgumentOutOfRangeException(nameof(GrossSalary), "Gross salary cannot be negative.");
         }
         
-        var scenario = await _employeeScenariosService.GetAsync(); 
+        var scenario = await _employeeScenariosService.GetAsync();
+        if (scenario == null)
+        {
+            throw new InvalidOperationException($"Employee scenario not found.");
+        }
+
         var ssCeiling = await _ssCeilingService.GetValueAsync(scenario.Year);   
-        
+        if (ssCeiling == null)
+        {
+            throw new InvalidOperationException($"SS ceiling not found for year: {scenario.Year}");
+        }
+
         if (GrossSalary > ssCeiling.Ceiling)
         {
             return ssCeiling.Ceiling;

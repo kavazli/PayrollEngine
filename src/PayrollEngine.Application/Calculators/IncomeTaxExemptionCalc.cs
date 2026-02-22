@@ -11,7 +11,6 @@ public class IncomeTaxExemptionCalc
 
     private readonly MinimumWageService _minimumWageService;
     private readonly IncomeTaxBracketsService _incomeTaxBracketsService;
-
     private readonly EmployeeScenariosService _employeeScenariosService;
 
     public IncomeTaxExemptionCalc(MinimumWageService minimumWageService, 
@@ -43,8 +42,23 @@ public class IncomeTaxExemptionCalc
     {   
 
         var scanario = await _employeeScenariosService.GetAsync();
+        if (scanario == null)
+        {
+            throw new InvalidOperationException($"Employee scenario not found.");
+        }
+
+
         var minimumWage = await _minimumWageService.GetValueAsync(scanario.Year);
+        if (minimumWage == null)
+        {
+            throw new InvalidOperationException($"Minimum wage not found for year: {scanario.Year}");
+        }
+
         var IncomeTaxBrackets = await _incomeTaxBracketsService.GetValueAsync(scanario.Year);
+        if (IncomeTaxBrackets == null)
+        {
+            throw new InvalidOperationException($"Income tax brackets not found for year: {scanario.Year}");
+        }
 
         decimal exemptionBase = minimumWage.NetAmount * (int)months;
 

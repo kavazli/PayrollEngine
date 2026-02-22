@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../PayrollEngine.Application/PayrollEngine.Application.csproj" />
     <ProjectReference Include="../PayrollEngine.Infrastructure/PayrollEngine.Infrastructure.csproj" />
   </ItemGroup>
 
