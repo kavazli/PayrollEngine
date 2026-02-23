@@ -42,11 +42,7 @@ public class PayrollMonthNormalizer
             Overtime50 = TempOvertime50,
             Overtime100 = TempOvertime100,
             BonusAmount = TemplateMonth.BonusAmount,
-            GrossSalary = TempGrossSalary,
-
-            PrivateHealthInsurance = TemplateMonth.PrivateHealthInsurance,
-            ShoppingVoucher = TemplateMonth.ShoppingVoucher 
-            
+            GrossSalary = TempGrossSalary
         };
 
         return payrollMonth;

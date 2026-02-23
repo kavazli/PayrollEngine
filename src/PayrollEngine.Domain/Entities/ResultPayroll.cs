@@ -14,9 +14,7 @@ public class ResultPayroll
     public decimal Overtime100Amount { get; set; }
     public decimal BonusAmount { get; set; }
     public decimal TotalSalary { get; set; }
-    public decimal PrivateHealthInsurance { get; set; }
-    public decimal ShoppingVoucher { get; set; }
-
+    
     public decimal GrossSalary { get; set; }
     public decimal SSContributionBase { get; set; }
     public decimal EmployeeSSContributionAmount { get; set; }
@@ -29,12 +27,5 @@ public class ResultPayroll
     public decimal StampTaxExemption { get; set; }
     public decimal NetSalary { get; set; }
     
-    public decimal EmployerSSContributionAmount { get; set; }
-    public decimal EmployerUIContributionAmount { get; set; }
-    public decimal IncentiveDiscount { get; set; }
-    public decimal TotalEmployerCost { get; set; }
-
-
-
 
 }

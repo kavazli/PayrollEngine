@@ -14,6 +14,5 @@ public class PayrollMonth
     public decimal BonusAmount { get; set; }
     public decimal GrossSalary { get; set; }
     
-    public decimal PrivateHealthInsurance { get; set; }
-    public decimal ShoppingVoucher { get; set; } 
+   
 }

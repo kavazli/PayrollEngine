@@ -1,10 +1,11 @@
 using System;
 using PayrollEngine.Domain.Entities;
-using PayrollEngine.Domain.Interfaces.Templates;
+using PayrollEngine.Domain.Interfaces.Providers;
+using PayrollEngine.Domain.Interfaces.Services;
 
-namespace PayrollEngine.Application.Services;
+namespace PayrollEngine.Application.Services.Services;
 
-public class ResultPayrollService
+public class ResultPayrollService : IResultPayrollService
 {   
 
     private readonly IResultPayrollsProvider _resultPayrollsProvider;

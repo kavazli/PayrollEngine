@@ -1,17 +1,18 @@
 using System;
 using PayrollEngine.Domain.Entities;
-using PayrollEngine.Domain.Interfaces.Templates;
+using PayrollEngine.Domain.Interfaces.Providers;
+using PayrollEngine.Domain.Interfaces.Services;
 
-namespace PayrollEngine.Application.Services;
+namespace PayrollEngine.Application.Services.Services;
 
 
-public class PayrollMonthService
+public class PayrollMonthService : IPayrollMonthService
 {   
 
     private readonly IPayrollMonthsProvider _payrollMonthsProvider;
 
 
-    public PayrollMonthService(IPayrollMonthsProvider provider)
+    public PayrollMonthService(IPayrollMonthsProvider provider) 
     {   
 
         if (provider == null)

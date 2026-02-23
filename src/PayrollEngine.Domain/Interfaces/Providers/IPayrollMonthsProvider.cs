@@ -1,6 +1,6 @@
 using PayrollEngine.Domain.Entities;
 
-namespace PayrollEngine.Domain.Interfaces.Templates;
+namespace PayrollEngine.Domain.Interfaces.Providers;
 
 public interface IPayrollMonthsProvider
 {

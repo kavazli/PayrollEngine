@@ -28,7 +28,7 @@ public class PayrollMonthsProvider : IPayrollMonthsProvider
             throw new ArgumentNullException(nameof(months));
         }
 
-        _context.PayrollMonths.AddRange(months);
+        await _context.PayrollMonths.AddRangeAsync(months);
         await _context.SaveChangesAsync();
         return months;
     }
@@ -55,22 +55,20 @@ public class PayrollMonthsProvider : IPayrollMonthsProvider
             throw new ArgumentNullException(nameof(months));
         }
 
-        using (var transaction = _context.Database.BeginTransaction())
+        await using var transaction = await _context.Database.BeginTransactionAsync();
+        try
         {
-            try
-            {
-                var existingMonths = await _context.PayrollMonths.ToListAsync();
-                _context.PayrollMonths.RemoveRange(existingMonths);
-                
-                _context.PayrollMonths.AddRange(months);
-                await _context.SaveChangesAsync();
-                await transaction.CommitAsync();
-            }
-            catch
-            {
-                await transaction.RollbackAsync();
-                throw;
-            }
+            var existingMonths = await _context.PayrollMonths.ToListAsync();
+            _context.PayrollMonths.RemoveRange(existingMonths);
+            
+            await _context.PayrollMonths.AddRangeAsync(months);
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
         }
     }
 

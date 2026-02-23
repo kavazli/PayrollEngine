@@ -28,7 +28,7 @@ public class ResultPayrollsProvider : IResultPayrollsProvider
             throw new ArgumentNullException(nameof(resultPayroll));
         }
 
-        _context.ResultPayrolls.Add(resultPayroll);
+        await _context.ResultPayrolls.AddAsync(resultPayroll);
         await _context.SaveChangesAsync();
         return resultPayroll;
     }
@@ -40,7 +40,7 @@ public class ResultPayrollsProvider : IResultPayrollsProvider
             throw new ArgumentNullException(nameof(resultPayrolls));
         }
 
-        _context.ResultPayrolls.AddRange(resultPayrolls);
+        await _context.ResultPayrolls.AddRangeAsync(resultPayrolls);
         await _context.SaveChangesAsync();
         return resultPayrolls;
     }
@@ -64,22 +64,20 @@ public class ResultPayrollsProvider : IResultPayrollsProvider
             throw new ArgumentNullException(nameof(resultPayrolls));
         }
 
-        using (var transaction = _context.Database.BeginTransaction())
+        await using var transaction = await _context.Database.BeginTransactionAsync();
+        try
         {
-            try
-            {
-                var existingResultPayrolls = await _context.ResultPayrolls.ToListAsync();
-                _context.ResultPayrolls.RemoveRange(existingResultPayrolls);
+            var existingResultPayrolls = await _context.ResultPayrolls.ToListAsync();
+            _context.ResultPayrolls.RemoveRange(existingResultPayrolls);
 
-                _context.ResultPayrolls.AddRange(resultPayrolls);
-                await _context.SaveChangesAsync();
-                await transaction.CommitAsync();
-            }
-            catch
-            {
-                await transaction.RollbackAsync();
-                throw;
-            }
+            await _context.ResultPayrolls.AddRangeAsync(resultPayrolls);
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
         }
     }
 

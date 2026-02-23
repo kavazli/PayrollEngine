@@ -28,7 +28,7 @@ public class EmployeeScenariosProvider : IEmployeeScenariosProvider
         }
             
 
-        _context.EmployeeScenarios.Add(scenario);
+        await _context.EmployeeScenarios.AddAsync(scenario);
         await _context.SaveChangesAsync();
         return scenario;
 
@@ -57,23 +57,21 @@ public class EmployeeScenariosProvider : IEmployeeScenariosProvider
 
         }
             
-        using (var transaction = _context.Database.BeginTransaction())
+        await using var transaction = await _context.Database.BeginTransactionAsync();
+        try
         {
-            try
-            {
-                // Clear ve Add bir transaction içinde
-                var scenarios = await _context.EmployeeScenarios.ToListAsync();
-                _context.EmployeeScenarios.RemoveRange(scenarios);
-                _context.EmployeeScenarios.Add(scenario);
-                
-                await _context.SaveChangesAsync();
-                await transaction.CommitAsync();
-            }
-            catch
-            {
-                await transaction.RollbackAsync();
-                throw;
-            }
+            // Clear ve Add bir transaction içinde
+            var scenarios = await _context.EmployeeScenarios.ToListAsync();
+            _context.EmployeeScenarios.RemoveRange(scenarios);
+            await _context.EmployeeScenarios.AddAsync(scenario);
+            
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
         }
     }
 

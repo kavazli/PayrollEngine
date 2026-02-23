@@ -19,7 +19,11 @@ public class PayrollEngineDbContext : DbContext
     public DbSet<SSCeiling> SSCeilings { get; set; }
     public DbSet<StampTax> StampTaxes { get; set; }
 
+    public DbSet<ShoppingVoucher> ShoppingVouchers { get; set; }
+    public DbSet<PrivateHealthInsurance> PrivateHealthInsurances { get; set; }
+    public DbSet<EmployerContributions> EmployerContributions { get; set; }
 
+    
 
 
     public PayrollEngineDbContext(DbContextOptions<PayrollEngineDbContext> options) : base(options)
