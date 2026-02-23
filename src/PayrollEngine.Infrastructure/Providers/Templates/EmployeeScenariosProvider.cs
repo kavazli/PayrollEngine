@@ -1,7 +1,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using PayrollEngine.Domain.Entities;
-using PayrollEngine.Domain.Interfaces.Templates;
+using PayrollEngine.Domain.Interfaces.Providers;
 
 namespace PayrollEngine.Infrastructure.Providers.Templates;
 

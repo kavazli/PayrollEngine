@@ -3,6 +3,7 @@ using PayrollEngine.Application.Services;
 using PayrollEngine.Application.Services.Params;
 using PayrollEngine.Domain.Entities;
 using PayrollEngine.Domain.Enums;
+using PayrollEngine.Domain.Interfaces.Services;
 
 namespace PayrollEngine.Application.Calculators;
 
@@ -11,11 +12,11 @@ public class IncomeTaxExemptionCalc
 
     private readonly MinimumWageService _minimumWageService;
     private readonly IncomeTaxBracketsService _incomeTaxBracketsService;
-    private readonly EmployeeScenariosService _employeeScenariosService;
+    private readonly IEmployeeScenariosService _employeeScenariosService;
 
     public IncomeTaxExemptionCalc(MinimumWageService minimumWageService, 
                                   IncomeTaxBracketsService incomeTaxBracketsService, 
-                                  EmployeeScenariosService employeeScenariosService)
+                                  IEmployeeScenariosService employeeScenariosService)
     {
 
         if (incomeTaxBracketsService == null)

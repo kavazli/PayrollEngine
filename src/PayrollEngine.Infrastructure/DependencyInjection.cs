@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using PayrollEngine.Domain.Interfaces;
-using PayrollEngine.Domain.Interfaces.Templates;
+using PayrollEngine.Domain.Interfaces.Providers;
 using PayrollEngine.Infrastructure.Providers;
 using PayrollEngine.Infrastructure.Providers.Templates;
 
@@ -23,6 +23,9 @@ public static class DependencyInjection
         services.AddScoped<IEmployeeScenariosProvider, EmployeeScenariosProvider>();
         services.AddScoped<IPayrollMonthsProvider, PayrollMonthsProvider>();
         services.AddScoped<IResultPayrollsProvider, ResultPayrollsProvider>();
+        services.AddScoped<IEmployerContributionsProvider, EmployerContributionsProvider>();
+        services.AddScoped<IPrivateHealthInsuranceProvider, PrivateHealthInsuranceProvider>();
+        services.AddScoped<IShoppingVoucherProvider, ShoppingVoucherProvider>();
 
         return services;
     }

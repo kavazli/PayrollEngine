@@ -2,17 +2,18 @@ using System;
 using PayrollEngine.Application.Services;
 using PayrollEngine.Application.Services.Params;
 using PayrollEngine.Domain.Entities;
+using PayrollEngine.Domain.Interfaces.Services;
 
 namespace PayrollEngine.Application.Calculators;
 
 public class StampTaxExemptionCalc
 {
     private readonly MinimumWageService _minimumWageService;
-    private readonly EmployeeScenariosService _employeeScenariosService;
+    private readonly IEmployeeScenariosService _employeeScenariosService;
     private readonly StampTaxService _stampTaxService;  
 
     public StampTaxExemptionCalc(MinimumWageService minimumWageService, 
-                                 EmployeeScenariosService employeeScenariosService,
+                                 IEmployeeScenariosService employeeScenariosService,
                                  StampTaxService stampTaxService)
     {
         if(minimumWageService == null)

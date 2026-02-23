@@ -6,7 +6,8 @@ namespace PayrollEngine.Domain.Interfaces.Providers;
 public interface IEmployerContributionsProvider
 {
     Task<EmployerContributions> AddAsync(EmployerContributions contributions);
-    Task<EmployerContributions> GetAsync();
+    Task<List<EmployerContributions>> AddRangeAsync(List<EmployerContributions> contributionsList);
+    Task<List<EmployerContributions>> GetAsync();
     Task ClearAsync();
     Task SetAsync(EmployerContributions contributions);  
 }

@@ -1,7 +1,8 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using PayrollEngine.Domain.Entities;
-using PayrollEngine.Domain.Interfaces.Templates;
+using PayrollEngine.Domain.Interfaces.Providers;
+
 
 namespace PayrollEngine.Infrastructure.Providers.Templates;
 
@@ -34,6 +35,19 @@ public class EmployerContributionsProvider : IEmployerContributionsProvider
     }
 
 
+    public async Task<List<EmployerContributions>> AddRangeAsync(List<EmployerContributions> contributionsList)
+    {
+        if (contributionsList == null || contributionsList.Count == 0)
+        {
+            throw new ArgumentException("Contributions list cannot be null or empty.", nameof(contributionsList));
+        }
+
+        await _context.EmployerContributions.AddRangeAsync(contributionsList);
+        await _context.SaveChangesAsync();
+        return contributionsList;
+    }
+
+
     public async Task ClearAsync()
     {
         var contributions = await _context.EmployerContributions.ToListAsync();
@@ -42,9 +56,9 @@ public class EmployerContributionsProvider : IEmployerContributionsProvider
     }
 
 
-    public Task<EmployerContributions> GetAsync()
+    public Task<List<EmployerContributions>> GetAsync()
     {
-        return _context.EmployerContributions.FirstOrDefaultAsync();
+        return _context.EmployerContributions.ToListAsync();
     }
 
 

@@ -1,28 +1,64 @@
 using System;
 using PayrollEngine.Domain.Entities;
 using PayrollEngine.Domain.Interfaces.Services;
+using PayrollEngine.Domain.Interfaces.Providers;
 
 namespace PayrollEngine.Application.Services.Services;
 
 public class EmployerContributionsService : IEmployerContributionsService
-{
-    public Task<EmployerContributions> AddAsync(EmployerContributions employerContributions)
-    {
-        throw new NotImplementedException();
+{   
+
+    private readonly IEmployerContributionsProvider _employerContributionsProvider;
+
+    public EmployerContributionsService(IEmployerContributionsProvider employerContributionsProvider)
+    {   
+
+        if (employerContributionsProvider == null)
+        {
+            throw new ArgumentNullException(nameof(employerContributionsProvider), "Employer contributions provider cannot be null.");
+        }
+
+        _employerContributionsProvider = employerContributionsProvider;
     }
 
-    public Task<List<EmployerContributions>> AddRangeAsync(List<EmployerContributions> employerContributionsList)
-    {
-        throw new NotImplementedException();
+
+
+    public async Task<EmployerContributions> AddAsync(EmployerContributions employerContributions)
+    {   
+        if (employerContributions == null)
+        {
+            throw new ArgumentNullException(nameof(employerContributions), "Employer contributions cannot be null.");
+        }
+
+        await _employerContributionsProvider.AddAsync(employerContributions);
+        return employerContributions;
+        
     }
+
+
+    public async Task<List<EmployerContributions>> AddRangeAsync(List<EmployerContributions> employerContributionsList)
+    {
+       if (employerContributionsList == null)
+        {
+            throw new ArgumentNullException(nameof(employerContributionsList), "Employer contributions list cannot be null.");
+        }
+
+        await _employerContributionsProvider.AddRangeAsync(employerContributionsList);
+        return employerContributionsList;
+    }
+
 
     public Task ClearAsync()
     {
-        throw new NotImplementedException();
+        return _employerContributionsProvider.ClearAsync();
     }
+
 
     public Task<List<EmployerContributions>> GetAsync()
     {
-        throw new NotImplementedException();
+        return _employerContributionsProvider.GetAsync();
     }
+
+    
+
 }

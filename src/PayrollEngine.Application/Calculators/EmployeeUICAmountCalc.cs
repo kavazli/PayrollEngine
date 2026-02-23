@@ -2,6 +2,7 @@ using System;
 using PayrollEngine.Application.Services;
 using PayrollEngine.Application.Services.Params;
 using PayrollEngine.Domain.Enums;
+using PayrollEngine.Domain.Interfaces.Services;
 
 namespace PayrollEngine.Application.Calculators;
 
@@ -9,9 +10,9 @@ public class EmployeeUICAmountCalc
 {
     private readonly ActiveSSParamsService _activeSSParamsService;
 
-    private readonly EmployeeScenariosService _employeeScenariosService;
+    private readonly IEmployeeScenariosService _employeeScenariosService;
 
-    public EmployeeUICAmountCalc(ActiveSSParamsService activeSSParamsService, EmployeeScenariosService employeeScenariosService)
+    public EmployeeUICAmountCalc(ActiveSSParamsService activeSSParamsService, IEmployeeScenariosService employeeScenariosService)
     {
         if (activeSSParamsService == null)
         {

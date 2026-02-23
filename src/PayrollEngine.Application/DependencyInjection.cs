@@ -2,6 +2,8 @@ using Microsoft.Extensions.DependencyInjection;
 using PayrollEngine.Application.Calculators;
 using PayrollEngine.Application.Services;
 using PayrollEngine.Application.Services.Params;
+using PayrollEngine.Application.Services.Services;
+using PayrollEngine.Domain.Interfaces.Services;
 
 namespace PayrollEngine.Application;
 
@@ -10,9 +12,12 @@ public static class DependencyInjection
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         // Services
-        services.AddScoped<EmployeeScenariosService>();
-        services.AddScoped<PayrollMonthService>();
-        services.AddScoped<ResultPayrollService>();
+        services.AddScoped<IEmployeeScenariosService, EmployeeScenariosService>();
+        services.AddScoped<IPayrollMonthService, PayrollMonthService>();
+        services.AddScoped<IResultPayrollService, ResultPayrollService>();
+        services.AddScoped<IEmployerContributionsService, EmployerContributionsService>();
+        services.AddScoped<IPrivateHealthInsuranceService, PrivateHealthInsuranceService>();
+        services.AddScoped<IShoppingVoucherService, ShoppingVoucherService>();
 
         // Param Services
         services.AddScoped<ActiveSSParamsService>();

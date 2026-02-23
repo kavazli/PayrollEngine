@@ -2,15 +2,16 @@ using System;
 using System.Threading.Tasks;
 using PayrollEngine.Application.Services;
 using PayrollEngine.Application.Services.Params;
+using PayrollEngine.Domain.Interfaces.Services;
 
 namespace PayrollEngine.Application.Calculators;
 
 public class SSContributionCalc
 {
     private readonly SSCeilingService _ssCeilingService;
-    private readonly EmployeeScenariosService _employeeScenariosService;
+    private readonly IEmployeeScenariosService _employeeScenariosService;
 
-    public SSContributionCalc(SSCeilingService ssCeilingService, EmployeeScenariosService employeeScenariosService)
+    public SSContributionCalc(SSCeilingService ssCeilingService, IEmployeeScenariosService employeeScenariosService)
     {   
         if (ssCeilingService == null)
         {

@@ -2,6 +2,7 @@ using System;
 using PayrollEngine.Application.Services;
 using PayrollEngine.Application.Services.Params;
 using PayrollEngine.Domain.Enums;
+using PayrollEngine.Domain.Interfaces.Services;
 
 namespace PayrollEngine.Application.Calculators;
 
@@ -9,12 +10,12 @@ public class IncomeTaxCalc
 {
     private readonly IncomeTaxBracketsService _incomeTaxService;
     private readonly CumulativeIncomeTaxBaseService _cumulativeIncomeTaxBaseService;
-    private readonly EmployeeScenariosService _employeeScenariosService;
+    private readonly IEmployeeScenariosService _employeeScenariosService;
     private readonly IncomeTaxExemptionCalc _incomeTaxExemptionCalc;    
 
     public IncomeTaxCalc(IncomeTaxBracketsService incomeTaxService, 
                          CumulativeIncomeTaxBaseService cumulativeIncomeTaxBaseService, 
-                         EmployeeScenariosService employeeScenariosService,
+                         IEmployeeScenariosService employeeScenariosService,
                          IncomeTaxExemptionCalc incomeTaxExemptionCalc)
     {   
 

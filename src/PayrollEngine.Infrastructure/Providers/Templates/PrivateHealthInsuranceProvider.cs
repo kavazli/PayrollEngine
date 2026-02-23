@@ -1,7 +1,8 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using PayrollEngine.Domain.Entities;
-using PayrollEngine.Domain.Interfaces.Templates;
+using PayrollEngine.Domain.Interfaces.Providers;
+
 
 namespace PayrollEngine.Infrastructure.Providers.Templates;
 
@@ -34,6 +35,19 @@ public class PrivateHealthInsuranceProvider : IPrivateHealthInsuranceProvider
     }
 
 
+    public async Task<List<PrivateHealthInsurance>> AddRangeAsync(List<PrivateHealthInsurance> healthInsuranceList)
+    {
+        if (healthInsuranceList == null || healthInsuranceList.Count == 0)
+        {
+            throw new ArgumentException("Health insurance list cannot be null or empty.", nameof(healthInsuranceList));
+        }
+
+        await _context.PrivateHealthInsurances.AddRangeAsync(healthInsuranceList);
+        await _context.SaveChangesAsync();
+        return healthInsuranceList;
+    }
+
+
     public async Task ClearAsync()
     {
         var healthInsurances = await _context.PrivateHealthInsurances.ToListAsync();
@@ -42,9 +56,9 @@ public class PrivateHealthInsuranceProvider : IPrivateHealthInsuranceProvider
     }
 
 
-    public Task<PrivateHealthInsurance> GetAsync()
+    public Task<List<PrivateHealthInsurance>> GetAsync()
     {
-       return _context.PrivateHealthInsurances.FirstOrDefaultAsync(); 
+       return _context.PrivateHealthInsurances.ToListAsync(); 
        
     }
 

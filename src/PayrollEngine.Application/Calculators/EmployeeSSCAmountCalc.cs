@@ -3,6 +3,7 @@ using PayrollEngine.Application.Services;
 using PayrollEngine.Application.Services.Params;
 using PayrollEngine.Domain.Enums;
 using PayrollEngine.Domain.Interfaces;
+using PayrollEngine.Domain.Interfaces.Services;
 
 namespace PayrollEngine.Application.Calculators;
 
@@ -10,11 +11,11 @@ public class EmployeeSSCAmountCalc
 {
     private readonly ActiveSSParamsService _activeSSParamsService;
     private readonly RetiredSSParamsService _retiredSSParamsService;
-    private readonly EmployeeScenariosService _employeeScenariosService;
+    private readonly IEmployeeScenariosService _employeeScenariosService;
 
     public EmployeeSSCAmountCalc(ActiveSSParamsService activeSSParamsService, 
                                     RetiredSSParamsService retiredSSParamsService,
-                                    EmployeeScenariosService employeeScenariosService)
+                                    IEmployeeScenariosService employeeScenariosService)
     {   
 
     if (activeSSParamsService == null)

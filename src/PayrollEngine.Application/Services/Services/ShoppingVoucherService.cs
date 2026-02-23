@@ -1,28 +1,58 @@
 using System;
 using PayrollEngine.Domain.Entities;
 using PayrollEngine.Domain.Interfaces.Services;
+using PayrollEngine.Domain.Interfaces.Providers;
 
 namespace PayrollEngine.Application.Services.Services;
 
 public class ShoppingVoucherService : IShoppingVoucherService
-{
-    public Task<ShoppingVoucher> AddAsync(ShoppingVoucher shoppingVoucher)
+{   
+
+    private readonly IShoppingVoucherProvider _shoppingVoucherProvider;
+
+    public ShoppingVoucherService(IShoppingVoucherProvider shoppingVoucherProvider)
     {
-        throw new NotImplementedException();
+        if (shoppingVoucherProvider == null)
+        {
+            throw new ArgumentNullException(nameof(shoppingVoucherProvider), "Shopping voucher provider cannot be null.");
+        }
+
+        _shoppingVoucherProvider = shoppingVoucherProvider;
     }
 
-    public Task<List<ShoppingVoucher>> AddRangeAsync(List<ShoppingVoucher> shoppingVoucherList)
+
+    public async Task<ShoppingVoucher> AddAsync(ShoppingVoucher shoppingVoucher)
     {
-        throw new NotImplementedException();
+        if (shoppingVoucher == null)
+        {
+            throw new ArgumentNullException(nameof(shoppingVoucher), "Shopping voucher cannot be null.");
+        }
+
+        await _shoppingVoucherProvider.AddAsync(shoppingVoucher);
+        return shoppingVoucher;
     }
+
+
+    public async Task<List<ShoppingVoucher>> AddRangeAsync(List<ShoppingVoucher> shoppingVoucherList)
+    {
+       if (shoppingVoucherList == null)
+        {
+            throw new ArgumentNullException(nameof(shoppingVoucherList), "Shopping voucher list cannot be null.");
+        }
+
+       await _shoppingVoucherProvider.AddRangeAsync(shoppingVoucherList);
+       return shoppingVoucherList;
+    }
+
 
     public Task ClearAsync()
     {
-        throw new NotImplementedException();
+       return _shoppingVoucherProvider.ClearAsync();
     }
+    
 
     public Task<List<ShoppingVoucher>> GetAsync()
     {
-        throw new NotImplementedException();
+        return _shoppingVoucherProvider.GetAsync();
     }
 }

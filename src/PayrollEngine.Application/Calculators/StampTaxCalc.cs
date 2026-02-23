@@ -1,17 +1,18 @@
 using System;
 using PayrollEngine.Application.Services;
 using PayrollEngine.Application.Services.Params;
+using PayrollEngine.Domain.Interfaces.Services;
 
 namespace PayrollEngine.Application.Calculators;
 
 public class StampTaxCalc
 {
     private readonly StampTaxService _stampTaxService;
-    private readonly EmployeeScenariosService _employeeScenariosService;
+    private readonly IEmployeeScenariosService _employeeScenariosService;
     private readonly StampTaxExemptionCalc _stampTaxExemptionCalc;  
     
     public StampTaxCalc(StampTaxService stampTaxService, 
-                        EmployeeScenariosService employeeScenariosService,
+                        IEmployeeScenariosService employeeScenariosService,
                         StampTaxExemptionCalc stampTaxExemptionCalc)
     {   
 
