@@ -1,9 +1,12 @@
-using System;
+
+
 using PayrollEngine.Application.Services.Params;
 using PayrollEngine.Domain.Entities;
 using PayrollEngine.Domain.Enums;
 
+
 namespace PayrollEngine.Application.Calculators;
+
 
 public class CumtIncomeTaxBaseCalc
 {

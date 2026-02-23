@@ -1,4 +1,4 @@
-using System;
+
 using Microsoft.EntityFrameworkCore;
 using PayrollEngine.Domain.Entities;
 using PayrollEngine.Domain.Interfaces.Providers;
@@ -6,6 +6,8 @@ using PayrollEngine.Domain.Interfaces.Providers;
 
 namespace PayrollEngine.Infrastructure.Providers.Templates;
 
+
+// hesaplamalardan dönen sonuçların veritabanında tutulması ve yönetilmesi için oluşturulan provider.
 public class PayrollMonthsProvider : IPayrollMonthsProvider
 {
 
@@ -22,6 +24,8 @@ public class PayrollMonthsProvider : IPayrollMonthsProvider
     }
 
 
+    // Veritabanına birden fazla PayrollMonth nesnesi ekler.
+    // Eğer null bir liste gönderilirse, ArgumentNullException fırlatır.
     public async Task<List<PayrollMonth>> AddAsync(List<PayrollMonth> months)
     {
         if (months == null)
@@ -35,12 +39,22 @@ public class PayrollMonthsProvider : IPayrollMonthsProvider
     }
     
 
+    // Veritabanındaki tüm PayrollMonth nesnelerini döndürür.
+    // Eğer veritabanında hiç PayrollMonth yoksa, hata fırlatır.
     public async Task<List<PayrollMonth>> GetAsync()
-    {
-        return await _context.PayrollMonths.ToListAsync();
+    {   
+
+        var payrollMonth = await _context.PayrollMonths.ToListAsync();
+        if(payrollMonth == null)
+        {
+            throw new InvalidOperationException("No payroll months found in the database.");
+        }
+
+        return payrollMonth;
     }
 
 
+    // Veritabanındaki tüm PayrollMonth nesnelerini temizler.
     public async Task ClearAsync()
     {
         var months = await _context.PayrollMonths.ToListAsync();
@@ -49,6 +63,8 @@ public class PayrollMonthsProvider : IPayrollMonthsProvider
     }
     
 
+    // Veritabanındaki PayrollMonth nesnelerini temizler ve ardından,
+    // yeni bir PayrollMonth nesnesi ekler.
     public async Task SetAsync(List<PayrollMonth> months)
     {
         if (months == null)
@@ -56,10 +72,18 @@ public class PayrollMonthsProvider : IPayrollMonthsProvider
             throw new ArgumentNullException(nameof(months));
         }
 
+
+        // Veritabanında birden fazla PayrollMonth nesnesi olabileceği için,
+        // İşlem açıp kapatmak daha güvenli olacaktır. Böylece,
+        // herhangi bir hata durumunda, veritabanı tutarsız kalmaz.
         await using var transaction = await _context.Database.BeginTransactionAsync();
         try
         {
             var existingMonths = await _context.PayrollMonths.ToListAsync();
+            if (existingMonths == null || existingMonths.Count == 0)
+            {
+                throw new InvalidOperationException("No payroll months found in the database to clear.");
+            }
             _context.PayrollMonths.RemoveRange(existingMonths);
             
             await _context.PayrollMonths.AddRangeAsync(months);

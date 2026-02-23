@@ -4,8 +4,12 @@ using PayrollEngine.Domain.Interfaces.Providers;
 using PayrollEngine.Infrastructure.Providers;
 using PayrollEngine.Infrastructure.Providers.Templates;
 
+
 namespace PayrollEngine.Infrastructure;
 
+
+// Bu sınıf, uygulamanın altyapı katmanında kullanılan bağımlılıkları yapılandırmak için kullanılır.
+// Bu sınıf, uygulamanın diğer katmanlarında kullanılan provider'ların ve diğer altyapı hizmetlerinin bağımlılıklarını kaydeder.
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)

@@ -1,10 +1,16 @@
-using System;
+
+
 using PayrollEngine.Domain.Entities;
 using PayrollEngine.Domain.Interfaces.Services;
 using PayrollEngine.Domain.Interfaces.Providers;
 
+
 namespace PayrollEngine.Application.Services.Services;
 
+
+// Bu sınıf, özel sağlık sigortası ile ilgili işlemleri gerçekleştiren servis sınıfıdır.
+// Bu sınıf, IPrivateHealthInsuranceProvider arayüzünü kullanarak özel sağlık sigortasını
+// eklemek, almak, temizlemek ve güncellemek için yöntemler sağlar.
 public class PrivateHealthInsuranceService : IPrivateHealthInsuranceService
 {   
 
@@ -22,6 +28,8 @@ public class PrivateHealthInsuranceService : IPrivateHealthInsuranceService
     }
 
 
+    // Özel sağlık sigortasını asenkron olarak ekler. 
+    // Bu yöntem, geçerli bir sağlık sigortası sağlanmazsa bir ArgumentNullException fırlatır.
     public async Task<PrivateHealthInsurance> AddAsync(PrivateHealthInsurance privateHealthInsurance)
     {
         if (privateHealthInsurance == null)
@@ -34,6 +42,8 @@ public class PrivateHealthInsuranceService : IPrivateHealthInsuranceService
     }
 
 
+    // Birden fazla özel sağlık sigortasını asenkron olarak ekler.
+    // Bu yöntem, geçerli bir sağlık sigortası listesi sağlanmazsa bir ArgumentNullException fırlatır.
     public async Task<List<PrivateHealthInsurance>> AddRangeAsync(List<PrivateHealthInsurance> privateHealthInsuranceList)
     {
         if(privateHealthInsuranceList == null)
@@ -46,12 +56,13 @@ public class PrivateHealthInsuranceService : IPrivateHealthInsuranceService
     }
 
 
+    // Özel sağlık sigortasını asenkron olarak temizler.
     public Task ClearAsync()
     {
         return _healthInsuranceProvider.ClearAsync();
     }
 
-    
+    // Özel sağlık sigortasını asenkron olarak alır.
     public Task<List<PrivateHealthInsurance>> GetAsync()
     {
         return _healthInsuranceProvider.GetAsync();

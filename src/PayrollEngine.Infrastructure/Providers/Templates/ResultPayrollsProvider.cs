@@ -6,6 +6,8 @@ using PayrollEngine.Domain.Interfaces.Providers;
 
 namespace PayrollEngine.Infrastructure.Providers.Templates;
 
+
+// Hesaplamalardan dönen sonuçların veritabanında tutulması ve yönetilmesi için oluşturulan provider.
 public class ResultPayrollsProvider : IResultPayrollsProvider
 {
     private readonly PayrollEngineDbContext _context;
@@ -22,6 +24,9 @@ public class ResultPayrollsProvider : IResultPayrollsProvider
         
     }
 
+
+    // Veritabanına yeni bir ResultPayroll nesnesi ekler.
+    // Eğer null bir nesne gönderilirse, ArgumentNullException fırlatır.
     public async Task<ResultPayroll> AddAsync(ResultPayroll resultPayroll)
     {
         if (resultPayroll == null)
@@ -34,6 +39,9 @@ public class ResultPayrollsProvider : IResultPayrollsProvider
         return resultPayroll;
     }
 
+
+    // Veritabanına birden fazla ResultPayroll nesnesi ekler.
+    // Eğer null bir liste gönderilirse, ArgumentNullException fırlatır.
     public async Task<List<ResultPayroll>> AddRangeAsync(List<ResultPayroll> resultPayrolls)
     {
         if (resultPayrolls == null)
@@ -46,11 +54,22 @@ public class ResultPayrollsProvider : IResultPayrollsProvider
         return resultPayrolls;
     }
 
+
+    // Veritabanındaki tüm ResultPayroll nesnelerini döndürür.
+    // Eğer veritabanında hiç ResultPayroll yoksa, hata fırlatır.
     public async Task<List<ResultPayroll>> GetAsync()
-    {
-        return await _context.ResultPayrolls.ToListAsync();
+    {   
+        var resultPayrolls = await _context.ResultPayrolls.ToListAsync();
+        if (resultPayrolls == null)
+        {
+            throw new InvalidOperationException("No result payrolls found in the database.");
+        }
+
+        return resultPayrolls;
     }
 
+
+    // Veritabanındaki tüm ResultPayroll nesnelerini temizler.
     public async Task ClearAsync()
     {
         var resultPayrolls = await _context.ResultPayrolls.ToListAsync();
@@ -58,6 +77,9 @@ public class ResultPayrollsProvider : IResultPayrollsProvider
         await _context.SaveChangesAsync();
     }
 
+
+    // Veritabanındaki ResultPayroll nesnelerini temizler ve ardından,
+    // yeni bir ResultPayroll nesnesi ekler.
     public async Task SetAsync(List<ResultPayroll> resultPayrolls)
     {
         if (resultPayrolls == null)
@@ -65,10 +87,19 @@ public class ResultPayrollsProvider : IResultPayrollsProvider
             throw new ArgumentNullException(nameof(resultPayrolls));
         }
 
+
+        // Veritabanında birden fazla ResultPayroll nesnesi olabileceği için,
+        // İşlem açıp kapatmak daha güvenli olacaktır. Böylece,
+        // herhangi bir hata durumunda, veritabanı tutarsız kalmaz.
         await using var transaction = await _context.Database.BeginTransactionAsync();
         try
         {
             var existingResultPayrolls = await _context.ResultPayrolls.ToListAsync();
+            if(existingResultPayrolls == null || existingResultPayrolls.Count == 0)
+            {
+                throw new InvalidOperationException("No result payrolls found in the database to clear.");
+            }
+
             _context.ResultPayrolls.RemoveRange(existingResultPayrolls);
 
             await _context.ResultPayrolls.AddRangeAsync(resultPayrolls);

@@ -1,10 +1,16 @@
-using System;
+
+
 using PayrollEngine.Domain.Entities;
 using PayrollEngine.Domain.Interfaces.Services;
 using PayrollEngine.Domain.Interfaces.Providers;
 
+
 namespace PayrollEngine.Application.Services.Services;
 
+
+// Bu sınıf, alışveriş çeki ile ilgili işlemleri gerçekleştiren servis sınıfıdır.
+// Bu sınıf, IShoppingVoucherProvider arayüzünü kullanarak alışveriş çeki bilgilerini
+// eklemek, almak, temizlemek ve güncellemek için yöntemler sağlar.
 public class ShoppingVoucherService : IShoppingVoucherService
 {   
 
@@ -21,6 +27,8 @@ public class ShoppingVoucherService : IShoppingVoucherService
     }
 
 
+    // Alışveriş çeki bilgilerini asenkron olarak ekler. 
+    // Bu yöntem, geçerli bir alışveriş çeki sağlanmazsa bir Argument
     public async Task<ShoppingVoucher> AddAsync(ShoppingVoucher shoppingVoucher)
     {
         if (shoppingVoucher == null)
@@ -33,6 +41,8 @@ public class ShoppingVoucherService : IShoppingVoucherService
     }
 
 
+    // Birden fazla alışveriş çeki bilgisini asenkron olarak ekler.
+    // Bu yöntem, geçerli bir alışveriş çeki listesi sağlanmazsa bir ArgumentNullException fırlatır.
     public async Task<List<ShoppingVoucher>> AddRangeAsync(List<ShoppingVoucher> shoppingVoucherList)
     {
        if (shoppingVoucherList == null)
@@ -45,12 +55,14 @@ public class ShoppingVoucherService : IShoppingVoucherService
     }
 
 
+    // Alışveriş çeki bilgilerini asenkron olarak temizler.
     public Task ClearAsync()
     {
        return _shoppingVoucherProvider.ClearAsync();
     }
     
 
+    // Alışveriş çeki bilgilerini asenkron olarak alır.
     public Task<List<ShoppingVoucher>> GetAsync()
     {
         return _shoppingVoucherProvider.GetAsync();

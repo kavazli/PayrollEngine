@@ -1,12 +1,15 @@
 using Microsoft.Extensions.DependencyInjection;
 using PayrollEngine.Application.Calculators;
-using PayrollEngine.Application.Services;
 using PayrollEngine.Application.Services.Params;
 using PayrollEngine.Application.Services.Services;
 using PayrollEngine.Domain.Interfaces.Services;
 
+
 namespace PayrollEngine.Application;
 
+
+// Bu sınıf, uygulamanın uygulama katmanında kullanılan bağımlılıkları yapılandırmak için kullanılır.
+// Bu sınıf, uygulamanın diğer katmanlarında kullanılan servislerin, hesaplayıcıların ve diğer uygulama hizmetlerinin bağımlılıklarını kaydeder.
 public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)

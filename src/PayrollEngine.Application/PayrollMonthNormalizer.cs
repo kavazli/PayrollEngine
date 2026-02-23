@@ -1,9 +1,13 @@
-using System;
+
 
 using PayrollEngine.Domain.Entities;
 
+
 namespace PayrollEngine.Application;
 
+
+// UI kullancısının girdiği verileri, hesaplamalarda kullanılacak verilere dönüştürmek için kullanılan sınıf.
+// Bu sınıf, PayrollTemplateMonth ve EmployeeScenario nesnelerini alır ve PayrollMonth nesnesine dönüştürür.
 public class PayrollMonthNormalizer
 {
     private PayrollTemplateMonth TemplateMonth { get; set; }
@@ -23,6 +27,9 @@ public class PayrollMonthNormalizer
         Scenario = scenario;
     }
 
+
+    // Normalize yöntemi, PayrollTemplateMonth ve 
+    // EmployeeScenario nesnelerini kullanarak PayrollMonth nesnesini oluşturur.
     public PayrollMonth Normalize()
     {   
         var TempWorkDay = CalculateWorkDays();
@@ -48,26 +55,32 @@ public class PayrollMonthNormalizer
         return payrollMonth;
     }
 
+
+    // Maaş artışını hesaplayan yöntem.
     private decimal CalculateSalaryIncrease()
     {   
-
         var result = TemplateMonth.BaseSalary * TemplateMonth.SalaryIncreaseRate;
 
         return TemplateMonth.BaseSalary + result;
     }
 
 
-
+    // 50% fazla mesai ücretini hesaplayan yöntem.
     private decimal CalculateOvertime50(decimal BaseSalary)
     {         
        return TemplateMonth.Overtime50 * (BaseSalary / 225m) * 1.5m;
     }
 
+
+    // 100% fazla mesai ücretini hesaplayan yöntem.
     private decimal CalculateOvertime100(decimal BaseSalary)
     {         
        return TemplateMonth.Overtime100 * (BaseSalary / 225m) * 2m;
     }
 
+
+    // Çalışma günlerini hesaplayan yöntem. 
+    // Bu yöntem, ödeme türüne (günlük veya aylık) ve aya göre çalışma günlerini belirler.
     private int CalculateWorkDays()
     {   
         int tempDay;

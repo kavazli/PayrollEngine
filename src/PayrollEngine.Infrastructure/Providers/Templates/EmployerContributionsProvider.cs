@@ -1,4 +1,4 @@
-using System;
+
 using Microsoft.EntityFrameworkCore;
 using PayrollEngine.Domain.Entities;
 using PayrollEngine.Domain.Interfaces.Providers;
@@ -6,6 +6,8 @@ using PayrollEngine.Domain.Interfaces.Providers;
 
 namespace PayrollEngine.Infrastructure.Providers.Templates;
 
+
+// Sgk İşveren paylarınına işlenmesi ve işveren maliyetinin tabloda tutulması için oluşturulan provider.
 public class EmployerContributionsProvider : IEmployerContributionsProvider
 {
 
@@ -22,6 +24,8 @@ public class EmployerContributionsProvider : IEmployerContributionsProvider
     }
 
 
+    // Veritabanına yeni bir EmployerContributions nesnesi ekler.
+    // Eğer null bir nesne gönderilirse, ArgumentNullException fırlatır.
     public async Task<EmployerContributions> AddAsync(EmployerContributions contributions)
     {
         if( contributions == null)
@@ -35,6 +39,8 @@ public class EmployerContributionsProvider : IEmployerContributionsProvider
     }
 
 
+    // Veritabanına birden fazla EmployerContributions nesnesi ekler.
+    // Eğer null veya boş bir liste gönderilirse, ArgumentException fırlatır.
     public async Task<List<EmployerContributions>> AddRangeAsync(List<EmployerContributions> contributionsList)
     {
         if (contributionsList == null || contributionsList.Count == 0)
@@ -48,6 +54,7 @@ public class EmployerContributionsProvider : IEmployerContributionsProvider
     }
 
 
+    // Veritabanındaki tüm EmployerContributions nesnelerini temizler.
     public async Task ClearAsync()
     {
         var contributions = await _context.EmployerContributions.ToListAsync();
@@ -56,12 +63,22 @@ public class EmployerContributionsProvider : IEmployerContributionsProvider
     }
 
 
+    // Veritabanındaki tüm EmployerContributions nesnelerini döndürür.
+    // Eğer veritabanında hiç EmployerContributions yoksa, hata fırlatır.
     public Task<List<EmployerContributions>> GetAsync()
-    {
-        return _context.EmployerContributions.ToListAsync();
+    {   
+        var contributions = _context.EmployerContributions.ToListAsync();
+        if (contributions == null )
+        {
+            throw new InvalidOperationException("No employer contributions found in the database.");
+        }
+
+        return contributions;
     }
 
 
+    // Veritabanındaki EmployerContributions nesnelerini temizler ve ardından,
+    // yeni bir EmployerContributions nesnesi ekler.
     public async Task SetAsync(EmployerContributions contributions)
     {   
         if (contributions == null)
@@ -69,12 +86,20 @@ public class EmployerContributionsProvider : IEmployerContributionsProvider
             throw new ArgumentNullException(nameof(contributions), "EmployerContributions cannot be null.");        
         }
 
+        // Veritabanında birden fazla EmployerContributions nesnesi olabileceği için,
+        // İşlem açıp kapatmak daha güvenli olacaktır. Böylece, 
+        // herhangi bir hata durumunda, veritabanı tutarsız kalmaz.
         await using var transaction = await _context.Database.BeginTransactionAsync();
         try
         {
             // Clear ve Add bir transaction içinde
             var contributionsList = await _context.EmployerContributions.ToListAsync();
-            _context.EmployerContributions.RemoveRange(contributionsList);
+            if(contributionsList == null || contributionsList.Count == 0)
+            {
+                throw new InvalidOperationException("No employer contributions found in the database to clear.");
+            }
+
+             _context.EmployerContributions.RemoveRange(contributionsList);
             await _context.EmployerContributions.AddAsync(contributions);
             
             await _context.SaveChangesAsync();

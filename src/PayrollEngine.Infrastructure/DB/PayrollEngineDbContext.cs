@@ -4,6 +4,9 @@ using PayrollEngine.Domain.Entities;
 
 namespace PayrollEngine.Infrastructure;
 
+
+// Veritabanı işlemlerini yönetmek için kullanılan DbContext sınıfı.
+// DB de yönetmek istediğimiz tüm entity'ler burada DbSet olarak tanımlanır.
 public class PayrollEngineDbContext : DbContext
 {   
 
@@ -25,7 +28,8 @@ public class PayrollEngineDbContext : DbContext
 
     
 
-
+    // DbContext'in constructor'ı, DbContextOptions parametresi alır ve base sınıfına iletir.
+    // Bu, DbContext'in yapılandırılmasını sağlar ve genellikle Dependency Injection ile kullanılır.
     public PayrollEngineDbContext(DbContextOptions<PayrollEngineDbContext> options) : base(options)
     {
     }

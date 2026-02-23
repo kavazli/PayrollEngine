@@ -1,4 +1,4 @@
-using System;
+
 using Microsoft.EntityFrameworkCore;
 using PayrollEngine.Domain.Entities;
 using PayrollEngine.Domain.Interfaces.Providers;
@@ -6,6 +6,7 @@ using PayrollEngine.Domain.Interfaces.Providers;
 
 namespace PayrollEngine.Infrastructure.Providers.Templates;
 
+// Alışveriş çeki nesnelerinin veritabanında tutulması ve yönetilmesi için oluşturulan provider.
 public class ShoppingVoucherProvider : IShoppingVoucherProvider
 {   
 
@@ -21,6 +22,9 @@ public class ShoppingVoucherProvider : IShoppingVoucherProvider
         _context = context;
     }
 
+
+    // Veritabanına yeni bir ShoppingVoucher nesnesi ekler.
+    // Eğer null bir nesne gönderilirse, ArgumentNullException fırlatır.
     public async Task<ShoppingVoucher> AddAsync(ShoppingVoucher shoppingVoucher)
     {
         
@@ -35,6 +39,8 @@ public class ShoppingVoucherProvider : IShoppingVoucherProvider
     }
 
 
+    // Veritabanına birden fazla ShoppingVoucher nesnesi ekler.
+    // Eğer null veya boş bir liste gönderilirse, ArgumentException fırlatır.
     public async Task<List<ShoppingVoucher>> AddRangeAsync(List<ShoppingVoucher> shoppingVoucherList)
     {
         if (shoppingVoucherList == null || shoppingVoucherList.Count == 0)
@@ -48,6 +54,7 @@ public class ShoppingVoucherProvider : IShoppingVoucherProvider
     }
 
 
+    // Veritabanındaki tüm ShoppingVoucher nesnelerini temizler.
     public async Task ClearAsync()
     {
         var shoppingVouchers = await _context.ShoppingVouchers.ToListAsync();
@@ -56,11 +63,22 @@ public class ShoppingVoucherProvider : IShoppingVoucherProvider
     }
 
 
+    // Veritabanındaki tüm ShoppingVoucher nesnelerini döndürür.
+    // Eğer veritabanında hiç ShoppingVoucher yoksa, hata fırlatır.
     public Task<List<ShoppingVoucher>> GetAsync()
-    {
-       return _context.ShoppingVouchers.ToListAsync();  
+    {   
+        var shoppingVouchers = _context.ShoppingVouchers.ToListAsync();
+        if (shoppingVouchers == null)       
+        {
+            throw new InvalidOperationException("No shopping vouchers found in the database.");
+        }
+
+       return shoppingVouchers;  
     }
 
+
+    // Veritabanındaki ShoppingVoucher nesnelerini temizler ve ardından,
+    // yeni bir ShoppingVoucher nesnesi ekler.    
     public async Task SetAsync(ShoppingVoucher shoppingVoucher)
     {
         if (shoppingVoucher == null)
@@ -68,12 +86,20 @@ public class ShoppingVoucherProvider : IShoppingVoucherProvider
             throw new ArgumentNullException(nameof(shoppingVoucher), "ShoppingVoucher cannot be null.");
         }
 
+        // Veritabanında birden fazla ShoppingVoucher nesnesi olabileceği için,
+        // işlem açıp kapatmak daha güvenli olacaktır. Böylece,
+        // herhangi bir hata durumunda, veritabanı tutarsız kalmaz.
         using (var transaction = await _context.Database.BeginTransactionAsync())
         {  
             try
             {
                 // Clear ve Add bir transaction içinde
                 var shoppingVouchersList = await _context.ShoppingVouchers.ToListAsync();
+                if(shoppingVouchersList == null || shoppingVouchersList.Count == 0)
+                {
+                    throw new InvalidOperationException("No shopping vouchers found in the database to clear.");
+                }
+
                 _context.ShoppingVouchers.RemoveRange(shoppingVouchersList);
                 await _context.ShoppingVouchers.AddAsync(shoppingVoucher);
                 

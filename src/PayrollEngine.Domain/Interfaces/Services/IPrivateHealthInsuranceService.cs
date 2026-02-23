@@ -1,8 +1,14 @@
-using System;
+
+
 using PayrollEngine.Domain.Entities;
+
 
 namespace PayrollEngine.Domain.Interfaces.Services;
 
+
+// Özel sağlık sigortası bilgilerini yöneten servis arayüzü.
+// Bu arayüz, özel sağlık sigortası bilgilerini eklemek, almak, temizlemek
+// ve belirli bir sağlık sigortası bilgisini güncellemek için yöntemler içerir.
 public interface IPrivateHealthInsuranceService
 {
     Task<PrivateHealthInsurance> AddAsync(PrivateHealthInsurance privateHealthInsurance);

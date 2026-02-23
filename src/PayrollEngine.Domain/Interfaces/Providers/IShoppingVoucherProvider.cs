@@ -1,8 +1,13 @@
-using System;
+
+
 using PayrollEngine.Domain.Entities;
+
 
 namespace PayrollEngine.Domain.Interfaces.Providers;
 
+// Alışveriş çeki bilgilerini sağlayan provider arayüzü.
+// Bu arayüz, alışveriş çeki bilgilerini eklemek, almak, temizlemek
+// ve belirli bir alışveriş çekini güncellemek için yöntemler içerir.
 public interface IShoppingVoucherProvider
 {
     Task<ShoppingVoucher> AddAsync(ShoppingVoucher shoppingVoucher);

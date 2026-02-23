@@ -1,10 +1,16 @@
-using System;
+
+
 using PayrollEngine.Domain.Entities;
 using PayrollEngine.Domain.Interfaces.Providers;
 using PayrollEngine.Domain.Interfaces.Services;
 
+
 namespace PayrollEngine.Application.Services.Services;
 
+
+// Bu sınıf, sonuç bordrosu ile ilgili işlemleri gerçekleştiren servis sınıfıdır.
+// Bu sınıf, IResultPayrollsProvider arayüzünü kullanarak sonuç bordrosunu
+// eklemek, almak, temizlemek ve güncellemek için yöntemler sağlar.
 public class ResultPayrollService : IResultPayrollService
 {   
 
@@ -23,6 +29,8 @@ public class ResultPayrollService : IResultPayrollService
     }
 
 
+    // Sonuç bordrosunu asenkron olarak ekler. 
+    // Bu yöntem, geçerli bir sonuç bordrosu sağlanmazsa bir ArgumentNullException fırlatır.
     public async Task<ResultPayroll> AddAsync(ResultPayroll resultPayroll)
     {   
 
@@ -35,7 +43,8 @@ public class ResultPayrollService : IResultPayrollService
        
     }
 
-
+    // Birden fazla sonuç bordrosunu asenkron olarak ekler.
+    // Bu yöntem, geçerli bir sonuç bordrosu listesi sağlanmazsa bir ArgumentNullException fırlatır.
     public async Task<List<ResultPayroll>> AddRangeAsync(List<ResultPayroll> resultPayrolls)
     {   
         if (resultPayrolls == null || !resultPayrolls.Any())
@@ -47,14 +56,14 @@ public class ResultPayrollService : IResultPayrollService
        
     }
 
-
+    // Sonuç bordrosunu asenkron olarak alır.
     public async Task<List<ResultPayroll>> GetAsync()
     {   
         return await _resultPayrollsProvider.GetAsync();
        
     }
 
-
+    // Sonuç bordrosunu asenkron olarak temizler.
     public async Task ClearAsync()
     {   
         await _resultPayrollsProvider.ClearAsync();
