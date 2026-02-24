@@ -62,6 +62,7 @@ public class IncomeTaxExemptionCalc
         }
 
         decimal exemptionBase = minimumWage.NetAmount * (int)months;
+        System.Console.WriteLine(exemptionBase);
 
         if(exemptionBase <= IncomeTaxBrackets[0].MaxAmount)
         {

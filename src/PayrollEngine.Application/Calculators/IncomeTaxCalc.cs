@@ -68,7 +68,12 @@ public class IncomeTaxCalc
 
         var taxPrevious = await CalculateTaxAmount(previousCumulativeBase, months);
         var taxCurrent = await CalculateTaxAmount(currentCumulativeBase.CumulativeBase, months);
-        return taxCurrent - taxPrevious;
+
+        decimal taxDifference = taxCurrent - taxPrevious;
+
+        decimal exemption = await _incomeTaxExemptionCalc.Calc(months); // Gelir vergisi istisnası, mevcut ay için hesaplanır
+        
+        return taxDifference - exemption;
     } 
    
     private async Task<decimal> CalculateTaxAmount(decimal cumulativeBase, Months months)
@@ -123,11 +128,9 @@ public class IncomeTaxCalc
 
         }
 
-        decimal exemption = await _incomeTaxExemptionCalc.Calc(months);
-        decimal result = tax - exemption;
-        
+    
 
-        return result;
+        return tax;
 
     }
 
