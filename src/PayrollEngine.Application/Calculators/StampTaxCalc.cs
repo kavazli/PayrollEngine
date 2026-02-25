@@ -52,6 +52,12 @@ public class StampTaxCalc
         }
         
         decimal exemption = await _stampTaxExemptionCalc.Calc();
+
+        if((GrossSalary * stampTax.Rate) < exemption)
+        { 
+            return 0; // hesaplanan damga vergisi muafiyet tutarından küçükse, damga vergisi sıfır olarak döndürülür.
+        }
+
         decimal result = (GrossSalary * stampTax.Rate) - exemption;
 
 

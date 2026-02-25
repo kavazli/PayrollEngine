@@ -1,6 +1,7 @@
 
 
 using PayrollEngine.Domain.Entities;
+using PayrollEngine.Domain.Enums;
 
 
 namespace PayrollEngine.Application;
@@ -33,9 +34,9 @@ public class PayrollMonthNormalizer
     public PayrollMonth Normalize()
     {   
         var TempWorkDay = CalculateWorkDays();
-        var TempBaseSalary = CalculateSalaryIncrease();
-        var TempOvertime50 = CalculateOvertime50(TempBaseSalary);
-        var TempOvertime100 = CalculateOvertime100(TempBaseSalary);
+        var TempBaseSalary = CalculateSalaryIncrease(TempWorkDay);
+        var TempOvertime50 = CalculateOvertime50(TempBaseSalary, TempWorkDay);
+        var TempOvertime100 = CalculateOvertime100(TempBaseSalary, TempWorkDay);
         var TempGrossSalary = TempBaseSalary + TempOvertime50 + TempOvertime100 + TemplateMonth.BonusAmount;
 
 
@@ -57,26 +58,56 @@ public class PayrollMonthNormalizer
 
 
     // Maaş artışını hesaplayan yöntem.
-    private decimal CalculateSalaryIncrease()
+    private decimal CalculateSalaryIncrease(int workDay)
     {   
-        var result = TemplateMonth.BaseSalary * TemplateMonth.SalaryIncreaseRate;
+        if(TemplateMonth.SalaryIncreaseRate == 0)
+        {   
+            var reslut = CalculateSalary(workDay, TemplateMonth.BaseSalary);
 
-        return TemplateMonth.BaseSalary + result;
+            return reslut;
+        }
+
+        var result = TemplateMonth.BaseSalary + (TemplateMonth.BaseSalary * TemplateMonth.SalaryIncreaseRate);
+
+        return CalculateSalary(workDay, result);
     }
 
 
     // 50% fazla mesai ücretini hesaplayan yöntem.
-    private decimal CalculateOvertime50(decimal BaseSalary)
-    {         
-       return TemplateMonth.Overtime50 * (BaseSalary / 225m) * 1.5m;
+    private decimal CalculateOvertime50(decimal BaseSalary, int workDay)
+    {  
+        if (TemplateMonth.Overtime50 == 0)
+        {
+            return 0;
+        }
+
+
+       var DailySalary = BaseSalary / workDay; 
+
+       return TemplateMonth.Overtime50 * (DailySalary / 7.5m) * 1.5m;
     }
 
 
     // 100% fazla mesai ücretini hesaplayan yöntem.
-    private decimal CalculateOvertime100(decimal BaseSalary)
-    {         
-       return TemplateMonth.Overtime100 * (BaseSalary / 225m) * 2m;
+    private decimal CalculateOvertime100(decimal BaseSalary, int workDay)
+    {           
+        if (TemplateMonth.Overtime100 == 0)
+        {
+            return 0;
+            
+        }  
+       var DailySalary = BaseSalary / workDay;
+
+       return TemplateMonth.Overtime100 * (DailySalary / 7.5m) * 2m;
     }
+
+
+    // Maaşı güne göre hesaplayan yöntem.
+    private decimal CalculateSalary(int workDay, decimal baseSalary)
+    {
+        return (baseSalary / 30m) * workDay;
+    }
+
 
 
     // Çalışma günlerini hesaplayan yöntem. 

@@ -72,6 +72,11 @@ public class IncomeTaxCalc
         decimal taxDifference = taxCurrent - taxPrevious;
 
         decimal exemption = await _incomeTaxExemptionCalc.Calc(months); // Gelir vergisi istisnası, mevcut ay için hesaplanır
+
+        if(taxDifference < exemption)
+        {
+            return 0; // Vergi farkı, istisnadan küçükse vergi sıfırlanır
+        }
         
         return taxDifference - exemption;
     } 
