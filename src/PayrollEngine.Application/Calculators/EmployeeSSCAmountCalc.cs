@@ -57,11 +57,14 @@ public class EmployeeSSCAmountCalc
         {   
 
             var activeSSParams = await _activeSSParamsService.GetValueAsync(scenario.Year);
+            decimal result;
             if (activeSSParams == null)
             {
                 throw new InvalidOperationException("Active SS parameters not found for the given year.");
             }
-            return SSContributionBase * activeSSParams.EmployeeSSRate;
+
+            result = SSContributionBase * activeSSParams.EmployeeSSRate;
+            return Math.Round(result, 2);
 
         }
         else if(scenario.Status == Status.Retired)
@@ -72,7 +75,8 @@ public class EmployeeSSCAmountCalc
             {
                 throw new InvalidOperationException("Retired SS parameters not found for the given year.");
             }
-            return SSContributionBase * retiredSSParams.EmployeeSSRate;
+            var result = SSContributionBase * retiredSSParams.EmployeeSSRate;
+            return Math.Round(result, 2);
             
         }
         else

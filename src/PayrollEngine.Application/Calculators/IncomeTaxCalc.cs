@@ -135,7 +135,7 @@ public class IncomeTaxCalc
 
     
 
-        return tax;
+        return Math.Round(tax, 2);
 
     }
 

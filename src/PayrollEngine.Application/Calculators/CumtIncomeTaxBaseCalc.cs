@@ -51,7 +51,7 @@ public class CumtIncomeTaxBaseCalc
 
         await _cumulativeIncomeTaxBaseService.AddAsync(newRecord);
 
-        return newCumulativeBase;
+        return Math.Round(newCumulativeBase, 2);
     }
 
 

@@ -21,6 +21,7 @@ public static class DependencyInjection
         services.AddScoped<IEmployerContributionsService, EmployerContributionsService>();
         services.AddScoped<IPrivateHealthInsuranceService, PrivateHealthInsuranceService>();
         services.AddScoped<IShoppingVoucherService, ShoppingVoucherService>();
+        
 
         // Param Services
         services.AddScoped<ActiveSSParamsService>();
@@ -30,6 +31,7 @@ public static class DependencyInjection
         services.AddScoped<RetiredSSParamsService>();
         services.AddScoped<SSCeilingService>();
         services.AddScoped<StampTaxService>();
+        services.AddScoped<DisabilityDegreeService>();
 
         // Calculators
         services.AddScoped<CumtIncomeTaxBaseCalc>();
@@ -42,6 +44,7 @@ public static class DependencyInjection
         services.AddScoped<NetSalaryCalc>();
         services.AddScoped<StampTaxCalc>();
         services.AddScoped<StampTaxExemptionCalc>();
+        services.AddScoped<DisabilityDegreeCalc>();
 
         return services;
     }

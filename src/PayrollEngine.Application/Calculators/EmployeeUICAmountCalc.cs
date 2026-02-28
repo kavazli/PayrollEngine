@@ -45,12 +45,13 @@ public class EmployeeUICAmountCalc
         if(scenario.Status == Status.Active)
         {
             var activeSSParams = await _activeSSParamsService.GetValueAsync(scenario.Year);
+            decimal result;
             if (activeSSParams == null)
             {
                 throw new InvalidOperationException($"Active SS parameters not found for year {scenario.Year}.");
             }
-
-            return SSContributionBase * activeSSParams.EmployeeUIRate;
+            result = SSContributionBase * activeSSParams.EmployeeUIRate;
+            return Math.Round(result, 2);
         }
         else
         {

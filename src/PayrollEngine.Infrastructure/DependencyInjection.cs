@@ -1,7 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using PayrollEngine.Domain.Interfaces;
+using PayrollEngine.Domain.Interfaces.Params;
 using PayrollEngine.Domain.Interfaces.Providers;
 using PayrollEngine.Infrastructure.Providers;
+using PayrollEngine.Infrastructure.Providers.Params;
 using PayrollEngine.Infrastructure.Providers.Templates;
 
 
@@ -22,6 +24,7 @@ public static class DependencyInjection
         services.AddScoped<IRetiredSSParamsProvider, RetiredSSParamsProvider>();
         services.AddScoped<ISSCeilingProvider, SSCeilingProvider>();
         services.AddScoped<IStampTaxProvider, StampTaxProvider>();
+        services.AddScoped<IDisabilityDegreeProvider, DisabilityDegreeProvider>();
 
         // Template Providers
         services.AddScoped<IEmployeeScenariosProvider, EmployeeScenariosProvider>();

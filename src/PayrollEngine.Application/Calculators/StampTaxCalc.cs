@@ -61,7 +61,7 @@ public class StampTaxCalc
         decimal result = (GrossSalary * stampTax.Rate) - exemption;
 
 
-        return result;
+        return Math.Round(result, 2);
     }
 
 

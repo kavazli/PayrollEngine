@@ -9,6 +9,7 @@ using PayrollEngine.Domain.Entities;
 using PayrollEngine.Domain.Enums;
 using PayrollEngine.Domain.Interfaces.Services;
 using PayrollEngine.Infrastructure;
+using PayrollEngine.Infrastructure.Seed;
 
 class Program
 {
@@ -35,57 +36,58 @@ class Program
         var StampTax = serviceProvider.GetRequiredService<StampTaxCalc>();
         var StampTaxExemption = serviceProvider.GetRequiredService<StampTaxExemptionCalc>();
         var NetSalary = serviceProvider.GetRequiredService<NetSalaryCalc>();
+        var DisabilityDegree = serviceProvider.GetRequiredService<DisabilityDegreeCalc>();
 
         var result = serviceProvider.GetRequiredService<IResultPayrollService>();
         var result2 = serviceProvider.GetRequiredService<CumulativeIncomeTaxBaseService>();
         var result3 = serviceProvider.GetRequiredService<IEmployeeScenariosService>();
         var result4 = serviceProvider.GetRequiredService<IPayrollMonthService>();
 
-        // await result.ClearAsync();
-        // await result2.ClearAsync();
-        // await result3.ClearAsync();
-        // await result4.ClearAsync();
+        await result.ClearAsync();
+        await result2.ClearAsync();
+        await result3.ClearAsync();
+        await result4.ClearAsync();
+        
         
 
-        // EmployeeScenario employeeScenario = new EmployeeScenario
-        // {
-        //    Year = 2026,
-        //    SalaryInputType = SalaryInputType.Gross,
-        //    Status = Status.Active,
-        //    DisabilityDegree = DisabilityDegree.Normal,
-        //    PayType = PayType.Daily,
-        //    IncentiveType = IncentiveType.None,
-        // };
-        // await result3.AddAsync(employeeScenario);
+        EmployeeScenario employeeScenario = new EmployeeScenario
+        {
+           Year = 2026,
+           SalaryInputType = SalaryInputType.Gross,
+           Status = Status.Active,
+           DisabilityDegree = Degree.Degree3,
+           PayType = PayType.Monthly,
+           IncentiveType = IncentiveType.None,
+        };
+        await result3.AddAsync(employeeScenario);
 
 
-        // List<PayrollTemplateMonth> payrollMonthList = new List<PayrollTemplateMonth>()
-        // {
-        //     new PayrollTemplateMonth(){ Month = Months.January,WorkDay = 31,BaseSalary = 33030m,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
-        //     new PayrollTemplateMonth(){ Month = Months.February,WorkDay = 28,BaseSalary = 33030m,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m }, 
-        //     new PayrollTemplateMonth(){ Month = Months.March,WorkDay = 31,BaseSalary = 33030m,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m }, 
-        //     new PayrollTemplateMonth(){ Month = Months.April,WorkDay = 30,BaseSalary = 33030m,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
-        //     new PayrollTemplateMonth(){ Month = Months.May,WorkDay = 31,BaseSalary = 33030m,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
-        //     new PayrollTemplateMonth(){ Month = Months.June,WorkDay = 30,BaseSalary = 33030m,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
-        //     new PayrollTemplateMonth(){ Month = Months.July,WorkDay = 31,BaseSalary = 33030m,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
-        //     new PayrollTemplateMonth(){ Month = Months.August,WorkDay = 31,BaseSalary = 33030m,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
-        //     new PayrollTemplateMonth(){ Month = Months.September,WorkDay = 30,BaseSalary = 33030m,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
-        //     new PayrollTemplateMonth(){ Month = Months.October,WorkDay = 31,BaseSalary = 33030m,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
-        //     new PayrollTemplateMonth(){ Month = Months.November,WorkDay = 30,BaseSalary = 33030m,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
-        //     new PayrollTemplateMonth(){ Month = Months.December,WorkDay = 31,BaseSalary = 33030m,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
+        List<PayrollTemplateMonth> payrollMonthList = new List<PayrollTemplateMonth>()
+        {
+            new PayrollTemplateMonth(){ Month = Months.January,WorkDay = 31,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
+            new PayrollTemplateMonth(){ Month = Months.February,WorkDay = 28,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m }, 
+            new PayrollTemplateMonth(){ Month = Months.March,WorkDay = 31,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m }, 
+            new PayrollTemplateMonth(){ Month = Months.April,WorkDay = 30,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
+            new PayrollTemplateMonth(){ Month = Months.May,WorkDay = 31,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
+            new PayrollTemplateMonth(){ Month = Months.June,WorkDay = 30,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
+            new PayrollTemplateMonth(){ Month = Months.July,WorkDay = 31,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
+            new PayrollTemplateMonth(){ Month = Months.August,WorkDay = 31,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
+            new PayrollTemplateMonth(){ Month = Months.September,WorkDay = 30,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
+            new PayrollTemplateMonth(){ Month = Months.October,WorkDay = 31,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
+            new PayrollTemplateMonth(){ Month = Months.November,WorkDay = 30,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
+            new PayrollTemplateMonth(){ Month = Months.December,WorkDay = 31,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
             
             
-        // };
+        };
 
-        // await result4.AddAsync(payrollMonthList,employeeScenario);
+        await result4.AddAsync(payrollMonthList,employeeScenario);
 
-        await result2.ClearAsync();
-        await result.ClearAsync();
+        
         
         var Liste = await result4.GetAsync();
 
         var aListe = Liste.OrderBy(x => x.Month).ToList();
-
+        
         
         for(int i = 0; i < aListe.Count; i++)
         {   
@@ -116,35 +118,10 @@ class Program
                 
 
             await result.AddAsync(pay);
-        }
+        } 
 
-    //    ResultPayroll resultPayroll= new ResultPayroll();
-
-    //    resultPayroll.Month = Months.January;
-    //    resultPayroll.WorkDay = 31;
-    //    resultPayroll.CurrentSalary = 0m;
-    //    resultPayroll.Overtime50Amount = 0m;
-    //    resultPayroll.Overtime100Amount = 0m;
-    //    resultPayroll.BonusAmount = 0m;
-    //    resultPayroll.TotalSalary = 0m;
-
-    //    resultPayroll.GrossSalary = 33030m;
-    //    resultPayroll.SSContributionBase = await SGKTavanKontrol.Calc(resultPayroll.GrossSalary);
-    //    resultPayroll.EmployeeSSContributionAmount = await SGKISciKesinti.Calc(resultPayroll.SSContributionBase);
-    //    resultPayroll.EmployeeUIContributionAmount = await SGKISciIszKesinti.Calc(resultPayroll.SSContributionBase);
-    //    resultPayroll.IncomeTaxBase = IncomeTaxBaseCalc.Calc(resultPayroll.GrossSalary, resultPayroll.EmployeeSSContributionAmount, resultPayroll.EmployeeUIContributionAmount);
-    //    resultPayroll.CumulativeIncomeTaxBase = await CumulativeIncomeTaxBase.Calc(resultPayroll.Month, resultPayroll.IncomeTaxBase);
-    //    resultPayroll.IncomeTax = await IncomeTax.Calc(resultPayroll.Month);
-    //    resultPayroll.IncomeTaxExemption = await IncomeTaxExemption.Calc(resultPayroll.Month);
-    //    resultPayroll.StampTax = await StampTax.Calc(resultPayroll.GrossSalary);
-    //    resultPayroll.StampTaxExemption = await StampTaxExemption.Calc();
-    //    resultPayroll.NetSalary = NetSalary.Calc(resultPayroll.GrossSalary, resultPayroll.EmployeeSSContributionAmount, resultPayroll.EmployeeUIContributionAmount, resultPayroll.IncomeTax, resultPayroll.StampTax);
-
-        
-    //     await result.AddAsync(resultPayroll);
-
-
-        
+    
+       
     }
 }
 

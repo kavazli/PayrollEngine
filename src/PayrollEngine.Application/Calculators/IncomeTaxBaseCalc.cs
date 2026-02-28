@@ -11,8 +11,11 @@ public class IncomeTaxBaseCalc
 
     private readonly MinimumWageService _minimumWageService;
     private readonly IEmployeeScenariosService _employeeScenariosService;
+    private readonly DisabilityDegreeCalc _disabilityDegreeCalc;
 
-    public IncomeTaxBaseCalc(MinimumWageService minimumWageService, IEmployeeScenariosService employeeScenariosService)
+    public IncomeTaxBaseCalc(MinimumWageService minimumWageService, 
+                             IEmployeeScenariosService employeeScenariosService,
+                             DisabilityDegreeCalc disabilityDegreeCalc)
     {   
         if (minimumWageService == null)
         {
@@ -22,8 +25,10 @@ public class IncomeTaxBaseCalc
         {
             throw new ArgumentNullException(nameof(employeeScenariosService));
         }
+
         _employeeScenariosService = employeeScenariosService;
         _minimumWageService = minimumWageService;
+        _disabilityDegreeCalc = disabilityDegreeCalc;
     }
 
     public async Task<decimal> Calc(decimal GrossSalary, decimal EmployeeSSCont, decimal EmployeeUICont)
@@ -32,14 +37,18 @@ public class IncomeTaxBaseCalc
         var scenario = await _employeeScenariosService.GetAsync();
         var minimumWage = await _minimumWageService.GetValueAsync(scenario.Year);
 
-        var result = GrossSalary - (EmployeeSSCont + EmployeeUICont);
+        var temp = GrossSalary - (EmployeeSSCont + EmployeeUICont);
+
+        var result = await _disabilityDegreeCalc.Calc(scenario, temp);
 
         if(result < minimumWage.NetAmount)
         {
-            return minimumWage.NetAmount;
+            return Math.Round(minimumWage.NetAmount, 2);
         }
+        
 
-        return result;
+
+        return Math.Round(result, 2);
     }
 
 }

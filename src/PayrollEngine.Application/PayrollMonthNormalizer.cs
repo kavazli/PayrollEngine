@@ -37,7 +37,8 @@ public class PayrollMonthNormalizer
         var TempBaseSalary = CalculateSalaryIncrease(TempWorkDay);
         var TempOvertime50 = CalculateOvertime50(TempBaseSalary, TempWorkDay);
         var TempOvertime100 = CalculateOvertime100(TempBaseSalary, TempWorkDay);
-        var TempGrossSalary = TempBaseSalary + TempOvertime50 + TempOvertime100 + TemplateMonth.BonusAmount;
+        decimal resultSalary = TempBaseSalary + TempOvertime50 + TempOvertime100 + TemplateMonth.BonusAmount;
+        var TempGrossSalary = Math.Round(resultSalary, 2);
 
 
         PayrollMonth payrollMonth = new PayrollMonth()
@@ -64,12 +65,12 @@ public class PayrollMonthNormalizer
         {   
             var reslut = CalculateSalary(workDay, TemplateMonth.BaseSalary);
 
-            return reslut;
+            return Math.Round(reslut, 2);
         }
 
         var result = TemplateMonth.BaseSalary + (TemplateMonth.BaseSalary * TemplateMonth.SalaryIncreaseRate);
 
-        return CalculateSalary(workDay, result);
+        return Math.Round(CalculateSalary(workDay, result), 2);
     }
 
 
@@ -83,8 +84,8 @@ public class PayrollMonthNormalizer
 
 
        var DailySalary = BaseSalary / workDay; 
-
-       return TemplateMonth.Overtime50 * (DailySalary / 7.5m) * 1.5m;
+       decimal result = TemplateMonth.Overtime50 * (DailySalary / 7.5m) * 1.5m; 
+       return Math.Round(result, 2);
     }
 
 
@@ -97,15 +98,19 @@ public class PayrollMonthNormalizer
             
         }  
        var DailySalary = BaseSalary / workDay;
+       decimal result = TemplateMonth.Overtime100 * (DailySalary / 7.5m) * 2m;
 
-       return TemplateMonth.Overtime100 * (DailySalary / 7.5m) * 2m;
+       return Math.Round(result, 2);
+
     }
 
 
     // Maaşı güne göre hesaplayan yöntem.
     private decimal CalculateSalary(int workDay, decimal baseSalary)
-    {
-        return (baseSalary / 30m) * workDay;
+    {   
+        decimal result = (baseSalary / 30m) * workDay;
+
+        return Math.Round(result, 2);
     }
 
 

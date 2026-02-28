@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PayrollEngine.Infrastructure;
 
@@ -10,9 +11,11 @@ using PayrollEngine.Infrastructure;
 namespace PayrollEngine.Infrastructure.Migrations
 {
     [DbContext(typeof(PayrollEngineDbContext))]
-    partial class PayrollEngineDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260228130346_AddDisabilityDegreeTable")]
+    partial class AddDisabilityDegreeTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
@@ -69,13 +72,15 @@ namespace PayrollEngine.Infrastructure.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("Degree")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid?>("DegreeId")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Year")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DegreeId");
 
                     b.ToTable("DisabilityDegrees");
                 });
@@ -86,8 +91,8 @@ namespace PayrollEngine.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("DisabilityDegree")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid?>("DisabilityDegreeId")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("IncentiveType")
                         .HasColumnType("INTEGER");
@@ -105,6 +110,8 @@ namespace PayrollEngine.Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DisabilityDegreeId");
 
                     b.ToTable("EmployeeScenarios");
                 });
@@ -408,6 +415,24 @@ namespace PayrollEngine.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("StampTaxes");
+                });
+
+            modelBuilder.Entity("PayrollEngine.Domain.Entities.DisabilityDegree", b =>
+                {
+                    b.HasOne("PayrollEngine.Domain.Entities.DisabilityDegree", "Degree")
+                        .WithMany()
+                        .HasForeignKey("DegreeId");
+
+                    b.Navigation("Degree");
+                });
+
+            modelBuilder.Entity("PayrollEngine.Domain.Entities.EmployeeScenario", b =>
+                {
+                    b.HasOne("PayrollEngine.Domain.Entities.DisabilityDegree", "DisabilityDegree")
+                        .WithMany()
+                        .HasForeignKey("DisabilityDegreeId");
+
+                    b.Navigation("DisabilityDegree");
                 });
 #pragma warning restore 612, 618
         }

@@ -21,6 +21,7 @@ public class PayrollEngineDbContext : DbContext
     public DbSet<RetiredSSParams> RetiredSSParams { get; set; }
     public DbSet<SSCeiling> SSCeilings { get; set; }
     public DbSet<StampTax> StampTaxes { get; set; }
+    public DbSet<DisabilityDegree> DisabilityDegrees { get; set; }
 
     public DbSet<ShoppingVoucher> ShoppingVouchers { get; set; }
     public DbSet<PrivateHealthInsurance> PrivateHealthInsurances { get; set; }

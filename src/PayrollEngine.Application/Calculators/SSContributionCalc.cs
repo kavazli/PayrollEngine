@@ -68,11 +68,11 @@ public class SSContributionCalc
         }
         else if (GrossSalary < minimumWage.GrossAmount)
         {
-            return minimumWage.GrossAmount;
+            return Math.Round(minimumWage.GrossAmount, 2);
         }
         else
         {
-            return GrossSalary;
+            return Math.Round(GrossSalary, 2);
         }
         
        

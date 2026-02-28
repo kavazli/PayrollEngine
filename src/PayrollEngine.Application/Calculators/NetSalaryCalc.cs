@@ -17,7 +17,7 @@ public class NetSalaryCalc
         var totalDeductions = employeeSSContributionAmount + employeeUIContributionAmount + incomeTax + stampTax;
         var netSalary = grossSalary - totalDeductions;
 
-        return netSalary;
+        return Math.Round(netSalary, 2);
     }
 
 }

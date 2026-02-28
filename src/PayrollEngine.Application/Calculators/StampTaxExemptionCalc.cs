@@ -46,6 +46,7 @@ public class StampTaxExemptionCalc
 
         var minimumWage = await _minimumWageService.GetValueAsync(scenario.Year);
         var stampTax = await _stampTaxService.GetValueAsync(scenario.Year);
+        decimal result;
 
         if (minimumWage == null)
         {
@@ -57,7 +58,9 @@ public class StampTaxExemptionCalc
             throw new InvalidOperationException($"Stamp tax not found for year: {scenario.Year}");
         }
 
-        return minimumWage.GrossAmount * stampTax.Rate;
+        result = minimumWage.GrossAmount * stampTax.Rate;
+
+        return Math.Round(result, 2);
 
     }
 
