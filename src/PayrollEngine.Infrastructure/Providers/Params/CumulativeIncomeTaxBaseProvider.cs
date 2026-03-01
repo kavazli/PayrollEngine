@@ -26,18 +26,11 @@ public class CumulativeIncomeTaxBaseProvider : ICumulativeIncomeTaxBaseProvider
     }
 
 
-    // DB tablosunda hangi ay isteniyorsa o aya ait veriyi döndürüyor. 
-    // Eğer o ay için kayıt yoksa hata fırlatıyor.
-    public async Task<CumulativeIncomeTaxBase> GetValueAsync(Months month)
+    // DB tablosunda hangi ay isteniyorsa o aya ait veriyi döndürüyor.
+    // Eğer o ay için kayıt yoksa null döndürür.
+    public async Task<CumulativeIncomeTaxBase?> GetValueAsync(Months month)
     {
-        var result = await _context.CumulativeIncomeTaxBases.SingleOrDefaultAsync(item => item.Month == month);
-        
-        if(result == null)
-        {
-            throw new InvalidOperationException($"CumulativeIncomeTaxBase not found for month {month}.");          
-        }
-
-        return result;
+        return await _context.CumulativeIncomeTaxBases.SingleOrDefaultAsync(item => item.Month == month);
     }
 
 
@@ -56,6 +49,20 @@ public class CumulativeIncomeTaxBaseProvider : ICumulativeIncomeTaxBaseProvider
         return taxBase;
     }
 
+
+    // Mevcut bir CumulativeIncomeTaxBase kaydını güncellemek için kullanılan method.
+    public async Task<CumulativeIncomeTaxBase> UpdateAsync(CumulativeIncomeTaxBase taxBase)
+    {
+        if (taxBase == null)
+        {
+            throw new ArgumentNullException(nameof(taxBase));
+        }
+
+        _context.CumulativeIncomeTaxBases.Update(taxBase);
+        await _context.SaveChangesAsync();
+
+        return taxBase;
+    }
 
     // CumulativeIncomeTaxBase tablosundaki tüm kayıtları silmek için kullanılan method.
     // Genellikle her yıl sonunda, yeni yılın başında eski kayıtları temizlemek için kullanılır.

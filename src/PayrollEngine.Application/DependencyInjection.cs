@@ -45,6 +45,10 @@ public static class DependencyInjection
         services.AddScoped<StampTaxCalc>();
         services.AddScoped<StampTaxExemptionCalc>();
         services.AddScoped<DisabilityDegreeCalc>();
+        services.AddScoped<ResultPayrollCalc>();
+
+
+        services.AddScoped<NetSalaryIteration>();
 
         return services;
     }

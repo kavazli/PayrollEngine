@@ -41,15 +41,23 @@ public class CumtIncomeTaxBaseCalc
 
         var newCumulativeBase = previousCumulativeBase + incomeTaxBase;
 
-        // Mevcut ayın kümülatif matrahını DB'ye kaydet
-        var newRecord = new CumulativeIncomeTaxBase
+        // Mevcut ayın kümülatif matrahını DB'ye upsert et (iterasyonda mükerrer kayıt oluşmasını önler)
+        var existingRecord = await _cumulativeIncomeTaxBaseService.GetValueAsync(currentMonth);
+        if (existingRecord != null)
         {
-            Id = Guid.NewGuid(),
-            Month = currentMonth,
-            CumulativeBase = newCumulativeBase
-        };
-
-        await _cumulativeIncomeTaxBaseService.AddAsync(newRecord);
+            existingRecord.CumulativeBase = newCumulativeBase;
+            await _cumulativeIncomeTaxBaseService.UpdateAsync(existingRecord);
+        }
+        else
+        {
+            var newRecord = new CumulativeIncomeTaxBase
+            {
+                Id = Guid.NewGuid(),
+                Month = currentMonth,
+                CumulativeBase = newCumulativeBase
+            };
+            await _cumulativeIncomeTaxBaseService.AddAsync(newRecord);
+        }
 
         return Math.Round(newCumulativeBase, 2);
     }

@@ -29,8 +29,8 @@ public class CumulativeIncomeTaxBaseService
 
 
     // Belirli bir ay için gelir vergisi matrahı hesaplama parametrelerini asenkron olarak alır.
-    // Bu yöntem, geçerli bir ay sağlanmazsa bir ArgumentOutOfRangeException fırlatır.
-    public Task<CumulativeIncomeTaxBase> GetValueAsync(Months month)
+    // Kayıt yoksa null döndürür.
+    public Task<CumulativeIncomeTaxBase?> GetValueAsync(Months month)
     {   
         if(month < Months.January || month > Months.December)
         {
@@ -45,6 +45,12 @@ public class CumulativeIncomeTaxBaseService
     public Task<CumulativeIncomeTaxBase> AddAsync(CumulativeIncomeTaxBase taxBase)
     {
         return _cumulativeIncomeTaxBaseProvider.AddAsync(taxBase);
+    }
+
+    // Gelir vergisi matrahı hesaplama parametrelerini asenkron olarak günceller.
+    public Task<CumulativeIncomeTaxBase> UpdateAsync(CumulativeIncomeTaxBase taxBase)
+    {
+        return _cumulativeIncomeTaxBaseProvider.UpdateAsync(taxBase);
     }
 
     // Gelir vergisi matrahı hesaplama parametrelerini asenkron olarak temizler.
