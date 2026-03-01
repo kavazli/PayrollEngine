@@ -56,7 +56,7 @@ class Program
            SalaryInputType = SalaryInputType.Gross,
            Status = Status.Active,
            DisabilityDegree = Degree.Degree3,
-           PayType = PayType.Monthly,
+           PayType = PayType.Daily,
            IncentiveType = IncentiveType.None,
         };
         await result3.AddAsync(employeeScenario);
@@ -64,18 +64,18 @@ class Program
 
         List<PayrollTemplateMonth> payrollMonthList = new List<PayrollTemplateMonth>()
         {
-            new PayrollTemplateMonth(){ Month = Months.January,WorkDay = 31,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
-            new PayrollTemplateMonth(){ Month = Months.February,WorkDay = 28,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m }, 
-            new PayrollTemplateMonth(){ Month = Months.March,WorkDay = 31,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m }, 
-            new PayrollTemplateMonth(){ Month = Months.April,WorkDay = 30,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
-            new PayrollTemplateMonth(){ Month = Months.May,WorkDay = 31,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
-            new PayrollTemplateMonth(){ Month = Months.June,WorkDay = 30,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
-            new PayrollTemplateMonth(){ Month = Months.July,WorkDay = 31,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
-            new PayrollTemplateMonth(){ Month = Months.August,WorkDay = 31,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
-            new PayrollTemplateMonth(){ Month = Months.September,WorkDay = 30,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
-            new PayrollTemplateMonth(){ Month = Months.October,WorkDay = 31,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
-            new PayrollTemplateMonth(){ Month = Months.November,WorkDay = 30,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
-            new PayrollTemplateMonth(){ Month = Months.December,WorkDay = 31,BaseSalary = 45000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
+            new PayrollTemplateMonth(){ Month = Months.January,WorkDay = 31,BaseSalary = 50000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
+            new PayrollTemplateMonth(){ Month = Months.February,WorkDay = 28,BaseSalary = 50000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m }, 
+            new PayrollTemplateMonth(){ Month = Months.March,WorkDay = 31,BaseSalary = 50000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m }, 
+            new PayrollTemplateMonth(){ Month = Months.April,WorkDay = 30,BaseSalary = 50000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
+            new PayrollTemplateMonth(){ Month = Months.May,WorkDay = 31,BaseSalary = 50000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
+            new PayrollTemplateMonth(){ Month = Months.June,WorkDay = 30,BaseSalary = 50000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
+            new PayrollTemplateMonth(){ Month = Months.July,WorkDay = 31,BaseSalary = 50000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
+            new PayrollTemplateMonth(){ Month = Months.August,WorkDay = 31,BaseSalary = 50000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
+            new PayrollTemplateMonth(){ Month = Months.September,WorkDay = 30,BaseSalary = 50000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
+            new PayrollTemplateMonth(){ Month = Months.October,WorkDay = 31,BaseSalary = 50000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
+            new PayrollTemplateMonth(){ Month = Months.November,WorkDay = 30,BaseSalary = 50000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
+            new PayrollTemplateMonth(){ Month = Months.December,WorkDay = 31,BaseSalary = 50000,SalaryIncreaseRate = 0m,Overtime50 = 0m,Overtime100 = 0m,BonusAmount = 0m,PrivateHealthInsurance = 0m,ShoppingVoucher = 0m },
             
             
         };

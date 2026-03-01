@@ -73,12 +73,14 @@ public class IncomeTaxCalc
 
         decimal exemption = await _incomeTaxExemptionCalc.Calc(months); // Gelir vergisi istisnası, mevcut ay için hesaplanır
 
-        if(taxDifference < exemption)
+        decimal result = taxDifference - exemption;
+
+        if(result <= 0)
         {
-            return 0; // Vergi farkı, istisnadan küçükse vergi sıfırlanır
+            return 0; // Vergi farkı, istisnadan küçük veya eşitse vergi sıfırlanır
         }
         
-        return taxDifference - exemption;
+        return Math.Round(result, 2);
     } 
    
     private async Task<decimal> CalculateTaxAmount(decimal cumulativeBase, Months months)
@@ -135,7 +137,7 @@ public class IncomeTaxCalc
 
     
 
-        return Math.Round(tax, 2);
+        return tax;
 
     }
 
