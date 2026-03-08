@@ -59,3 +59,17 @@ record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
+
+
+//   { "month": 1,  "workDay": 31, "baseSalary": 50000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 },
+//   { "month": 2,  "workDay": 28, "baseSalary": 50000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 },
+//   { "month": 3,  "workDay": 31, "baseSalary": 50000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 },
+//   { "month": 4,  "workDay": 30, "baseSalary": 50000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 },
+//   { "month": 5,  "workDay": 31, "baseSalary": 50000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 },
+//   { "month": 6,  "workDay": 30, "baseSalary": 50000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 },
+//   { "month": 7,  "workDay": 31, "baseSalary": 50000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 },
+//   { "month": 8,  "workDay": 31, "baseSalary": 50000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 },
+//   { "month": 9,  "workDay": 30, "baseSalary": 50000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 },
+//   { "month": 10, "workDay": 31, "baseSalary": 50000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 },
+//   { "month": 11, "workDay": 30, "baseSalary": 50000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 },
+//   { "month": 12, "workDay": 31, "baseSalary": 50000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 }
