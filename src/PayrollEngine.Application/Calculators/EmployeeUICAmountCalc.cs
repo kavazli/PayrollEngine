@@ -8,9 +8,10 @@ namespace PayrollEngine.Application.Calculators;
 
 public class EmployeeUICAmountCalc
 {
-    private readonly ActiveSSParamsService _activeSSParamsService;
 
+    private readonly ActiveSSParamsService _activeSSParamsService;
     private readonly IEmployeeScenariosService _employeeScenariosService;
+
 
     public EmployeeUICAmountCalc(ActiveSSParamsService activeSSParamsService, IEmployeeScenariosService employeeScenariosService)
     {

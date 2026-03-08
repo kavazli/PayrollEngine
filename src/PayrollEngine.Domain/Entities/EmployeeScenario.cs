@@ -6,7 +6,7 @@ namespace PayrollEngine.Domain.Entities;
 public class EmployeeScenario
 {
     
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     public int Year { get; set; }
     public SalaryInputType SalaryInputType { get; set; }
     public Status Status { get; set; }

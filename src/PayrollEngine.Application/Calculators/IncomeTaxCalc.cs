@@ -98,12 +98,11 @@ public class IncomeTaxCalc
         }
 
         
-        // Eğer toplam matrah, mevcut dilimin minimumundan küçük veya eşitse döngüden çık
+        // Kümülatif matrah sıfır veya negatifse vergi hesaplanmaz
         if(cumulativeBase <= 0)
         {
             return 0;
         }
-
         decimal tax = 0m;
 
 

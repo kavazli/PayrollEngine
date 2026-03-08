@@ -38,6 +38,8 @@ public class EmployeeScenariosService : IEmployeeScenariosService
             throw new ArgumentNullException(nameof(scenario), "Employee scenario cannot be null.");
         }   
 
+        scenario.Id = Guid.NewGuid();
+
         await ClearAsync();
 
         await _employeeScenariosProvider.AddAsync(scenario);

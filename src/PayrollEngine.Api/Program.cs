@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using PayrollEngine.Application;
 using PayrollEngine.Infrastructure;
+using Scalar.AspNetCore;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +19,7 @@ builder.Services.AddDbContext<PayrollEngineDbContext>(options =>
 builder.Services.AddInfrastructure();
 builder.Services.AddApplication();
 
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -24,6 +27,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();
@@ -46,6 +50,8 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 })
 .WithName("GetWeatherForecast");
+
+app.MapControllers();
 
 app.Run();
 

@@ -10,6 +10,7 @@ namespace PayrollEngine.Application.Calculators;
 
 public class DisabilityDegreeCalc
 {
+    
     private readonly DisabilityDegreeService _disabilityDegreeService;
     
 

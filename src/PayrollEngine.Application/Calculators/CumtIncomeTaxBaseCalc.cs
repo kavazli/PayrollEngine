@@ -9,8 +9,10 @@ namespace PayrollEngine.Application.Calculators;
 
 
 public class CumtIncomeTaxBaseCalc
-{
+{      
+
     private readonly CumulativeIncomeTaxBaseService _cumulativeIncomeTaxBaseService;
+
 
     public CumtIncomeTaxBaseCalc(CumulativeIncomeTaxBaseService cumulativeIncomeTaxBaseService)
     {

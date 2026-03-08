@@ -25,6 +25,12 @@ public class IncomeTaxBaseCalc
         {
             throw new ArgumentNullException(nameof(employeeScenariosService));
         }
+        if (disabilityDegreeCalc == null)
+        {
+            throw new ArgumentNullException(nameof(disabilityDegreeCalc));
+        }
+
+
 
         _employeeScenariosService = employeeScenariosService;
         _minimumWageService = minimumWageService;
