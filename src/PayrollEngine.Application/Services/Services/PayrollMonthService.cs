@@ -2,6 +2,7 @@
 
 
 using PayrollEngine.Domain.Entities;
+using PayrollEngine.Domain.Enums;
 using PayrollEngine.Domain.Interfaces.Providers;
 using PayrollEngine.Domain.Interfaces.Services;
 
@@ -69,6 +70,12 @@ public class PayrollMonthService : IPayrollMonthService
     public Task<List<PayrollMonth>> GetAsync()
     {
         return _payrollMonthsProvider.GetAsync();
+    }
+
+
+    public Task<PayrollMonth> GetMonthAsync(Months month)
+    {
+        return _payrollMonthsProvider.GetMonthAsync(month);
     }
 
 

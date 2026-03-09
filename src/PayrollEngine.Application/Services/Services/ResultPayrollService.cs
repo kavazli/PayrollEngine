@@ -1,6 +1,7 @@
 
 
 using PayrollEngine.Domain.Entities;
+using PayrollEngine.Domain.Enums;
 using PayrollEngine.Domain.Interfaces.Providers;
 using PayrollEngine.Domain.Interfaces.Services;
 
@@ -56,12 +57,21 @@ public class ResultPayrollService : IResultPayrollService
        
     }
 
+
     // Sonuç bordrosunu asenkron olarak alır.
     public async Task<List<ResultPayroll>> GetAsync()
     {   
         return await _resultPayrollsProvider.GetAsync();
        
     }
+
+
+    // Belirli bir aya ait sonuç bordrosunu asenkron olarak alır.
+    public async Task<ResultPayroll> GetMonthAsync(Months month)
+    {
+        return await _resultPayrollsProvider.GetMonthAsync(month);
+    }
+
 
     // Sonuç bordrosunu asenkron olarak temizler.
     public async Task ClearAsync()

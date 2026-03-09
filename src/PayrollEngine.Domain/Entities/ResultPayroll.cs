@@ -22,6 +22,7 @@ public class ResultPayroll
     public decimal IncomeTaxBase { get; set; }
     public decimal CumulativeIncomeTaxBase { get; set; }
     public decimal IncomeTax { get; set; }
+    public decimal IncomeTaxRate { get; set; }
     public decimal IncomeTaxExemption { get; set; }
     public decimal StampTax { get; set; }
     public decimal StampTaxExemption { get; set; }

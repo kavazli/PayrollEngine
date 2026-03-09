@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using PayrollEngine.Domain.Entities;
+using PayrollEngine.Domain.Enums;
 using PayrollEngine.Domain.Interfaces.Providers;
 
 
@@ -45,11 +46,24 @@ public class PayrollMonthsProvider : IPayrollMonthsProvider
     {   
 
         var payrollMonth = await _context.PayrollMonths.ToListAsync();
-        if(payrollMonth == null)
+        if(payrollMonth == null || payrollMonth.Count == 0)
         {
             throw new InvalidOperationException("No payroll months found in the database.");
         }
 
+        return payrollMonth;
+    }
+
+
+    // Veritabanından belirli bir ay için PayrollMonth nesnesini döndürür.
+    // Eğer belirtilen ay için bir PayrollMonth bulunamazsa, hata fırlatır
+    public async Task<PayrollMonth> GetMonthAsync(Months month)
+    {
+        var payrollMonth = await _context.PayrollMonths.FirstOrDefaultAsync(pm => pm.Month == month);
+        if (payrollMonth == null)
+        {
+            throw new InvalidOperationException($"Payroll month for {month} not found in the database.");
+        }
         return payrollMonth;
     }
 

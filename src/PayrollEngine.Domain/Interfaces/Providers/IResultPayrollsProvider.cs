@@ -1,6 +1,7 @@
 
 
 using PayrollEngine.Domain.Entities;
+using PayrollEngine.Domain.Enums;
 
 
 namespace PayrollEngine.Domain.Interfaces.Providers;
@@ -14,6 +15,7 @@ public interface IResultPayrollsProvider
     Task<ResultPayroll> AddAsync(ResultPayroll resultPayroll);
     Task<List<ResultPayroll>> AddRangeAsync(List<ResultPayroll> resultPayrolls);
     Task<List<ResultPayroll>> GetAsync();
+    Task<ResultPayroll> GetMonthAsync(Months month);
     Task ClearAsync();
     Task SetAsync(List<ResultPayroll> resultPayrolls);
 }

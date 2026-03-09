@@ -64,6 +64,7 @@ public class ResultPayrollCalc
             // 5. Gelir Vergisi ve Asgari Geçim İndirimi
             var incomeTaxExemption = await _incomeTaxExemptionCalc.Calc(payrollMonth.Month);
             var incomeTax = await _incomeTaxCalc.Calc(payrollMonth.Month);
+            var incomeTaxRate = await _incomeTaxCalc.CalcRate(cumulativeIncomeTaxBase);
 
             // 6. Damga Vergisi ve Muafiyeti
             var stampTaxExemption = await _stampTaxExemptionCalc.Calc();
@@ -90,6 +91,7 @@ public class ResultPayrollCalc
                 CumulativeIncomeTaxBase = cumulativeIncomeTaxBase,
                 IncomeTaxExemption = incomeTaxExemption,
                 IncomeTax = incomeTax,
+                IncomeTaxRate = incomeTaxRate,
                 StampTaxExemption = stampTaxExemption,
                 StampTax = stampTax,
                 NetSalary = netSalary,

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PayrollEngine.Infrastructure;
 
@@ -10,9 +11,11 @@ using PayrollEngine.Infrastructure;
 namespace PayrollEngine.Infrastructure.Migrations
 {
     [DbContext(typeof(PayrollEngineDbContext))]
-    partial class PayrollEngineDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260309184509_AddColumnsToVoucherAndHealthInsurance")]
+    partial class AddColumnsToVoucherAndHealthInsurance
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
@@ -307,9 +310,6 @@ namespace PayrollEngine.Infrastructure.Migrations
                     b.Property<decimal>("IncomeTaxExemption")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("IncomeTaxRate")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("Month")
                         .HasColumnType("INTEGER");
 
@@ -389,9 +389,6 @@ namespace PayrollEngine.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("GrossAmount")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("IncomeTax")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Month")

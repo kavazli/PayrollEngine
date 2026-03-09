@@ -140,4 +140,46 @@ public class IncomeTaxCalc
 
     }
 
+
+    public async Task<decimal> CalcRate(decimal cumulativeBase)
+    {   
+        var employeeScenario = await _employeeScenariosService.GetAsync();
+        if(employeeScenario == null)
+        {
+            throw new InvalidOperationException("Employee scenario is not available.");
+        }
+
+        var taxBrackets = await _incomeTaxService.GetValueAsync(employeeScenario.Year);
+        if (taxBrackets == null || taxBrackets.Count == 0)
+        {
+            throw new InvalidOperationException($"Income tax brackets for the year {employeeScenario.Year} are not available.");
+        }
+
+        
+        // Kümülatif matrah sıfır veya negatifse vergi hesaplanmaz
+        if(cumulativeBase <= 0)
+        {
+            return 0;
+        }
+        decimal taxRate = 0m;
+
+
+        // Vergi dilimlerini sırayla kontrol et
+        for(int i = 0; i < taxBrackets.Count; i++)
+        {
+            // Mevcut dilimin minimum ve maksimum matrahını belirle
+            decimal bracketMin = (i == 0) ? 0 : taxBrackets[i-1].MaxAmount; // İlk dilim için minimum 0, diğerleri için bir önceki dilimin maksimumu
+            decimal bracketMax = taxBrackets[i].MaxAmount; // Mevcut dilimin maksimum matrahı
+
+            if(cumulativeBase > bracketMin && cumulativeBase <= bracketMax)
+            {
+                taxRate = taxBrackets[i].Rate;
+                break;
+            }
+        }
+        
+        return taxRate;
+
+    }
+
 }

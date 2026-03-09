@@ -5,6 +5,7 @@ namespace PayrollEngine.Domain.Entities;
 
 public class PayrollMonth
 {   
+
     public Guid Id { get; set; }
     public Months Month { get; set; }
     public int WorkDay { get; set; }
@@ -14,5 +15,4 @@ public class PayrollMonth
     public decimal BonusAmount { get; set; }
     public decimal GrossSalary { get; set; }
     
-   
 }

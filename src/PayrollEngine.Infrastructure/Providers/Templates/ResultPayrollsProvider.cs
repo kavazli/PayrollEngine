@@ -1,6 +1,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using PayrollEngine.Domain.Entities;
+using PayrollEngine.Domain.Enums;
 using PayrollEngine.Domain.Interfaces.Providers;
 
 
@@ -66,6 +67,20 @@ public class ResultPayrollsProvider : IResultPayrollsProvider
         }
 
         return resultPayrolls;
+    }
+
+
+    // Veritabanından belirli bir aya ait ResultPayroll nesnesini döndürür.
+    // Eğer belirtilen aya ait bir ResultPayroll bulunamazsa, hata fırlatır
+    public async Task<ResultPayroll> GetMonthAsync(Months month)
+    {
+        var resultPayroll = await _context.ResultPayrolls.FirstOrDefaultAsync(rp => rp.Month == month);
+        if (resultPayroll == null)
+        {
+            throw new InvalidOperationException($"No result payroll found for month {month}.");
+        }
+
+        return resultPayroll;
     }
 
 
