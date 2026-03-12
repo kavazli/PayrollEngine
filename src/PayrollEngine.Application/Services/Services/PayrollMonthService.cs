@@ -175,12 +175,17 @@ public class PayrollMonthService : IPayrollMonthService
                 var pay = await _netSalaryIteration.Iterator(item);
                 resultPayrolls.Add(pay);
 
-                var shoppingVoucher = await _shoppingVoucherCalc.Calc(item, item.Month);
-                shoppingVouchers.Add(shoppingVoucher);
+                
             }
 
             await _resultPayrollService.ClearAsync();
             await _resultPayrollService.AddRangeAsync(resultPayrolls);
+
+            foreach(var item in list)
+            {
+                var shoppingVoucher = await _shoppingVoucherCalc.Calc(item, item.Month);
+                shoppingVouchers.Add(shoppingVoucher);
+            }
 
             await _shoppingVoucherService.ClearAsync();
             await _shoppingVoucherService.AddRangeAsync(shoppingVouchers);
@@ -193,12 +198,17 @@ public class PayrollMonthService : IPayrollMonthService
                 var pay = await _resultPayrollCalc.Calc(item);
                 resultPayrolls.Add(pay);
 
-                var shoppingVoucher = await _shoppingVoucherCalc.Calc(item, item.Month);
-                shoppingVouchers.Add(shoppingVoucher);
+                
             }
 
             await _resultPayrollService.ClearAsync();
             await _resultPayrollService.AddRangeAsync(resultPayrolls);
+
+            foreach(var item in list)
+            {
+                var shoppingVoucher = await _shoppingVoucherCalc.Calc(item, item.Month);
+                shoppingVouchers.Add(shoppingVoucher);
+            }
 
             await _shoppingVoucherService.ClearAsync();
             await _shoppingVoucherService.AddRangeAsync(shoppingVouchers);
