@@ -1,6 +1,7 @@
 
 
 
+using PayrollEngine.Application.Calculators;
 using PayrollEngine.Domain.Entities;
 using PayrollEngine.Domain.Enums;
 using PayrollEngine.Domain.Interfaces.Providers;
@@ -17,16 +18,66 @@ public class PayrollMonthService : IPayrollMonthService
 {   
 
     private readonly IPayrollMonthsProvider _payrollMonthsProvider;
+    private readonly IEmployeeScenariosProvider _employeeScenariosProvider;
+    private readonly IResultPayrollService _resultPayrollService;
+    private readonly ResultPayrollCalc _resultPayrollCalc;
+    private readonly NetSalaryIteration _netSalaryIteration;
+    private readonly IShoppingVoucherService _shoppingVoucherService;
+    private readonly ShoppingVoucherCalc _shoppingVoucherCalc;
 
 
-    public PayrollMonthService(IPayrollMonthsProvider provider) 
+    public PayrollMonthService(IPayrollMonthsProvider provider,
+                               IEmployeeScenariosProvider employeeScenariosProvider,
+                               IResultPayrollService resultPayrollService,
+                               ResultPayrollCalc resultPayrollCalc,
+                               NetSalaryIteration netSalaryIteration,
+                               IShoppingVoucherService shoppingVoucherService,
+                               ShoppingVoucherCalc shoppingVoucherCalc) 
     {   
 
         if (provider == null)
         {
             throw new ArgumentNullException(nameof(provider), "Payroll months provider cannot be null.");
         }
+
+        if (employeeScenariosProvider == null)
+        {
+            throw new ArgumentNullException(nameof(employeeScenariosProvider), "Employee scenarios provider cannot be null.");
+        }
+
+        if (resultPayrollCalc == null)
+        {
+            throw new ArgumentNullException(nameof(resultPayrollCalc), "Result payroll calculator cannot be null.");
+        }
+
+        if (resultPayrollService == null)
+        {
+            throw new ArgumentNullException(nameof(resultPayrollService), "Result payroll service cannot be null.");
+        }
+
+        if (netSalaryIteration == null)
+        {
+            throw new ArgumentNullException(nameof(netSalaryIteration), "Net salary iteration cannot be null.");
+        }
+
+        if(shoppingVoucherService == null)
+        {
+            throw new ArgumentNullException(nameof(shoppingVoucherService), "Shopping voucher service cannot be null.");
+        }
+
+        if(shoppingVoucherCalc == null)
+        {
+            throw new ArgumentNullException(nameof(shoppingVoucherCalc), "Shopping voucher calculator cannot be null.");
+        }
+
+
         _payrollMonthsProvider = provider;
+        _employeeScenariosProvider = employeeScenariosProvider;
+        _resultPayrollService = resultPayrollService; 
+        _resultPayrollCalc = resultPayrollCalc;
+        _netSalaryIteration = netSalaryIteration;
+        _shoppingVoucherService = shoppingVoucherService;
+        _shoppingVoucherCalc = shoppingVoucherCalc;
 
     }
 
@@ -61,6 +112,12 @@ public class PayrollMonthService : IPayrollMonthService
         }
         
         await _payrollMonthsProvider.AddAsync(normalizedMonths);
+
+        await CalculateResultPayrollAsync();
+
+
+
+
         return normalizedMonths;
 
     }
@@ -96,4 +153,57 @@ public class PayrollMonthService : IPayrollMonthService
         }
         await _payrollMonthsProvider.SetAsync(months);
     }
+
+
+    private async Task CalculateResultPayrollAsync()
+    {
+        var employeeScenario = await _employeeScenariosProvider.GetAsync();
+
+        var monthsPayroll = await _payrollMonthsProvider.GetAsync();
+
+        var list = monthsPayroll.OrderBy(x => x.Month).ToList();
+
+        List<ResultPayroll> resultPayrolls = new List<ResultPayroll>();
+        List<ShoppingVoucher> shoppingVouchers = new List<ShoppingVoucher>();
+
+
+       if(employeeScenario.SalaryInputType == SalaryInputType.Net)
+       {
+
+            foreach(var item in list)
+            {
+                var pay = await _netSalaryIteration.Iterator(item);
+                resultPayrolls.Add(pay);
+
+                var shoppingVoucher = await _shoppingVoucherCalc.Calc(item, item.Month);
+                shoppingVouchers.Add(shoppingVoucher);
+            }
+
+            await _resultPayrollService.ClearAsync();
+            await _resultPayrollService.AddRangeAsync(resultPayrolls);
+
+            await _resultPayrollService.ClearAsync();
+            await _shoppingVoucherService.AddRangeAsync(shoppingVouchers);
+ 
+        }
+        else
+        {
+            foreach(var item in list)
+            {
+                var pay = await _resultPayrollCalc.Calc(item);
+                resultPayrolls.Add(pay);
+
+                var shoppingVoucher = await _shoppingVoucherCalc.Calc(item, item.Month);
+                shoppingVouchers.Add(shoppingVoucher);
+            }
+
+            await _resultPayrollService.ClearAsync();
+            await _resultPayrollService.AddRangeAsync(resultPayrolls);
+
+            await _shoppingVoucherService.ClearAsync();
+            await _shoppingVoucherService.AddRangeAsync(shoppingVouchers);
+        }
+    }
+
+
 }

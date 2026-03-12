@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PayrollEngine.Infrastructure;
 
@@ -10,9 +11,11 @@ using PayrollEngine.Infrastructure;
 namespace PayrollEngine.Infrastructure.Migrations
 {
     [DbContext(typeof(PayrollEngineDbContext))]
-    partial class PayrollEngineDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260312062855_AddShoppingVoucherAndPrivateHealthInsuranceToPayrollMonth")]
+    partial class AddShoppingVoucherAndPrivateHealthInsuranceToPayrollMonth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
@@ -202,6 +205,9 @@ namespace PayrollEngine.Infrastructure.Migrations
                     b.Property<decimal>("Overtime50")
                         .HasColumnType("TEXT");
 
+                    b.Property<decimal>("PrivateHealthInsurance")
+                        .HasColumnType("TEXT");
+
                     b.Property<decimal>("ShoppingVoucher")
                         .HasColumnType("TEXT");
 
@@ -234,6 +240,9 @@ namespace PayrollEngine.Infrastructure.Migrations
                     b.Property<decimal>("Overtime50")
                         .HasColumnType("TEXT");
 
+                    b.Property<decimal>("PrivateHealthInsurance")
+                        .HasColumnType("TEXT");
+
                     b.Property<decimal>("SalaryIncreaseRate")
                         .HasColumnType("TEXT");
 
@@ -246,6 +255,32 @@ namespace PayrollEngine.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PayrollTemplateMonths");
+                });
+
+            modelBuilder.Entity("PayrollEngine.Domain.Entities.PrivateHealthInsurance", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("GrossAmount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("IncomeTax")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Month")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("NetAmount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("StampTax")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PrivateHealthInsurances");
                 });
 
             modelBuilder.Entity("PayrollEngine.Domain.Entities.ResultPayroll", b =>

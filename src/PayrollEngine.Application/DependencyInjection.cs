@@ -19,7 +19,6 @@ public static class DependencyInjection
         services.AddScoped<IPayrollMonthService, PayrollMonthService>();
         services.AddScoped<IResultPayrollService, ResultPayrollService>();
         services.AddScoped<IEmployerContributionsService, EmployerContributionsService>();
-        services.AddScoped<IPrivateHealthInsuranceService, PrivateHealthInsuranceService>();
         services.AddScoped<IShoppingVoucherService, ShoppingVoucherService>();
         
 
@@ -46,6 +45,7 @@ public static class DependencyInjection
         services.AddScoped<StampTaxExemptionCalc>();
         services.AddScoped<DisabilityDegreeCalc>();
         services.AddScoped<ResultPayrollCalc>();
+        services.AddScoped<ShoppingVoucherCalc>();
 
 
         services.AddScoped<NetSalaryIteration>();

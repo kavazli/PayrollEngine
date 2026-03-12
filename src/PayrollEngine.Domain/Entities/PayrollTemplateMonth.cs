@@ -13,6 +13,5 @@ public class PayrollTemplateMonth
     public decimal Overtime50 { get; set; }
     public decimal Overtime100 { get; set; }
     public decimal BonusAmount { get; set; }
-    public decimal PrivateHealthInsurance { get; set; }
     public decimal ShoppingVoucher { get; set; } 
 }

@@ -31,7 +31,6 @@ public static class DependencyInjection
         services.AddScoped<IPayrollMonthsProvider, PayrollMonthsProvider>();
         services.AddScoped<IResultPayrollsProvider, ResultPayrollsProvider>();
         services.AddScoped<IEmployerContributionsProvider, EmployerContributionsProvider>();
-        services.AddScoped<IPrivateHealthInsuranceProvider, PrivateHealthInsuranceProvider>();
         services.AddScoped<IShoppingVoucherProvider, ShoppingVoucherProvider>();
 
         return services;

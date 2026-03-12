@@ -24,7 +24,6 @@ public class PayrollEngineDbContext : DbContext
     public DbSet<DisabilityDegree> DisabilityDegrees { get; set; }
 
     public DbSet<ShoppingVoucher> ShoppingVouchers { get; set; }
-    public DbSet<PrivateHealthInsurance> PrivateHealthInsurances { get; set; }
     public DbSet<EmployerContributions> EmployerContributions { get; set; }
 
     

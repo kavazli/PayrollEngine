@@ -39,6 +39,7 @@ public class PayrollMonthNormalizer
         var TempOvertime100 = CalculateOvertime100(TempBaseSalary, TempWorkDay);
         decimal resultSalary = TempBaseSalary + TempOvertime50 + TempOvertime100 + TemplateMonth.BonusAmount;
         var TempGrossSalary = Math.Round(resultSalary, 2);
+        var TempShoppingVoucher = TemplateMonth.ShoppingVoucher;
 
 
         PayrollMonth payrollMonth = new PayrollMonth()
@@ -51,7 +52,8 @@ public class PayrollMonthNormalizer
             Overtime50 = TempOvertime50,
             Overtime100 = TempOvertime100,
             BonusAmount = TemplateMonth.BonusAmount,
-            GrossSalary = TempGrossSalary
+            GrossSalary = TempGrossSalary,
+            ShoppingVoucher = TempShoppingVoucher
         };
 
         return payrollMonth;
