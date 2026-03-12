@@ -41,15 +41,15 @@ app.MapControllers();
 app.Run();
 
 
-//   { "month": 1,  "workDay": 31, "baseSalary": 33030, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 },
-//   { "month": 2,  "workDay": 28, "baseSalary": 33030, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 },
-//   { "month": 3,  "workDay": 31, "baseSalary": 33030, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 },
-//   { "month": 4,  "workDay": 30, "baseSalary": 33030, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 },
-//   { "month": 5,  "workDay": 31, "baseSalary": 33030, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 },
-//   { "month": 6,  "workDay": 30, "baseSalary": 33030, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 },
-//   { "month": 7,  "workDay": 31, "baseSalary": 33030, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 },
-//   { "month": 8,  "workDay": 31, "baseSalary": 33030, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 },
-//   { "month": 9,  "workDay": 30, "baseSalary": 33030, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 },
-//   { "month": 10, "workDay": 31, "baseSalary": 33030, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 },
-//   { "month": 11, "workDay": 30, "baseSalary": 33030, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 },
-//   { "month": 12, "workDay": 31, "baseSalary": 33030, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0, "privateHealthInsurance": 0, "shoppingVoucher": 0 }
+//   { "month": 1,  "workDay": 31, "baseSalary": 30000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0,  "shoppingVoucher": 2500 },
+//   { "month": 2,  "workDay": 28, "baseSalary": 30000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0,  "shoppingVoucher": 2500 },
+//   { "month": 3,  "workDay": 31, "baseSalary": 30000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0,  "shoppingVoucher": 2500 },
+//   { "month": 4,  "workDay": 30, "baseSalary": 30000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0,  "shoppingVoucher": 2500 },
+//   { "month": 5,  "workDay": 31, "baseSalary": 30000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0,  "shoppingVoucher": 2500 },
+//   { "month": 6,  "workDay": 30, "baseSalary": 30000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0,  "shoppingVoucher": 2500 },
+//   { "month": 7,  "workDay": 31, "baseSalary": 30000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0,  "shoppingVoucher": 2500 },
+//   { "month": 8,  "workDay": 31, "baseSalary": 30000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0,  "shoppingVoucher": 2500 },
+//   { "month": 9,  "workDay": 30, "baseSalary": 30000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0,  "shoppingVoucher": 2500 },
+//   { "month": 10, "workDay": 31, "baseSalary": 30000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0,  "shoppingVoucher": 2500 },
+//   { "month": 11, "workDay": 30, "baseSalary": 30000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0,  "shoppingVoucher": 2500 },
+//   { "month": 12, "workDay": 31, "baseSalary": 30000, "salaryIncreaseRate": 0, "overtime50": 0, "overtime100": 0, "bonusAmount": 0,  "shoppingVoucher": 2500 }

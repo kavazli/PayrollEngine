@@ -182,7 +182,7 @@ public class PayrollMonthService : IPayrollMonthService
             await _resultPayrollService.ClearAsync();
             await _resultPayrollService.AddRangeAsync(resultPayrolls);
 
-            await _resultPayrollService.ClearAsync();
+            await _shoppingVoucherService.ClearAsync();
             await _shoppingVoucherService.AddRangeAsync(shoppingVouchers);
  
         }
