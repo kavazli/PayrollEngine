@@ -13,5 +13,6 @@ public class EmployeeScenario
     public Degree? DisabilityDegree { get; set; }
     public PayType PayType { get; set; }
     public IncentiveType IncentiveType { get; set; }
+    public Sector Sector { get; set; }
     
 }
