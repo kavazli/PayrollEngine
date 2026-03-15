@@ -5,7 +5,7 @@ namespace PayrollEngine.Domain.Entities;
 
 public class ResultPayroll
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     public Months Month { get; set; }
     public int WorkDay { get; set; }
     public int SSDay { get; set; }
