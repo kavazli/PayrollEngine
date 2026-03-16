@@ -24,6 +24,8 @@ public class PayrollMonthService : IPayrollMonthService
     private readonly NetSalaryIteration _netSalaryIteration;
     private readonly IShoppingVoucherService _shoppingVoucherService;
     private readonly ShoppingVoucherCalc _shoppingVoucherCalc;
+    private readonly EmployerContributionsCalc _employerContributionsCalc;
+    private readonly IEmployerContributionsService _employerContributionsService;
 
 
     public PayrollMonthService(IPayrollMonthsProvider provider,
@@ -32,7 +34,9 @@ public class PayrollMonthService : IPayrollMonthService
                                ResultPayrollCalc resultPayrollCalc,
                                NetSalaryIteration netSalaryIteration,
                                IShoppingVoucherService shoppingVoucherService,
-                               ShoppingVoucherCalc shoppingVoucherCalc) 
+                               ShoppingVoucherCalc shoppingVoucherCalc,
+                               EmployerContributionsCalc employerContributionsCalc,
+                               IEmployerContributionsService employerContributionsService) 
     {   
 
         if (provider == null)
@@ -70,6 +74,15 @@ public class PayrollMonthService : IPayrollMonthService
             throw new ArgumentNullException(nameof(shoppingVoucherCalc), "Shopping voucher calculator cannot be null.");
         }
 
+        if(_employerContributionsCalc == null)
+        {
+            throw new ArgumentNullException(nameof(_employerContributionsCalc), "Employer contributions calculator cannot be null.");
+        }
+
+        if(employerContributionsService == null)
+        {
+            throw new ArgumentNullException(nameof(employerContributionsService), "Employer contributions service cannot be null.");
+        }
 
         _payrollMonthsProvider = provider;
         _employeeScenariosProvider = employeeScenariosProvider;
@@ -78,7 +91,8 @@ public class PayrollMonthService : IPayrollMonthService
         _netSalaryIteration = netSalaryIteration;
         _shoppingVoucherService = shoppingVoucherService;
         _shoppingVoucherCalc = shoppingVoucherCalc;
-
+        _employerContributionsCalc = employerContributionsCalc;
+        _employerContributionsService = employerContributionsService;
     }
 
 
@@ -165,6 +179,7 @@ public class PayrollMonthService : IPayrollMonthService
 
         List<ResultPayroll> resultPayrolls = new List<ResultPayroll>();
         List<ShoppingVoucher> shoppingVouchers = new List<ShoppingVoucher>();
+        List<EmployerContributions> employerContributionsList = new List<EmployerContributions>();
 
 
        if(employeeScenario.SalaryInputType == SalaryInputType.Net)
@@ -189,6 +204,16 @@ public class PayrollMonthService : IPayrollMonthService
 
             await _shoppingVoucherService.ClearAsync();
             await _shoppingVoucherService.AddRangeAsync(shoppingVouchers);
+
+            foreach( var item in list)
+            {
+                var employerContributions = await _employerContributionsCalc.Calc(item.Month);
+                employerContributionsList.Add(employerContributions);                
+            }
+
+            await _employerContributionsService.ClearAsync();
+            await _employerContributionsService.AddRangeAsync(employerContributionsList);
+
  
         }
         else
@@ -212,6 +237,20 @@ public class PayrollMonthService : IPayrollMonthService
 
             await _shoppingVoucherService.ClearAsync();
             await _shoppingVoucherService.AddRangeAsync(shoppingVouchers);
+
+
+            foreach( var item in list)
+            {
+                var employerContributions = await _employerContributionsCalc.Calc(item.Month);
+                employerContributionsList.Add(employerContributions);                
+            }
+
+            await _employerContributionsService.ClearAsync();
+            await _employerContributionsService.AddRangeAsync(employerContributionsList);
+
+
+
+
         }
     }
 
