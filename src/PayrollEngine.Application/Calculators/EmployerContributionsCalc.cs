@@ -65,7 +65,8 @@ public class EmployerContributionsCalc
         IncentiveType incentiveType = scenario.IncentiveType;
         Status status = scenario.Status;
 
-        decimal totalGross = resultPayroll.SSContributionBase;
+        decimal SSCeiling = resultPayroll.SSContributionBase;
+        decimal totalGross = resultPayroll.GrossSalary;
         decimal employerSSRate = activeSSParams.EmployerSSRate;
         decimal employerUIRate = activeSSParams.EmployerUIRate;
         decimal employerRetiredSSRate = retiredSSParams.EmployerSSRate;
@@ -80,9 +81,9 @@ public class EmployerContributionsCalc
         if(status == Status.Retired)
         {   
             employerContributions.Month = months;
-            employerContributions.EmployerSSContributionAmount = SgdpCalc(totalGross, employerRetiredSSRate);
+            employerContributions.EmployerSSContributionAmount = SgdpCalc(SSCeiling, employerRetiredSSRate);
             employerContributions.EmployerUIContributionAmount = 0;
-            employerContributions.TotalEmployerCost = totalGross + employerContributions.EmployerSSContributionAmount + employerContributions.EmployerUIContributionAmount;
+            employerContributions.TotalEmployerCost = SSCeiling + employerContributions.EmployerSSContributionAmount + employerContributions.EmployerUIContributionAmount;
             return employerContributions;
         }
        
@@ -90,50 +91,50 @@ public class EmployerContributionsCalc
         if(status == Status.Active && incentiveType == IncentiveType.None)
         {
             employerContributions.Month = months;
-            employerContributions.EmployerSSContributionAmount = Full(totalGross, employerSSRate);
-            employerContributions.EmployerUIContributionAmount = _UICalc(totalGross, employerUIRate);
+            employerContributions.EmployerSSContributionAmount = Full(SSCeiling, employerSSRate);
+            employerContributions.EmployerUIContributionAmount = _UICalc(SSCeiling, employerUIRate);
         }
         else if(status == Status.Active && incentiveType == IncentiveType.Code5510 && sector == Sector.Manufacturing)
         {
             employerContributions.Month = months;
-            employerContributions.EmployerSSContributionAmount = _5510ManCalc(totalGross, employerSSRate);
-            employerContributions.EmployerUIContributionAmount = _UICalc(totalGross, employerUIRate);
+            employerContributions.EmployerSSContributionAmount = _5510ManCalc(SSCeiling, employerSSRate);
+            employerContributions.EmployerUIContributionAmount = _UICalc(SSCeiling, employerUIRate);
         }
         else if(status == Status.Active && incentiveType == IncentiveType.Code5510 && sector == Sector.Other)
         {
             employerContributions.Month = months;
-            employerContributions.EmployerSSContributionAmount = _5510OtherCalc(totalGross, employerSSRate);
-            employerContributions.EmployerUIContributionAmount = _UICalc(totalGross, employerUIRate);
+            employerContributions.EmployerSSContributionAmount = _5510OtherCalc(SSCeiling, employerSSRate);
+            employerContributions.EmployerUIContributionAmount = _UICalc(SSCeiling, employerUIRate);
         }
         else if(status == Status.Active && incentiveType == IncentiveType.Code14857 && sector == Sector.Manufacturing)
         {
             employerContributions.Month = months;
-            employerContributions.EmployerSSContributionAmount = _14857ManCalc(totalGross, employerSSRate, minimumWageAmount);
-            employerContributions.EmployerUIContributionAmount = _UICalc(totalGross, employerUIRate);
+            employerContributions.EmployerSSContributionAmount = _14857ManCalc(SSCeiling, employerSSRate, minimumWageAmount);
+            employerContributions.EmployerUIContributionAmount = _UICalc(SSCeiling, employerUIRate);
         }
         else if(status == Status.Active && incentiveType == IncentiveType.Code14857 && sector == Sector.Other)
         {
             employerContributions.Month = months;
-            employerContributions.EmployerSSContributionAmount = _14857OtherCalc(totalGross, employerSSRate, minimumWageAmount);
-            employerContributions.EmployerUIContributionAmount = _UICalc(totalGross, employerUIRate);
+            employerContributions.EmployerSSContributionAmount = _14857OtherCalc(SSCeiling, employerSSRate, minimumWageAmount);
+            employerContributions.EmployerUIContributionAmount = _UICalc(SSCeiling, employerUIRate);
         }
         else if(status == Status.Active && incentiveType == IncentiveType.Code6111)
         {
             employerContributions.Month = months;
             employerContributions.EmployerSSContributionAmount = _6111Calc();
-            employerContributions.EmployerUIContributionAmount = _UICalc(totalGross, employerUIRate);
+            employerContributions.EmployerUIContributionAmount = _UICalc(SSCeiling, employerUIRate);
         }
         else if(status == Status.Active && incentiveType == IncentiveType.Code16322 && sector == Sector.Manufacturing)
         {
             employerContributions.Month = months;
-            employerContributions.EmployerSSContributionAmount = _16322ManCalc(totalGross, employerSSRate, minimumWageAmount);
-            employerContributions.EmployerUIContributionAmount = _UICalc(totalGross, employerUIRate);
+            employerContributions.EmployerSSContributionAmount = _16322ManCalc(SSCeiling, employerSSRate, minimumWageAmount);
+            employerContributions.EmployerUIContributionAmount = _UICalc(SSCeiling, employerUIRate);
         }
         else if(status == Status.Active && incentiveType == IncentiveType.Code16322 && sector == Sector.Other)
         {
             employerContributions.Month = months;
-            employerContributions.EmployerSSContributionAmount = _16322OtherCalc(totalGross, employerSSRate, minimumWageAmount);
-            employerContributions.EmployerUIContributionAmount = _UICalc(totalGross, employerUIRate);
+            employerContributions.EmployerSSContributionAmount = _16322OtherCalc(SSCeiling, employerSSRate, minimumWageAmount);
+            employerContributions.EmployerUIContributionAmount = _UICalc(SSCeiling, employerUIRate);
         }
         else
         {
