@@ -46,6 +46,7 @@ public static class DependencyInjection
         services.AddScoped<DisabilityDegreeCalc>();
         services.AddScoped<ResultPayrollCalc>();
         services.AddScoped<ShoppingVoucherCalc>();
+        services.AddScoped<EmployerContributionsCalc>();
 
 
         services.AddScoped<NetSalaryIteration>();

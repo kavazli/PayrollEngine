@@ -74,9 +74,9 @@ public class PayrollMonthService : IPayrollMonthService
             throw new ArgumentNullException(nameof(shoppingVoucherCalc), "Shopping voucher calculator cannot be null.");
         }
 
-        if(_employerContributionsCalc == null)
+        if(employerContributionsCalc == null)
         {
-            throw new ArgumentNullException(nameof(_employerContributionsCalc), "Employer contributions calculator cannot be null.");
+            throw new ArgumentNullException(nameof(employerContributionsCalc), "Employer contributions calculator cannot be null.");
         }
 
         if(employerContributionsService == null)

@@ -78,7 +78,8 @@ public class EmployerContributionsCalc
         
         // Emeklilerde sector veya İncentiveType'ye bakılmaksızın SGDP uygulanır.
         if(status == Status.Retired)
-        {
+        {   
+            employerContributions.Month = months;
             employerContributions.EmployerSSContributionAmount = SgdpCalc(totalGross, employerRetiredSSRate);
             employerContributions.EmployerUIContributionAmount = 0;
             employerContributions.TotalEmployerCost = totalGross + employerContributions.EmployerSSContributionAmount + employerContributions.EmployerUIContributionAmount;
@@ -88,41 +89,49 @@ public class EmployerContributionsCalc
         
         if(status == Status.Active && incentiveType == IncentiveType.None)
         {
+            employerContributions.Month = months;
             employerContributions.EmployerSSContributionAmount = Full(totalGross, employerSSRate);
             employerContributions.EmployerUIContributionAmount = _UICalc(totalGross, employerUIRate);
         }
         else if(status == Status.Active && incentiveType == IncentiveType.Code5510 && sector == Sector.Manufacturing)
         {
+            employerContributions.Month = months;
             employerContributions.EmployerSSContributionAmount = _5510ManCalc(totalGross, employerSSRate);
             employerContributions.EmployerUIContributionAmount = _UICalc(totalGross, employerUIRate);
         }
         else if(status == Status.Active && incentiveType == IncentiveType.Code5510 && sector == Sector.Other)
         {
+            employerContributions.Month = months;
             employerContributions.EmployerSSContributionAmount = _5510OtherCalc(totalGross, employerSSRate);
             employerContributions.EmployerUIContributionAmount = _UICalc(totalGross, employerUIRate);
         }
         else if(status == Status.Active && incentiveType == IncentiveType.Code14857 && sector == Sector.Manufacturing)
         {
+            employerContributions.Month = months;
             employerContributions.EmployerSSContributionAmount = _14857ManCalc(totalGross, employerSSRate, minimumWageAmount);
             employerContributions.EmployerUIContributionAmount = _UICalc(totalGross, employerUIRate);
         }
         else if(status == Status.Active && incentiveType == IncentiveType.Code14857 && sector == Sector.Other)
         {
+            employerContributions.Month = months;
             employerContributions.EmployerSSContributionAmount = _14857OtherCalc(totalGross, employerSSRate, minimumWageAmount);
             employerContributions.EmployerUIContributionAmount = _UICalc(totalGross, employerUIRate);
         }
         else if(status == Status.Active && incentiveType == IncentiveType.Code6111)
         {
+            employerContributions.Month = months;
             employerContributions.EmployerSSContributionAmount = _6111Calc();
             employerContributions.EmployerUIContributionAmount = _UICalc(totalGross, employerUIRate);
         }
         else if(status == Status.Active && incentiveType == IncentiveType.Code16322 && sector == Sector.Manufacturing)
         {
+            employerContributions.Month = months;
             employerContributions.EmployerSSContributionAmount = _16322ManCalc(totalGross, employerSSRate, minimumWageAmount);
             employerContributions.EmployerUIContributionAmount = _UICalc(totalGross, employerUIRate);
         }
         else if(status == Status.Active && incentiveType == IncentiveType.Code16322 && sector == Sector.Other)
         {
+            employerContributions.Month = months;
             employerContributions.EmployerSSContributionAmount = _16322OtherCalc(totalGross, employerSSRate, minimumWageAmount);
             employerContributions.EmployerUIContributionAmount = _UICalc(totalGross, employerUIRate);
         }
@@ -150,7 +159,7 @@ public class EmployerContributionsCalc
 
     private decimal _5510ManCalc(decimal totalGross, decimal employerSSRate)
     {
-        decimal rate = employerSSRate - 0.005m;
+        decimal rate = employerSSRate - 0.05m;
         return totalGross * rate;
     }
 
