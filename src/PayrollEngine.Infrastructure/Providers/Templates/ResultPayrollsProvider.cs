@@ -61,11 +61,7 @@ public class ResultPayrollsProvider : IResultPayrollsProvider
     public async Task<List<ResultPayroll>> GetAsync()
     {   
         var resultPayrolls = await _context.ResultPayrolls.ToListAsync();
-        if (resultPayrolls == null)
-        {
-            throw new InvalidOperationException("No result payrolls found in the database.");
-        }
-
+        
         return resultPayrolls;
     }
 

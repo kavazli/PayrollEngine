@@ -1,5 +1,6 @@
 using System;
 using PayrollEngine.Application.Services.Params;
+using PayrollEngine.Application.Services.Services;
 using PayrollEngine.Domain.Entities;
 using PayrollEngine.Domain.Enums;
 using PayrollEngine.Domain.Interfaces.Services;
@@ -10,18 +11,18 @@ public class EmployerContributionsCalc
 {
     private readonly IEmployeeScenariosService _employeeScenariosService;
     private readonly IResultPayrollService _resultPayrollService;
-    private readonly IEmployerContributionsService _employerContributionsService;
     private readonly MinimumWageService _minimumWageService;
     private readonly ActiveSSParamsService _activeSSParamsService;
     private readonly RetiredSSParamsService _retiredSSParamsService;
+    private readonly ShoppingVoucherService _shoppingVoucherService;
 
 
     public EmployerContributionsCalc(IEmployeeScenariosService employeeScenariosService,
                                       IResultPayrollService resultPayrollService,
-                                      IEmployerContributionsService employerContributionsService,
                                       MinimumWageService minimumWageService,
                                       ActiveSSParamsService activeSSParamsService,
-                                      RetiredSSParamsService retiredSSParamsService)
+                                      RetiredSSParamsService retiredSSParamsService,
+                                      ShoppingVoucherService shoppingVoucherService)
     {   
 
         if (employeeScenariosService == null)
@@ -31,9 +32,6 @@ public class EmployerContributionsCalc
         if (resultPayrollService == null)        {
             throw new ArgumentNullException(nameof(resultPayrollService), "ResultPayrollService cannot be null.");
         }
-        if (employerContributionsService == null)        {
-            throw new ArgumentNullException(nameof(employerContributionsService), "EmployerContributionsService cannot be null.");
-        }
         if (minimumWageService == null)        {
             throw new ArgumentNullException(nameof(minimumWageService), "MinimumWageService cannot be null.");
         }
@@ -42,13 +40,17 @@ public class EmployerContributionsCalc
         }
         if (retiredSSParamsService == null)        {
             throw new ArgumentNullException(nameof(retiredSSParamsService), "RetiredSSParamsService cannot be null.");
-        }       
+        }
+        if (shoppingVoucherService == null)        
+        {
+            throw new ArgumentNullException(nameof(shoppingVoucherService), "ShoppingVoucherService cannot be null.");
+        }
 
 
         _employeeScenariosService = employeeScenariosService;
         _resultPayrollService = resultPayrollService;
-        _employerContributionsService = employerContributionsService;
         _minimumWageService = minimumWageService;
+        _shoppingVoucherService = shoppingVoucherService;
         _activeSSParamsService = activeSSParamsService;
         _retiredSSParamsService = retiredSSParamsService;
     }
@@ -60,6 +62,7 @@ public class EmployerContributionsCalc
         var activeSSParams = await _activeSSParamsService.GetValueAsync(scenario.Year);
         var retiredSSParams = await _retiredSSParamsService.GetValueAsync(scenario.Year);
         var minimumWage = await _minimumWageService.GetValueAsync(scenario.Year);
+        var shoppingVoucher = await _shoppingVoucherService.GetMonthAsync(months);
         
         Sector sector = scenario.Sector;
         IncentiveType incentiveType = scenario.IncentiveType;
@@ -67,6 +70,7 @@ public class EmployerContributionsCalc
 
         decimal SSCeiling = resultPayroll.SSContributionBase;
         decimal totalGross = resultPayroll.GrossSalary;
+        decimal shopping = shoppingVoucher.GrossAmount;
         decimal employerSSRate = activeSSParams.EmployerSSRate;
         decimal employerUIRate = activeSSParams.EmployerUIRate;
         decimal employerRetiredSSRate = retiredSSParams.EmployerSSRate;
@@ -83,7 +87,7 @@ public class EmployerContributionsCalc
             employerContributions.Month = months;
             employerContributions.EmployerSSContributionAmount = SgdpCalc(SSCeiling, employerRetiredSSRate);
             employerContributions.EmployerUIContributionAmount = 0;
-            employerContributions.TotalEmployerCost = SSCeiling + employerContributions.EmployerSSContributionAmount + employerContributions.EmployerUIContributionAmount;
+            employerContributions.TotalEmployerCost = totalGross + employerContributions.EmployerSSContributionAmount + employerContributions.EmployerUIContributionAmount + shopping;
             return employerContributions;
         }
        
@@ -141,9 +145,9 @@ public class EmployerContributionsCalc
             throw new InvalidOperationException("Invalid combination of Status, IncentiveType, and Sector.");
         }
 
-        employerContributions.TotalEmployerCost = totalGross + employerContributions.EmployerSSContributionAmount + employerContributions.EmployerUIContributionAmount;
+        employerContributions.TotalEmployerCost = totalGross + employerContributions.EmployerSSContributionAmount + employerContributions.EmployerUIContributionAmount + shopping;
         return employerContributions;
-
+        
         
     }
 

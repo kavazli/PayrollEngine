@@ -30,7 +30,7 @@ namespace PayrollEngine.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] List<PayrollTemplateMonth> payrolss) 
         {   
-            await Clear();
+            
             var scenario = await _scenario.GetAsync();
             var result = await _service.AddAsync(payrolss, scenario);
             return Ok(result);

@@ -65,14 +65,10 @@ public class EmployerContributionsProvider : IEmployerContributionsProvider
 
     // Veritabanındaki tüm EmployerContributions nesnelerini döndürür.
     // Eğer veritabanında hiç EmployerContributions yoksa, hata fırlatır.
-    public Task<List<EmployerContributions>> GetAsync()
+    public async Task<List<EmployerContributions>> GetAsync()
     {   
-        var contributions = _context.EmployerContributions.ToListAsync();
-        if (contributions == null )
-        {
-            throw new InvalidOperationException("No employer contributions found in the database.");
-        }
-
+        var contributions = await _context.EmployerContributions.ToListAsync();
+        
         return contributions;
     }
 

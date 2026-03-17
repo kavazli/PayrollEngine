@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using PayrollEngine.Domain.Entities;
+using PayrollEngine.Domain.Enums;
 using PayrollEngine.Domain.Interfaces.Providers;
 
 
@@ -65,17 +66,24 @@ public class ShoppingVoucherProvider : IShoppingVoucherProvider
 
     // Veritabanındaki tüm ShoppingVoucher nesnelerini döndürür.
     // Eğer veritabanında hiç ShoppingVoucher yoksa, hata fırlatır.
-    public Task<List<ShoppingVoucher>> GetAsync()
+    public async Task<List<ShoppingVoucher>> GetAsync()
     {   
-        var shoppingVouchers = _context.ShoppingVouchers.ToListAsync();
-        if (shoppingVouchers == null)       
-        {
-            throw new InvalidOperationException("No shopping vouchers found in the database.");
-        }
-
+       var shoppingVouchers = await _context.ShoppingVouchers.ToListAsync();
+        
        return shoppingVouchers;  
     }
 
+
+    public async Task<ShoppingVoucher> GetMonthAsync(Months months)
+    {
+        var shoppingVoucher = await _context.ShoppingVouchers.FirstOrDefaultAsync(sv => sv.Month == months);
+        if (shoppingVoucher == null)       
+        {
+            throw new InvalidOperationException($"No shopping voucher found for the month: {months}.");
+        }
+
+       return shoppingVoucher;  
+    }
 
     // Veritabanındaki ShoppingVoucher nesnelerini temizler ve ardından,
     // yeni bir ShoppingVoucher nesnesi ekler.    

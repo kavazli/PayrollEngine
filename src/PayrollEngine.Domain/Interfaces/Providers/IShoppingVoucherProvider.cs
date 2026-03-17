@@ -1,6 +1,7 @@
 
 
 using PayrollEngine.Domain.Entities;
+using PayrollEngine.Domain.Enums;
 
 
 namespace PayrollEngine.Domain.Interfaces.Providers;
@@ -13,6 +14,7 @@ public interface IShoppingVoucherProvider
     Task<ShoppingVoucher> AddAsync(ShoppingVoucher shoppingVoucher);
     Task<List<ShoppingVoucher>> AddRangeAsync(List<ShoppingVoucher> shoppingVoucherList);
     Task<List<ShoppingVoucher>> GetAsync();
+    Task<ShoppingVoucher> GetMonthAsync(Months months);
     Task ClearAsync();
     Task SetAsync(ShoppingVoucher shoppingVoucher);
 }

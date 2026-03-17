@@ -3,6 +3,7 @@
 using PayrollEngine.Domain.Entities;
 using PayrollEngine.Domain.Interfaces.Services;
 using PayrollEngine.Domain.Interfaces.Providers;
+using PayrollEngine.Domain.Enums;
 
 
 namespace PayrollEngine.Application.Services.Services;
@@ -67,4 +68,11 @@ public class ShoppingVoucherService : IShoppingVoucherService
     {
         return _shoppingVoucherProvider.GetAsync();
     }
+
+    public Task<ShoppingVoucher> GetMonthAsync(Months months)
+    {
+        return _shoppingVoucherProvider.GetMonthAsync(months);
+    }
+
+
 }

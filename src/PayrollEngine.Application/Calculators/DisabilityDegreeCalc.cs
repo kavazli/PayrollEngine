@@ -2,6 +2,7 @@
 
 using PayrollEngine.Application.Services.Params;
 using PayrollEngine.Domain.Entities;
+using PayrollEngine.Domain.Enums;
 
 
 namespace PayrollEngine.Application.Calculators;
@@ -50,22 +51,20 @@ public class DisabilityDegreeCalc
             throw new InvalidOperationException("Disability degree information not found for the given year.");
         }
 
-        if(scenario.DisabilityDegree == disabilityDegree[0].Degree)
+        if (scenario.DisabilityDegree == null || scenario.DisabilityDegree == Degree.Normal)
         {
             return IncomeTaxBase;
         }
 
-        decimal result = 0;
-
-
         foreach (var degree in disabilityDegree)
-        {   
-            if(scenario.DisabilityDegree == degree.Degree)
-            {   
-                result = IncomeTaxBase - degree.Amount;
+        {
+            if (scenario.DisabilityDegree == degree.Degree)
+            {
+                return Math.Round(IncomeTaxBase - degree.Amount, 2);
             }
         }
-    
-        return result;
+
+        throw new InvalidOperationException(
+            $"Disability degree '{scenario.DisabilityDegree}' not found in the database for year {scenario.Year}.");
     }
 }

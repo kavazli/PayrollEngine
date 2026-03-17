@@ -27,7 +27,7 @@ namespace PayrollEngine.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] EmployeeScenario scenario)
         {   
-            await Clear();
+            
             var result = await _service.AddAsync(scenario);
             return Ok(result);
         }
