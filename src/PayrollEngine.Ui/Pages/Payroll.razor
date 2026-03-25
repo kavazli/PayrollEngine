@@ -1,0 +1,599 @@
+@page "/"
+@page "/payroll"
+@using PayrollEngine.Domain.Entities
+@using PayrollEngine.Domain.Enums
+@inject HttpClient Http
+
+<PageTitle>Payroll Engine</PageTitle>
+
+<div class="payroll-page">
+
+    <!-- ═══ SAYFA BAŞLIĞI ═══ -->
+    <div class="page-hero d-flex align-items-center justify-content-between mb-4">
+        <div class="d-flex align-items-center gap-3">
+            <div class="hero-icon-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
+                    <path d="M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5z" />
+                </svg>
+            </div>
+            <div>
+                <h2 class="hero-title mb-0">Payroll Engine</h2>
+                <p class="hero-sub mb-0">Çalışan senaryosunu ve aylık verileri girerek net maaş hesaplaması yapın</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- ═══ BÖLÜM 1: ÇALIŞAN SENARYOSU ═══ -->
+    <div class="pe-card mb-4">
+        <div class="pe-card-header scenario-bg">
+            <div class="d-flex align-items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M6.5 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1zM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                    <path d="M4.5 0A2.5 2.5 0 0 0 2 2.5V14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2.5A2.5 2.5 0 0 0 11.5 0zm0 1h7A1.5 1.5 0 0 1 13 2.5v.2a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-.2A1.5 1.5 0 0 1 4.5 1M3 6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z" />
+                </svg>
+                <span class="fw-semibold">Çalışan Senaryosu</span>
+            </div>
+            
+        </div>
+        <div class="pe-card-body">
+            <div class="row g-3">
+                <div class="col">
+                    <label class="field-label">Yıl</label>
+                    <input type="number" class="form-control pe-input" @bind="_year" />
+                </div>
+                <div class="col">
+                    <label class="field-label">Maaş Türü</label>
+                    <select class="form-select pe-input" @bind="_salaryType">
+                        <option value="Gross">Brüt</option>
+                        <option value="Net">Net</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label class="field-label">Sigortalı Statüsü</label>
+                    <select class="form-select pe-input" @bind="_status">
+                        <option value="Active">Aktif Sigortalı</option>
+                        <option value="Retired">Emekli</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label class="field-label">Engellilik Derecesi</label>
+                    <select class="form-select pe-input" @bind="_disabilityDegree">
+                        <option value="Normal">Yok</option>
+                        <option value="Degree1">1. Derece</option>
+                        <option value="Degree2">2. Derece</option>
+                        <option value="Degree3">3. Derece</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label class="field-label">Ücret Türü</label>
+                    <select class="form-select pe-input" @bind="_payType">
+                        <option value="Monthly">Aylık</option>
+                        <option value="Daily">Günlük</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label class="field-label">Sektör</label>
+                    <select class="form-select pe-input" @bind="_sector">
+                        <option value="Manufacturing">İmalat</option>
+                        <option value="Other">Diğer</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label class="field-label">Teşvik Türü</label>
+                    <select class="form-select pe-input" @bind="_incentiveType">
+                        <option value="None">Teşvik Yok</option>
+                        <option value="Code5510">5510 – SGK İşveren Teşviği</option>
+                        <option value="Code6111">6111 – İstihdam Teşviği</option>
+                        <option value="Code16322">16322 – Yatırım Teşviği</option>
+                        <option value="Code14857">14857 – Engelli Teşviği</option>
+                    </select>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end mt-4 pt-3 border-top">
+                <button class="btn btn-scenario px-4" @onclick="SaveScenario">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="me-2" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                        <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05" />
+                    </svg>
+                    Senaryoyu Kaydet
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ BÖLÜM 2: AYLIK MAAŞ BİLGİLERİ ═══ -->
+    <div class="pe-card mb-4">
+        <div class="pe-card-header months-bg">
+            <div class="d-flex align-items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857z" />
+                    <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
+                </svg>
+                <span class="fw-semibold">Aylık Maaş Bilgileri</span>
+            </div>
+            
+        </div>
+        <div class="pe-card-body p-0">
+            <div class="table-responsive">
+                <table class="table months-table mb-0">
+                    <thead>
+                        <tr>
+                            <th class="text-end">Ay</th>
+                            <th class="text-end">Çalışma Günü</th>
+                            <th class="text-end">Temel Maaş ₺</th>
+                            <th class="text-end">Artış Oranı %</th>
+                            <th class="text-end">Fazla Mesai %50 ₺</th>
+                            <th class="text-end">Fazla Mesai %100 ₺</th>
+                            <th class="text-end">Prim/İkramiye ₺</th>
+                            <th class="text-end">Alışveriş Çeki ₺</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var row in _templateMonths)
+                        {
+                            <tr class="month-row">
+                                <td class="month-name-cell text-end">
+                                    <span class="month-pill">@row.MonthName</span>
+                                </td>
+                                <td><input type="number" class="form-control form-control-sm month-input" value="@row.WorkDay" /></td>
+                                <td><input type="number" class="form-control form-control-sm month-input" value="@row.BaseSalary" /></td>
+                                <td><input type="number" class="form-control form-control-sm month-input" value="@row.IncreaseRate" /></td>
+                                <td><input type="number" class="form-control form-control-sm month-input" value="@row.Overtime50" /></td>
+                                <td><input type="number" class="form-control form-control-sm month-input" value="@row.Overtime100" /></td>
+                                <td><input type="number" class="form-control form-control-sm month-input" value="@row.Bonus" /></td>
+                                <td><input type="number" class="form-control form-control-sm month-input" value="@row.Shopping" /></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-between align-items-center p-3 border-top">
+                <span class="text-muted" style="font-size:0.82rem">12 ay girildi &nbsp;·&nbsp; Tüm alanlar zorunludur</span>
+                <button class="btn btn-months px-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="me-2" viewBox="0 0 16 16">
+                        <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z" />
+                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0" />
+                    </svg>
+                    Kaydet &amp; Hesapla
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ BÖLÜM 3: BORDRO SONUÇLARI ═══ -->
+    <div class="pe-card">
+        <div class="pe-card-header results-bg">
+            <div class="d-flex align-items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07z" />
+                </svg>
+                <span class="fw-semibold">Bordro Sonuçları</span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span class="result-stat-badge">12 Ay</span>
+                <span class="result-stat-badge">2026</span>
+            </div>
+        </div>
+        <div class="pe-card-body p-0">
+            <div class="table-responsive">
+                <table class="table result-table mb-0">
+                    <thead>
+                        <tr>
+                            <th class="col-ay">Ay</th>
+                            <th class="text-end col-money">Çalışma Günü</th>
+                            <th class="text-end col-money">Mevcut Maaş ₺</th>
+                            <th class="text-end col-money">Fazla Mesai %50 ₺</th>
+                            <th class="text-end col-money">Fazla Mesai %100 ₺</th>
+                            <th class="text-end col-money">Prim/İkramiye ₺</th>
+                            <th class="text-end col-money">Toplam Maaş ₺</th>
+                            <th class="text-end col-money">Brüt Maaş ₺</th>
+                            <th class="text-end col-money">SGK Matrahı ₺</th>
+                            <th class="text-end col-money">SGK Kesintisi ₺</th>
+                            <th class="text-end col-money">İşsizlik Kes. ₺</th>
+                            <th class="text-end col-money">GV Matrahı ₺</th>
+                            <th class="text-end col-money">Kümülatif GV Matrahı ₺</th>
+                            <th class="text-end col-money">Gelir Vergisi ₺</th>
+                            <th class="text-end col-money">GV İstisnası ₺</th>
+                            <th class="text-end col-money">Damga Vergisi ₺</th>
+                            <th class="text-end col-money">Damga Vergisi İst. ₺</th>
+                            <th class="text-end col-money col-net">Net Maaş ₺</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var r in _results)
+                        {
+                            <tr class="result-data-row">
+                                <td class="text-end"><span class="result-month-pill">@r.MonthName</span></td>
+                                <td class="text-end val-neutral">@r.WorkDay</td>
+                                <td class="text-end val-gross">@r.CurrentSalary.ToString("N2")</td>
+                                <td class="text-end val-neutral">@r.Overtime50Amount.ToString("N2")</td>
+                                <td class="text-end val-neutral">@r.Overtime100Amount.ToString("N2")</td>
+                                <td class="text-end val-neutral">@r.BonusAmount.ToString("N2")</td>
+                                <td class="text-end val-gross">@r.TotalSalary.ToString("N2")</td>
+                                <td class="text-end val-gross">@r.GrossSalary.ToString("N2")</td>
+                                <td class="text-end val-neutral">@r.SSContributionBase.ToString("N2")</td>
+                                <td class="text-end val-deduct">@r.EmployeeSSC.ToString("N2")</td>
+                                <td class="text-end val-deduct">@r.EmployeeUIC.ToString("N2")</td>
+                                <td class="text-end val-neutral">@r.IncomeTaxBase.ToString("N2")</td>
+                                <td class="text-end val-neutral">@r.CumulativeIncomeTaxBase.ToString("N2")</td>
+                                <td class="text-end val-deduct">@r.IncomeTax.ToString("N2")</td>
+                                <td class="text-end val-neutral">@r.IncomeTaxExemption.ToString("N2")</td>
+                                <td class="text-end val-deduct">@r.StampTax.ToString("N2")</td>
+                                <td class="text-end val-neutral">@r.StampTaxExemption.ToString("N2")</td>
+                                <td class="text-end val-net">@r.NetSalary.ToString("N2")</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr class="result-total-row">
+                            <td><strong>TOPLAM</strong></td>
+                            <td class="text-end val-neutral">—</td>
+                            <td class="text-end val-gross"><strong>@_results.Sum(r => r.CurrentSalary).ToString("N2")</strong></td>
+                            <td class="text-end val-neutral"><strong>@_results.Sum(r => r.Overtime50Amount).ToString("N2")</strong></td>
+                            <td class="text-end val-neutral"><strong>@_results.Sum(r => r.Overtime100Amount).ToString("N2")</strong></td>
+                            <td class="text-end val-neutral"><strong>@_results.Sum(r => r.BonusAmount).ToString("N2")</strong></td>
+                            <td class="text-end val-gross"><strong>@_results.Sum(r => r.TotalSalary).ToString("N2")</strong></td>
+                            <td class="text-end val-gross"><strong>@_results.Sum(r => r.GrossSalary).ToString("N2")</strong></td>
+                            <td class="text-end val-neutral"><strong>@_results.Sum(r => r.SSContributionBase).ToString("N2")</strong></td>
+                            <td class="text-end val-deduct"><strong>@_results.Sum(r => r.EmployeeSSC).ToString("N2")</strong></td>
+                            <td class="text-end val-deduct"><strong>@_results.Sum(r => r.EmployeeUIC).ToString("N2")</strong></td>
+                            <td class="text-end val-neutral"><strong>@_results.Sum(r => r.IncomeTaxBase).ToString("N2")</strong></td>
+                            <td class="text-end val-neutral">—</td>
+                            <td class="text-end val-deduct"><strong>@_results.Sum(r => r.IncomeTax).ToString("N2")</strong></td>
+                            <td class="text-end val-neutral"><strong>@_results.Sum(r => r.IncomeTaxExemption).ToString("N2")</strong></td>
+                            <td class="text-end val-deduct"><strong>@_results.Sum(r => r.StampTax).ToString("N2")</strong></td>
+                            <td class="text-end val-neutral"><strong>@_results.Sum(r => r.StampTaxExemption).ToString("N2")</strong></td>
+                            <td class="text-end val-net"><strong>@_results.Sum(r => r.NetSalary).ToString("N2")</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@code {
+
+    private record TemplateMonth(
+        string MonthName, int WorkDay, decimal BaseSalary,
+        decimal IncreaseRate, decimal Overtime50, decimal Overtime100,
+        decimal Bonus, decimal Shopping);
+
+    private record ResultRow(
+        string MonthName,
+        int WorkDay, int SSDay,
+        decimal CurrentSalary, decimal Overtime50Amount, decimal Overtime100Amount,
+        decimal BonusAmount, decimal TotalSalary,
+        decimal GrossSalary, decimal SSContributionBase,
+        decimal EmployeeSSC, decimal EmployeeUIC,
+        decimal IncomeTaxBase, decimal CumulativeIncomeTaxBase,
+        decimal IncomeTax, decimal IncomeTaxRate, decimal IncomeTaxExemption,
+        decimal StampTax, decimal StampTaxExemption,
+        decimal NetSalary);
+
+    private static readonly string[] MonthNames =
+        ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
+         "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+
+    private List<TemplateMonth> _templateMonths =
+        MonthNames.Select(m => new TemplateMonth(m, 0, 0, 0, 0, 0, 0, 0)).ToList();
+
+    private List<ResultRow> _results = new();
+
+    private int _year = 2026;
+    private string _salaryType = "Gross";
+    private string _status = "Active";
+    private string _disabilityDegree = "Normal";
+    private string _payType = "Monthly";
+    private string _sector = "Manufacturing";
+    private string _incentiveType = "None";
+
+    private async Task SaveScenario()
+    {
+        var scenario = new EmployeeScenario
+        {
+            Year             = _year,
+            SalaryInputType  = Enum.Parse<SalaryInputType>(_salaryType),
+            Status           = Enum.Parse<Status>(_status),
+            DisabilityDegree = Enum.Parse<Degree>(_disabilityDegree),
+            PayType          = Enum.Parse<PayType>(_payType),
+            Sector           = Enum.Parse<Sector>(_sector),
+            IncentiveType    = Enum.Parse<IncentiveType>(_incentiveType)
+        };
+
+        var response = await Http.PostAsJsonAsync("api/employeescenarios", scenario);
+
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Kaydedildi!");
+        }
+    }
+
+
+}
+
+
+<style>
+
+    /* ═══ SAYFA ═══ */
+    .payroll-page {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    /* ═══ HERO ═══ */
+    .page-hero {
+        background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 60%, #3b82f6 100%);
+        border-radius: 16px;
+        padding: 28px 32px;
+        color: white;
+        box-shadow: 0 4px 20px rgba(37,99,235,0.3);
+    }
+
+    .hero-icon-wrap {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(6px);
+        border-radius: 12px;
+        width: 54px;
+        height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .hero-title {
+        font-size: 1.55rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+    }
+
+    .hero-sub {
+        font-size: 0.875rem;
+        opacity: 0.78;
+        margin-top: 3px;
+    }
+
+    .year-badge {
+        background: rgba(255, 255, 255, 0.2);
+        border: 1.5px solid rgba(255, 255, 255, 0.35);
+        border-radius: 24px;
+        color: white;
+        padding: 6px 18px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        white-space: nowrap;
+    }
+
+    /* ═══ KART ═══ */
+    .pe-card {
+        border: none;
+        border-radius: 14px;
+        box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+        overflow: hidden;
+        background: white;
+    }
+
+    .pe-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 24px;
+        font-size: 0.95rem;
+        color: white;
+    }
+
+    .scenario-bg { background: linear-gradient(90deg, #1d4ed8, #3b82f6); }
+    .months-bg   { background: linear-gradient(90deg, #6d28d9, #8b5cf6); }
+    .results-bg  { background: linear-gradient(90deg, #065f46, #059669); }
+
+    .step-badge {
+        background: rgba(255, 255, 255, 0.25);
+        border-radius: 20px;
+        color: white;
+        padding: 3px 12px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+
+    .result-stat-badge {
+        background: rgba(255, 255, 255, 0.22);
+        border-radius: 20px;
+        color: white;
+        padding: 3px 12px;
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+
+    .pe-card-body { padding: 24px; }
+
+    /* ═══ FORM ALANLARI ═══ */
+    .field-label {
+        display: block;
+        font-size: 0.73rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: #64748b;
+        margin-bottom: 6px;
+    }
+
+    .pe-input {
+        border: 1.5px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 0.88rem;
+        color: #1e293b;
+        transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+        .pe-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
+            outline: none;
+        }
+
+    .btn-scenario {
+        display: inline-flex;
+        align-items: center;
+        background: linear-gradient(90deg, #1d4ed8, #3b82f6);
+        color: white;
+        border: none;
+        border-radius: 9px;
+        font-weight: 600;
+        font-size: 0.88rem;
+        padding: 10px 22px;
+        transition: opacity 0.15s, transform 0.1s;
+    }
+
+        .btn-scenario:hover { opacity: 0.88; transform: translateY(-1px); color: white; }
+
+    .btn-months {
+        display: inline-flex;
+        align-items: center;
+        background: linear-gradient(90deg, #6d28d9, #8b5cf6);
+        color: white;
+        border: none;
+        border-radius: 9px;
+        font-weight: 600;
+        font-size: 0.88rem;
+        padding: 10px 22px;
+        transition: opacity 0.15s, transform 0.1s;
+    }
+
+        .btn-months:hover { opacity: 0.88; transform: translateY(-1px); color: white; }
+
+    /* ═══ AY TABLOSU ═══ */
+    .months-table {
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    .months-table thead th {
+        background: #f8fafc;
+        color: #64748b;
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        padding: 12px 14px;
+        border-bottom: 2px solid #e2e8f0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .months-table tbody tr:hover { background: #fafbff; }
+
+    .month-row td {
+        padding: 7px 14px;
+        vertical-align: middle;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .month-name-cell { }
+
+    .month-pill {
+        background: linear-gradient(90deg, #ede9fe, #ddd6fe);
+        color: #5b21b6;
+        border-radius: 7px;
+        padding: 4px 0;
+        font-size: 0.78rem;
+        font-weight: 700;
+        display: inline-block;
+        width: 72px;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .month-input {
+        border: 1.5px solid #e2e8f0;
+        border-radius: 7px;
+        width: 100%;
+        font-size: 0.83rem;
+        text-align: right;
+        color: #1e293b;
+    }
+
+        .month-input:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139,92,246,0.12);
+            outline: none;
+        }
+
+    /* ═══ SONUÇ TABLOSU ═══ */
+    .result-table thead th {
+        background: #f0fdf4;
+        color: #065f46;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.55px;
+        padding: 12px 16px;
+        border-bottom: 2px solid #a7f3d0;
+        white-space: nowrap;
+        vertical-align: middle;
+    }
+
+    .result-table .col-ay   { width: 100px; }
+    .result-table .col-money { min-width: 100px; }
+    .result-table .col-rate  { width: 90px; }
+    .result-table .col-net   { background: #f0fdf4; }
+
+    .result-data-row td {
+        padding: 10px 16px;
+        vertical-align: middle;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 0.85rem;
+    }
+
+    .result-data-row:hover { background: #f8fffe; }
+    .result-data-row:hover .val-net { background: #dcfce7; }
+
+    .result-data-row td.col-net,
+    .result-table tfoot td.col-net {
+        background: #f0fdf4;
+    }
+
+    .result-month-pill {
+        background: linear-gradient(90deg, #d1fae5, #a7f3d0);
+        color: #065f46;
+        border-radius: 7px;
+        padding: 4px 0;
+        font-size: 0.78rem;
+        font-weight: 700;
+        display: inline-block;
+        width: 72px;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .rate-chip {
+        background: #fef9c3;
+        color: #713f12;
+        border-radius: 20px;
+        padding: 2px 9px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        display: inline-block;
+    }
+
+    .val-gross  { color: #1d4ed8; font-weight: 600; }
+    .val-net    { color: #065f46; font-weight: 700; font-size: 0.92rem !important; }
+    .val-deduct { color: #b91c1c; font-weight: 500; }
+    .val-neutral { color: #94a3b8; }
+
+    /* ═══ TOPLAM SATIRI ═══ */
+    .result-total-row td {
+        padding: 12px 16px;
+        font-size: 0.85rem;
+        background: #f8fafc;
+        border-top: 2px solid #a7f3d0;
+        border-bottom: none;
+    }
+
+</style>
