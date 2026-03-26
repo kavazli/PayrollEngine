@@ -14,7 +14,7 @@ public class EmployerContributionsCalc
     private readonly MinimumWageService _minimumWageService;
     private readonly ActiveSSParamsService _activeSSParamsService;
     private readonly RetiredSSParamsService _retiredSSParamsService;
-    private readonly ShoppingVoucherService _shoppingVoucherService;
+    private readonly IShoppingVoucherService _shoppingVoucherService;
 
 
     public EmployerContributionsCalc(IEmployeeScenariosService employeeScenariosService,
@@ -22,7 +22,7 @@ public class EmployerContributionsCalc
                                       MinimumWageService minimumWageService,
                                       ActiveSSParamsService activeSSParamsService,
                                       RetiredSSParamsService retiredSSParamsService,
-                                      ShoppingVoucherService shoppingVoucherService)
+                                      IShoppingVoucherService shoppingVoucherService)
     {   
 
         if (employeeScenariosService == null)

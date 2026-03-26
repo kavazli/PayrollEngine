@@ -3,7 +3,7 @@
 using PayrollEngine.Domain.Entities;
 
 
-namespace PayrollEngine.Domain.Interfaces;
+namespace PayrollEngine.Domain.Interfaces.Params;
 
 
 // Bu arayüz, belirli bir yıl için engellilik derecelerini sağlayan bir hizmeti temsil eder. 
