@@ -6,6 +6,7 @@
 
 <div class="payroll-page">
 
+
     <!-- ═══ SAYFA BAŞLIĞI ═══ -->
     <div class="page-hero d-flex align-items-center justify-content-between mb-4">
         <div class="d-flex align-items-center gap-3">
@@ -22,6 +23,7 @@
         </div>
         
     </div>
+
 
     <!-- ═══ BÖLÜM 1: ÇALIŞAN SENARYOSU ═══ -->
     <div class="pe-card mb-4">
@@ -89,7 +91,8 @@
                     </select>
                 </div>
             </div>
-            <div class="d-flex justify-content-end mt-4 pt-3 border-top">
+            <div class="d-flex justify-content-between align-items-center p-3 border-top">
+                <span class="text-muted" style="font-size:0.82rem">@_ScenarioMessage</span>
                 <button class="btn btn-scenario px-4" @onclick="SaveScenario">
                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="me-2" viewBox="0 0 16 16">
                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />

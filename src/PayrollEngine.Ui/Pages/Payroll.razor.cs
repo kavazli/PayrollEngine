@@ -6,7 +6,8 @@ using PayrollEngine.Domain.Enums;
 namespace PayrollEngine.Ui.Pages;
 
 public partial class Payroll
-{
+{   
+    // HttpClient'i dependency injection ile alıyoruz, API çağrıları için kullanacağız
     [Inject]
     public HttpClient Http { get; set; } = null!;
 
@@ -17,8 +18,10 @@ public partial class Payroll
     private string _payType = "Monthly";
     private string _sector = "Manufacturing";
     private string _incentiveType = "None";
+    private string _ScenarioMessage = string.Empty; // Senaryo kaydedildikten sonra gösterilecek mesaj için 
 
 
+    
     private static readonly Dictionary<Months, string> MonthNames = new()
     {
         { Months.January, "Ocak" },
@@ -58,6 +61,7 @@ public partial class Payroll
 
     private List<PayrollTemplateMonth> _templateMonths = InitializeMonths();
 
+    // şablon olarak kullanılacak aylık veriler, başlangıçta sadece ay bilgisi dolu, diğer alanlar kullanıcı tarafından doldurulacak
     private static List<PayrollTemplateMonth> InitializeMonths()
     {
         var list = new List<PayrollTemplateMonth>();
@@ -68,101 +72,5 @@ public partial class Payroll
         }
         
         return list;
-    }
-
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        UpdateWorkDays();
-    }
-
-    private void OnPayTypeChanged()
-    {
-        UpdateWorkDays();
-    }
-
-    private void OnYearChanged()
-    {
-        if (_payType == "Daily")
-        {
-            UpdateWorkDays();
-        }
-    }
-
-    private void UpdateWorkDays()
-    {
-        if (_payType == "Monthly")
-        {
-            // Tüm ayları 30 gün yap
-            foreach (var month in _templateMonths)
-            {
-                month.WorkDay = 30;
-            }
-        }
-        else // Daily
-        {
-            // Her ayın gerçek gün sayısını hesapla
-            foreach (var month in _templateMonths)
-            {
-                int daysInMonth = DateTime.DaysInMonth(_year, (int)month.Month);
-                month.WorkDay = daysInMonth;
-            }
-        }
-    }
-
-    private void OnJanuaryDataChanged()
-    {
-        if (_templateMonths.Count < 12) return;
-        
-        var january = _templateMonths[0]; // Ocak
-        
-        // Ocak'tan diğer 11 aya kopyala (WorkDay HARİÇ)
-        for (int i = 1; i < 12; i++)
-        {
-            _templateMonths[i].BaseSalary = january.BaseSalary;
-            _templateMonths[i].SalaryIncreaseRate = january.SalaryIncreaseRate;
-            _templateMonths[i].Overtime50 = january.Overtime50;
-            _templateMonths[i].Overtime100 = january.Overtime100;
-            _templateMonths[i].BonusAmount = january.BonusAmount;
-            _templateMonths[i].ShoppingVoucher = january.ShoppingVoucher;
-        }
-    }
-
-    private async Task SaveScenario()
-    {
-        var scenario = new EmployeeScenario
-        {
-            Year             = _year,
-            SalaryInputType  = Enum.Parse<SalaryInputType>(_salaryType),
-            Status           = Enum.Parse<Status>(_status),
-            DisabilityDegree = Enum.Parse<Degree>(_disabilityDegree),
-            PayType          = Enum.Parse<PayType>(_payType),
-            Sector           = Enum.Parse<Sector>(_sector),
-            IncentiveType    = Enum.Parse<IncentiveType>(_incentiveType)
-        };
-
-        var response = await Http.PostAsJsonAsync("api/employeescenarios", scenario);
-
-        if (response.IsSuccessStatusCode)
-        {
-            Console.WriteLine("Kaydedildi!");
-        }
-    }
-
-
-
-    private async Task SaveMonths()
-    {
-        // API'ye direkt PayrollTemplateMonth listesini gönder
-        var response = await Http.PostAsJsonAsync("api/payrollmonth", _templateMonths);
-
-        if (response.IsSuccessStatusCode)
-        {
-            Console.WriteLine("12 ay kaydedildi ve bordro hesaplandı!");
-        }
-        else
-        {
-            Console.WriteLine($"Hata: {response.StatusCode}");
-        }
     }
 }
