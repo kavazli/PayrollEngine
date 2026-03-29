@@ -60,7 +60,7 @@ public class ResultPayrollsProvider : IResultPayrollsProvider
     // Eğer veritabanında hiç ResultPayroll yoksa, hata fırlatır.
     public async Task<List<ResultPayroll>> GetAsync()
     {   
-        var resultPayrolls = await _context.ResultPayrolls.ToListAsync();
+        var resultPayrolls = await _context.ResultPayrolls.OrderBy(x => x.Month).ToListAsync();
         
         return resultPayrolls;
     }

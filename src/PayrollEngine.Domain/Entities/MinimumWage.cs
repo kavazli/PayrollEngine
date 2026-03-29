@@ -8,4 +8,5 @@ public class MinimumWage
     public int Year { get; set; }
     public decimal GrossAmount { get; set; }
     public decimal NetAmount { get; set; }
+    public decimal RetiredNetAmount { get; set; }
 }

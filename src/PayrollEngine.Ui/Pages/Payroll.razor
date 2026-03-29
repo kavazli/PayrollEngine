@@ -38,10 +38,12 @@
             
         </div>
         <div class="pe-card-body">
-            <div class="row g-3">
+            <div class="row g-3 align-items-end">
                 <div class="col">
                     <label class="field-label">Yıl</label>
-                    <input type="number" class="form-control pe-input" @bind="_year" @bind:after="OnYearChanged" />
+                    <select class="form-select pe-input" @bind="_year" @bind:after="OnYearChanged">
+                        <option value="2026">2026</option>
+                    </select>
                 </div>
                 <div class="col">
                     <label class="field-label">Maaş Türü</label>
@@ -92,7 +94,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-between align-items-center p-3 border-top">
-                <span class="text-muted" style="font-size:0.82rem">@_ScenarioMessage</span>
+                <span class="text-success" style="font-size:0.82rem">@_ScenarioMessage</span>
                 <button class="btn btn-scenario px-4" @onclick="SaveScenario">
                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="me-2" viewBox="0 0 16 16">
                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
@@ -143,7 +145,16 @@
                                 @if (row.Month == Months.January)
                                 {
                                     <!-- OCAK satırı - Otomatik kopyalama aktif -->
-                                    <td><input type="number" class="form-control form-control-sm month-input" @bind="row.BaseSalary" @bind:after="OnJanuaryDataChanged" /></td>
+                                    <td>
+                                        <input type="number"
+                                               class="form-control form-control-sm month-input @(!string.IsNullOrEmpty(_baseSalaryWarning) ? "is-invalid" : "")"
+                                               @bind="row.BaseSalary"
+                                               @bind:after="OnJanuaryDataChanged" />
+                                        @if (!string.IsNullOrEmpty(_baseSalaryWarning))
+                                        {
+                                            <div class="invalid-feedback d-block" style="font-size:0.73rem;white-space:nowrap">@_baseSalaryWarning</div>
+                                        }
+                                    </td>
                                     <td><input type="number" class="form-control form-control-sm month-input" @bind="row.SalaryIncreaseRate" @bind:after="OnJanuaryDataChanged" /></td>
                                     <td><input type="number" class="form-control form-control-sm month-input" @bind="row.Overtime50" @bind:after="OnJanuaryDataChanged" /></td>
                                     <td><input type="number" class="form-control form-control-sm month-input" @bind="row.Overtime100" @bind:after="OnJanuaryDataChanged" /></td>
@@ -166,14 +177,23 @@
                 </table>
             </div>
             <div class="d-flex justify-content-between align-items-center p-3 border-top">
-                <span class="text-muted" style="font-size:0.82rem">12 ay girildi &nbsp;·&nbsp; Tüm alanlar zorunludur</span>
-                <button class="btn btn-months px-4" @onclick="SaveMonths">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="me-2" viewBox="0 0 16 16">
-                        <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z" />
-                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0" />
-                    </svg>
-                    Kaydet &amp; Hesapla
-                </button>
+                <span class="text-success" style="font-size:0.82rem">@_ScenarioMessage</span>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-months px-4" @onclick="ClearMonths">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="me-2" viewBox="0 0 16 16">
+                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z" />
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0" />
+                        </svg>
+                        Temizle
+                    </button>
+                    <button class="btn btn-months px-4" @onclick="SaveMonths">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="me-2" viewBox="0 0 16 16">
+                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z" />
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0" />
+                        </svg>
+                        Kaydet &amp; Hesapla
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -188,8 +208,13 @@
                 <span class="fw-semibold">Bordro Sonuçları</span>
             </div>
             <div class="d-flex align-items-center gap-2">
-                <span class="result-stat-badge">12 Ay</span>
-                <span class="result-stat-badge">2026</span>
+                <a href="@ExportUrl" download="@($"bordro_sonuclari_{_year}.csv")" class="btn btn-outline-success">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="me-2" viewBox="0 0 16 16">
+                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z" />
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0" />
+                        </svg>
+                        İndir
+                    </a>
             </div>
         </div>
         <div class="pe-card-body p-0">
@@ -204,7 +229,7 @@
                             <th class="text-end col-money">Fazla Mesai %100 ₺</th>
                             <th class="text-end col-money">Prim/İkramiye ₺</th>
                             <th class="text-end col-money">Toplam Maaş ₺</th>
-                            <th class="text-end col-money">Brüt Maaş ₺</th>
+
                             <th class="text-end col-money">SGK Matrahı ₺</th>
                             <th class="text-end col-money">SGK Kesintisi ₺</th>
                             <th class="text-end col-money">İşsizlik Kes. ₺</th>
@@ -215,53 +240,67 @@
                             <th class="text-end col-money">Damga Vergisi ₺</th>
                             <th class="text-end col-money">Damga Vergisi İst. ₺</th>
                             <th class="text-end col-money col-net">Net Maaş ₺</th>
+                            <th class="text-end col-money">Brüt Maaş ₺</th>
+                            <th class="text-end col-money">İşveren SGK ₺</th>
+                            <th class="text-end col-money">İşveren işsizlik ₺</th>
+                            <th class="text-end col-money">Toplam Maliyet ₺</th>
+
+
+
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var r in _results)
                         {
                             <tr class="result-data-row">
-                                <td class="text-end"><span class="result-month-pill">@r.MonthName</span></td>
+                                <td class="text-end"><span class="result-month-pill">@MonthNames[r.Month]</span></td>
                                 <td class="text-end val-neutral">@r.WorkDay</td>
-                                <td class="text-end val-gross">@r.CurrentSalary.ToString("N2")</td>
-                                <td class="text-end val-neutral">@r.Overtime50Amount.ToString("N2")</td>
-                                <td class="text-end val-neutral">@r.Overtime100Amount.ToString("N2")</td>
-                                <td class="text-end val-neutral">@r.BonusAmount.ToString("N2")</td>
-                                <td class="text-end val-gross">@r.TotalSalary.ToString("N2")</td>
-                                <td class="text-end val-gross">@r.GrossSalary.ToString("N2")</td>
-                                <td class="text-end val-neutral">@r.SSContributionBase.ToString("N2")</td>
-                                <td class="text-end val-deduct">@r.EmployeeSSC.ToString("N2")</td>
-                                <td class="text-end val-deduct">@r.EmployeeUIC.ToString("N2")</td>
-                                <td class="text-end val-neutral">@r.IncomeTaxBase.ToString("N2")</td>
-                                <td class="text-end val-neutral">@r.CumulativeIncomeTaxBase.ToString("N2")</td>
-                                <td class="text-end val-deduct">@r.IncomeTax.ToString("N2")</td>
+                                <td class="text-end val-net">@r.CurrentSalary.ToString("N2")</td>
+                                <td class="text-end val-net">@r.Overtime50Amount.ToString("N2")</td>
+                                <td class="text-end val-net">@r.Overtime100Amount.ToString("N2")</td>
+                                <td class="text-end val-net">@r.BonusAmount.ToString("N2")</td>
+                                <td class="text-end val-net">@r.TotalSalary.ToString("N2")</td>
+                                <td class="text-end val-net">@r.SSContributionBase.ToString("N2")</td>
+                                <td class="text-end val-net">@r.EmployeeSSContributionAmount.ToString("N2")</td>
+                                <td class="text-end val-net">@r.EmployeeUIContributionAmount.ToString("N2")</td>
+                                <td class="text-end val-net">@r.IncomeTaxBase.ToString("N2")</td>
+                                <td class="text-end val-net">@r.CumulativeIncomeTaxBase.ToString("N2")</td>
+                                <td class="text-end val-net">@r.IncomeTax.ToString("N2")</td>
                                 <td class="text-end val-neutral">@r.IncomeTaxExemption.ToString("N2")</td>
-                                <td class="text-end val-deduct">@r.StampTax.ToString("N2")</td>
+                                <td class="text-end val-net">@r.StampTax.ToString("N2")</td>
                                 <td class="text-end val-neutral">@r.StampTaxExemption.ToString("N2")</td>
                                 <td class="text-end val-net">@r.NetSalary.ToString("N2")</td>
+                                  <td class="text-end val-net">@r.GrossSalary.ToString("N2")</td>
+                                @{ var ec = _employerContributions.FirstOrDefault(e => e.Month == r.Month); }
+                                <td class="text-end val-net">@(ec?.EmployerSSContributionAmount.ToString("N2") ?? "—")</td>
+                                <td class="text-end val-net">@(ec?.EmployerUIContributionAmount.ToString("N2") ?? "—")</td>
+                                <td class="text-end val-net">@(ec?.TotalEmployerCost.ToString("N2") ?? "—")</td>
                             </tr>
                         }
                     </tbody>
                     <tfoot>
                         <tr class="result-total-row">
                             <td><strong>TOPLAM</strong></td>
-                            <td class="text-end val-neutral">—</td>
-                            <td class="text-end val-gross"><strong>@_results.Sum(r => r.CurrentSalary).ToString("N2")</strong></td>
-                            <td class="text-end val-neutral"><strong>@_results.Sum(r => r.Overtime50Amount).ToString("N2")</strong></td>
-                            <td class="text-end val-neutral"><strong>@_results.Sum(r => r.Overtime100Amount).ToString("N2")</strong></td>
-                            <td class="text-end val-neutral"><strong>@_results.Sum(r => r.BonusAmount).ToString("N2")</strong></td>
-                            <td class="text-end val-gross"><strong>@_results.Sum(r => r.TotalSalary).ToString("N2")</strong></td>
-                            <td class="text-end val-gross"><strong>@_results.Sum(r => r.GrossSalary).ToString("N2")</strong></td>
-                            <td class="text-end val-neutral"><strong>@_results.Sum(r => r.SSContributionBase).ToString("N2")</strong></td>
-                            <td class="text-end val-deduct"><strong>@_results.Sum(r => r.EmployeeSSC).ToString("N2")</strong></td>
-                            <td class="text-end val-deduct"><strong>@_results.Sum(r => r.EmployeeUIC).ToString("N2")</strong></td>
-                            <td class="text-end val-neutral"><strong>@_results.Sum(r => r.IncomeTaxBase).ToString("N2")</strong></td>
-                            <td class="text-end val-neutral">—</td>
-                            <td class="text-end val-deduct"><strong>@_results.Sum(r => r.IncomeTax).ToString("N2")</strong></td>
+                            <td class="text-end val-neutral"><strong>@_results.Sum(r => r.WorkDay)</strong></td>
+                            <td class="text-end val-net"><strong>@_results.Sum(r => r.CurrentSalary).ToString("N2")</strong></td>
+                            <td class="text-end val-net"><strong>@_results.Sum(r => r.Overtime50Amount).ToString("N2")</strong></td>
+                            <td class="text-end val-net"><strong>@_results.Sum(r => r.Overtime100Amount).ToString("N2")</strong></td>
+                            <td class="text-end val-net"><strong>@_results.Sum(r => r.BonusAmount).ToString("N2")</strong></td>
+                            <td class="text-end val-net"><strong>@_results.Sum(r => r.TotalSalary).ToString("N2")</strong></td>
+                            <td class="text-end val-net"><strong>@_results.Sum(r => r.SSContributionBase).ToString("N2")</strong></td>
+                            <td class="text-end val-net"><strong>@_results.Sum(r => r.EmployeeSSContributionAmount).ToString("N2")</strong></td>
+                            <td class="text-end val-net"><strong>@_results.Sum(r => r.EmployeeUIContributionAmount).ToString("N2")</strong></td>
+                            <td class="text-end val-net"><strong>@_results.Sum(r => r.IncomeTaxBase).ToString("N2")</strong></td>
+                            <td class="text-end val-net">—</td>
+                            <td class="text-end val-net"><strong>@_results.Sum(r => r.IncomeTax).ToString("N2")</strong></td>
                             <td class="text-end val-neutral"><strong>@_results.Sum(r => r.IncomeTaxExemption).ToString("N2")</strong></td>
-                            <td class="text-end val-deduct"><strong>@_results.Sum(r => r.StampTax).ToString("N2")</strong></td>
+                            <td class="text-end val-net"><strong>@_results.Sum(r => r.StampTax).ToString("N2")</strong></td>
                             <td class="text-end val-neutral"><strong>@_results.Sum(r => r.StampTaxExemption).ToString("N2")</strong></td>
                             <td class="text-end val-net"><strong>@_results.Sum(r => r.NetSalary).ToString("N2")</strong></td>
+                            <td class="text-end val-net"><strong>@_results.Sum(r => r.GrossSalary).ToString("N2")</strong></td>
+                            <td class="text-end val-net"><strong>@_employerContributions.Sum(e => e.EmployerSSContributionAmount).ToString("N2")</strong></td>
+                            <td class="text-end val-net"><strong>@_employerContributions.Sum(e => e.EmployerUIContributionAmount).ToString("N2")</strong></td>
+                            <td class="text-end val-net"><strong>@_employerContributions.Sum(e => e.TotalEmployerCost).ToString("N2")</strong></td>
                         </tr>
                     </tfoot>
                 </table>

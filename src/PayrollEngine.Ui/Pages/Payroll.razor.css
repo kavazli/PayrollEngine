@@ -101,6 +101,7 @@
     letter-spacing: 0.6px;
     color: #64748b;
     margin-bottom: 6px;
+    white-space: nowrap;
 }
 
 .pe-input {

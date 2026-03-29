@@ -5,9 +5,10 @@ namespace PayrollEngine.Infrastructure.Seed;
 
 public class MinimumWageSeeder
 {
-    public static void Seed(PayrollEngineDbContext context, int year, 
+    public static void Seed(PayrollEngineDbContext context, int year,
                                                             decimal minimumWage,
-                                                            decimal netAmount)
+                                                            decimal netAmount,
+                                                            decimal retiredNetAmount)
     {
         if (context.MinimumWages.Any(m => m.Year == year))
         {
@@ -19,7 +20,8 @@ public class MinimumWageSeeder
             Id = Guid.NewGuid(),
             Year = year,
             GrossAmount = minimumWage,
-            NetAmount = minimumWage
+            NetAmount = netAmount,
+            RetiredNetAmount = retiredNetAmount
         };
         
         context.MinimumWages.Add(minWage);

@@ -11,6 +11,8 @@ public partial class Payroll
     [Inject]
     public HttpClient Http { get; set; } = null!;
 
+    private string ExportUrl => $"{Http.BaseAddress}api/ResultPayroll/export";
+
     private int _year = 2026;
     private string _salaryType = "Gross";
     private string _status = "Active";
@@ -19,6 +21,14 @@ public partial class Payroll
     private string _sector = "Manufacturing";
     private string _incentiveType = "None";
     private string _ScenarioMessage = string.Empty; // Senaryo kaydedildikten sonra gösterilecek mesaj için 
+
+    private MinimumWage? _minimumWage;
+    private string _baseSalaryWarning = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadMinimumWageAsync();
+    }
 
 
     
@@ -40,23 +50,8 @@ public partial class Payroll
 
 
 
-
-
-    private record ResultRow(
-        string MonthName,
-        int WorkDay, int SSDay,
-        decimal CurrentSalary, decimal Overtime50Amount, decimal Overtime100Amount,
-        decimal BonusAmount, decimal TotalSalary,
-        decimal GrossSalary, decimal SSContributionBase,
-        decimal EmployeeSSC, decimal EmployeeUIC,
-        decimal IncomeTaxBase, decimal CumulativeIncomeTaxBase,
-        decimal IncomeTax, decimal IncomeTaxRate, decimal IncomeTaxExemption,
-        decimal StampTax, decimal StampTaxExemption,
-        decimal NetSalary);
-
-    
-    private List<ResultRow> _results = new();
-
+    List<ResultPayroll> _results = new List<ResultPayroll>();
+    List<EmployerContributions> _employerContributions = new List<EmployerContributions>();
 
 
     private List<PayrollTemplateMonth> _templateMonths = InitializeMonths();

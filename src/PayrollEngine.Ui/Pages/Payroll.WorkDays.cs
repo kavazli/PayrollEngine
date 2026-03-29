@@ -9,9 +9,12 @@ public partial class Payroll
         UpdateWorkDays();
     }
 
-    // Yıl değiştiğinde çalışacak method, çalışma günlerini güncellemek için
-    private void OnYearChanged()
+    // Yıl değiştiğinde çalışacak method, çalışma günlerini ve asgari ücreti güncellemek için
+    private async Task OnYearChanged()
     {
+        await LoadMinimumWageAsync();
+        ValidateBaseSalary();
+
         if (_payType == "Daily")
         {
             UpdateWorkDays();

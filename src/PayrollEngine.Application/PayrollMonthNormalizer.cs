@@ -70,7 +70,7 @@ public class PayrollMonthNormalizer
             return Math.Round(reslut, 2);
         }
 
-        var result = TemplateMonth.BaseSalary + (TemplateMonth.BaseSalary * TemplateMonth.SalaryIncreaseRate);
+        var result = TemplateMonth.BaseSalary + (TemplateMonth.BaseSalary * (TemplateMonth.SalaryIncreaseRate / 100));
 
         return Math.Round(CalculateSalary(workDay, result), 2);
     }

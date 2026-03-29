@@ -67,7 +67,7 @@ public class EmployerContributionsProvider : IEmployerContributionsProvider
     // Eğer veritabanında hiç EmployerContributions yoksa, hata fırlatır.
     public async Task<List<EmployerContributions>> GetAsync()
     {   
-        var contributions = await _context.EmployerContributions.ToListAsync();
+        var contributions = await _context.EmployerContributions.OrderBy(x=> x.Month).ToListAsync();
         
         return contributions;
     }
