@@ -20,7 +20,8 @@ public partial class Payroll
     private string _payType = "Monthly";
     private string _sector = "Manufacturing";
     private string _incentiveType = "None";
-    private string _ScenarioMessage = string.Empty; // Senaryo kaydedildikten sonra gösterilecek mesaj için 
+    private string _scenarioMessage = string.Empty; // Senaryo kaydedildikten sonra gösterilecek mesaj için
+    private string _payrollMonthMessage = string.Empty; // Maaş hesaplama sonrası gösterilecek mesaj için
 
     private MinimumWage? _minimumWage;
     private string _baseSalaryWarning = string.Empty;

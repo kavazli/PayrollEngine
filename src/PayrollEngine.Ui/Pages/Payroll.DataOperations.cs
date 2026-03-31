@@ -110,12 +110,12 @@ public partial class Payroll
         {
             UpdateWorkDays();
 
-            _ScenarioMessage = "Senaryo kaydedildi!";
+            _scenarioMessage = "Senaryo kaydedildi!";
             StateHasChanged();
             
             await Task.Delay(2000);
             
-            _ScenarioMessage = string.Empty; // Mesajı temizle
+            _scenarioMessage = string.Empty; // Mesajı temizle
             StateHasChanged();
         }
     }
@@ -127,7 +127,7 @@ public partial class Payroll
         await ValidateBaseSalary();
         if (!string.IsNullOrEmpty(_baseSalaryWarning))
         {
-            _ScenarioMessage = _baseSalaryWarning;
+            _payrollMonthMessage = _baseSalaryWarning;
             StateHasChanged();
             return;
         }
@@ -137,7 +137,7 @@ public partial class Payroll
 
         if (response.IsSuccessStatusCode)
         {
-            _ScenarioMessage = "Senaryo kaydedildi!";
+            _payrollMonthMessage = "Maaş verileri kaydedildi!";
             StateHasChanged();
             
             await ResultPayrolls();
@@ -145,7 +145,7 @@ public partial class Payroll
 
             await Task.Delay(2000);
             
-            _ScenarioMessage = string.Empty; // Mesajı temizle
+            _payrollMonthMessage = string.Empty; // Mesajı temizle
             StateHasChanged();
         }
     }
